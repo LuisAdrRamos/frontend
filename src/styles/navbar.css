@@ -1,0 +1,68 @@
+/* 🏗️ Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* background-color: #f5d0d0; */
+    padding: 10px 20px;
+    border-radius: 10px;
+    height: 100%; /* ✅ Hace que ocupe toda la altura del div1 */
+    width: 100%; /* ✅ Ocupa todo el ancho */
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    color: black;
+}
+
+/* 📌 Logo + Nombre */
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre logo y nombre */
+}
+
+.navbar-logo img {
+    height: 40px;
+}
+
+.navbar-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 📅 Lista de Meses */
+.navbar-meses {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mes-item {
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.mes-item:hover {
+    color: #646cff;
+}
+
+/* 🔍 Botón de Búsqueda */
+.navbar-search {
+    display: flex;
+    align-items: center;
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.search-btn:hover {
+    transform: scale(1.1);
+}

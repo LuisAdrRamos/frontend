@@ -1,0 +1,96 @@
+
+.parent {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 5px;
+    grid-template-rows: auto 1fr auto; /* Navbar, contenido y footer */
+    min-height: 100vh; /* Asegura que ocupe toda la pantalla */
+    width: 100vw;
+}
+    
+.div1 {
+    grid-column: span 5 / span 5;
+    background-color: rgb(233, 247, 208);
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    height: 60px;
+}
+
+.div2 {
+    grid-row: span 3 / span 3;
+    grid-row-start: 2;
+    background-color: rgb(128, 211, 211);
+    padding: 15px;
+    border-radius: 10px;
+    position: relative;
+    height: auto;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+
+.div3 {
+    grid-column: span 4 / span 4;
+    grid-row: span 3 / span 3;
+    grid-row-start: 2;
+    background-color: rgb(84, 179, 179);
+    padding: 15px;
+    border-radius: 10px;
+    min-height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+
+.div4 {
+    grid-column: span 5 / span 5;
+    grid-row-start: 5;
+    background-color: rgb(128, 153, 153);
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* 🟢 Responsive para móviles */
+@media (max-width: 768px) {
+    .parent {
+        grid-template-columns: 1fr; /* Solo una columna */
+        grid-template-rows: auto auto 1fr auto;
+    }
+
+    .div1 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: auto;
+    }
+
+    .div2 {
+        display: none; /* Oculta la sidebar */
+    }
+
+    .sidebar.active {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 250px;
+        background: #f2f2f2;
+        padding: 20px;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .div3 {
+        grid-column: span 1;
+        width: 100%;
+    }
+
+    .div4 {
+        grid-column: span 1;
+        width: 100%;
+        padding: 15px;
+    }
+}
