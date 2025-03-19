@@ -1,22 +1,35 @@
-/* 🏗️ Navbar */
+/* 🏗️ Navbar - General */
 .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* background-color: #f5d0d0; */
     padding: 10px 20px;
     border-radius: 10px;
-    height: 100%; /* ✅ Hace que ocupe toda la altura del div1 */
-    width: 100%; /* ✅ Ocupa todo el ancho */
-    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    width: 100%;
+    height: 60px;
+    background: rgb(243, 238, 206);
     color: black;
+    position: relative;
+}
+
+/* 📌 Botón de menú */
+.menu-btn {
+    color: #333;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    display: none; /* 🔴 Oculto por defecto */
+    position: absolute;
+    left: -10px;
+    top: -5px;
 }
 
 /* 📌 Logo + Nombre */
 .navbar-logo {
     display: flex;
     align-items: center;
-    gap: 10px; /* Espacio entre logo y nombre */
+    gap: 10px;
 }
 
 .navbar-logo img {
@@ -38,31 +51,37 @@
     margin: 0;
 }
 
-.mes-item {
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
+/* 📌 Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        height: auto;
+        justify-content: center;
+    }
 
-.mes-item:hover {
-    color: #646cff;
-}
+    .navbar-meses {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: thin; /* Oculta scrollbar en navegadores modernos */
+        -ms-overflow-style: none; /* Oculta scrollbar en IE y Edge */
+        white-space: nowrap;
+        width: 100%;
+        justify-content: flex-start;
+        padding-left: 10px;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory; /* Hace que el scroll se alinee mejor */
+    }
 
-/* 🔍 Botón de Búsqueda */
-.navbar-search {
-    display: flex;
-    align-items: center;
-}
+    .navbar-meses::-webkit-scrollbar {
+        display: none; /* Oculta scrollbar en navegadores basados en WebKit */
+    }
 
-.search-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-}
+    .navbar-meses .nav-item {
+        scroll-snap-align: start;
+    }
 
-.search-btn:hover {
-    transform: scale(1.1);
+    .menu-btn {
+        display: block; /* 🟢 Mostrar solo en móviles */
+    }
 }

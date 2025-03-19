@@ -2,8 +2,13 @@ footer {
     grid-column: span 2;
     /* background-color: #f18080; */
     text-align: center;
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
+    background: rgb(243, 238, 206);
+    text-align: center;
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .social-icons {
