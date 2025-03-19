@@ -1,0 +1,296 @@
+/* 📌 Estilos Generales */
+.store-container {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #F2F2F2;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 📌 Header - Navbar */
+.store-header {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #1a1a3dda;
+    color: white;
+    width: 100%;
+}
+
+.titulo {
+    font-size: 2rem;
+    margin: 10px 0;
+    color: rgb(7, 7, 7);
+}
+
+/* 📌 Carrusel */
+.carousel-section {
+    width: 80%;
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.carousel-text {
+    text-align: center;
+    background-color: #F8FFE5;
+    padding: 10px 0;
+    font-weight: bold;
+}
+
+/* 📌 Sección de nuevas llegadas */
+.new-arrivals {
+    text-align: center;
+    padding: 20px;
+    background-color: #F8FFE5;
+    border-radius: 15px;
+    margin: 20px auto;
+    width: 90%;
+    overflow-x: auto;
+}
+
+.new-arrivals-container {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px 0;
+}
+
+.new-arrival-card {
+    flex: 0 0 auto;
+    width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    background: white;
+}
+
+.new-arrival-card:hover {
+    transform: translateY(-5px);
+}
+
+.arrival-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+/* 📌 Texto y Precios de productos */
+.new-arrival-card p {
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #6d6c6c;
+    text-align: center;
+}
+
+.new-arrival-card span {
+    color: #000000;
+    font-size: 0.9rem;
+    display: block;
+    text-align: center;
+}
+
+/* 📌 Iconos */
+.card-icons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.iconF {
+    font-size: 1.5rem;
+    color: #65031dc1;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.iconS {
+    font-size: 1.5rem;
+    color: #056b4f;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.iconF:hover {
+    color: #ff0245;
+}
+
+.iconS:hover {
+    color: #0adca4;
+}
+
+/* 📌 Descripción de productos */
+.product-description {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+    z-index: 1;
+}
+
+.new-arrival-card:hover .product-description {
+    display: block;
+}
+
+/* 📌 Botón de información */
+.info-button-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+.info-button {
+    background: #1a1a3dda;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s;
+}
+
+.info-button:hover {
+    background-color: #058160;
+}
+
+/* 📌 Modal de tutorial */
+.modal {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    z-index: 10001;
+    display: block;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #0610d6;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* 📌 Responsive */
+@media (max-width: 1024px) {
+    .carousel-section {
+        width: 90%;
+    }
+
+    .new-arrival-card {
+        width: 160px;
+    }
+
+    .modal {
+        width: 90%;
+        bottom: 60px;
+        left: 5%;
+    }
+
+    .info-button {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+    }
+}
+
+@media (max-width: 768px) {
+    .new-arrivals-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .new-arrival-card {
+        width: 100%;
+    }
+
+    .carousel-image {
+        height: 300px;
+    }
+
+    .modal {
+        width: 90%;
+        bottom: 60px;
+        left: 5%;
+    }
+
+    .info-button {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-image {
+        height: 250px;
+    }
+
+    .modal {
+        width: 90%;
+        bottom: 50px;
+        left: 5%;
+        padding: 10px;
+    }
+
+    .info-button {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+    }
+}

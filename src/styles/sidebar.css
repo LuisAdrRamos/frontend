@@ -3,38 +3,25 @@
     width: 250px;
     background: rgb(243, 238, 206); /* Color de fondo acorde a la paleta */
     padding: 15px;
+    padding-top: 0px;
     border-radius: 10px;
     position: fixed;
-    right: -250px; /* 🔴 Sidebar oculta inicialmente en el lado derecho */
+    left: -250px; /* 🔴 Sidebar oculta inicialmente */
     top: 0;
     height: 100vh; /* Ocupa toda la altura */
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-    transition: right 0.3s ease-in-out;
+    transition: transform 0.4s ease-in-out, opacity 0.3s ease-in-out;
     z-index: 1001;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* ✅ Habilita el scroll dentro de la sidebar */
-    scrollbar-width: thin; /* 🔵 Oculta la barra en Firefox */
-    -ms-overflow-style: none; /* 🔵 Oculta la barra en IE y Edge */
-}
-/* ✅ Oculta la barra de desplazamiento en navegadores basados en WebKit */
-.sidebar::-webkit-scrollbar {
-    width: 5px;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-}
-
-/* 📌 Evitar que el fondo de la página haga scroll cuando la sidebar está abierta */
-body.sidebar-open {
-    overflow: hidden;
+    overflow-y: auto;
+    opacity: 0; /* 🔴 Inicialmente oculta */
 }
 
 /* 📌 Mostrar la sidebar cuando está activa */
 .sidebar.active {
-    right: 0; /* ✅ Ahora se despliega en el lado derecho */
+    transform: translateX(250px); /* ✅ Se despliega suavemente */
+    opacity: 1;
 }
 
 /* 📌 Overlay (Fondo oscuro para cerrar sidebar al hacer clic fuera) */
@@ -45,8 +32,16 @@ body.sidebar-open {
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.3); /* 🔴 Oscurece el fondo */
-    z-index: 1000; /* ✅ Detrás de la sidebar */
-    transition: opacity 0.3s ease-in-out;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* 📌 Mostrar el overlay cuando la sidebar está activa */
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* 📌 Botón para cerrar */
@@ -169,6 +164,8 @@ body.sidebar-open {
         width: auto;
         height: auto;
         left: 0 !important;
+        transform: none !important;
+        opacity: 1 !important;
     }
 
     .close-btn {
@@ -176,6 +173,6 @@ body.sidebar-open {
     }
 
     .overlay {
-        display: none; /* 🔴 No se necesita en escritorio */
+        display: none;
     }
 }
