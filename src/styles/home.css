@@ -1,8 +1,8 @@
 /* 📌 Estilos Generales */
 .store-container {
-    min-height: 100vh;
+    min-height: 90vh;
     width: 100%;
-    background-color: #F2F2F2;
+    background-color: transparent;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -26,8 +26,9 @@
 
 /* 📌 Carrusel */
 .carousel-section {
-    width: 80%;
-    margin: 20px auto;
+    width: 2500px;
+    height: 500px;
+    /* margin: 20px auto; */
     background-color: white;
     border-radius: 15px;
     overflow: hidden;
@@ -61,8 +62,10 @@
 .new-arrivals-container {
     display: flex;
     gap: 15px;
-    overflow-x: auto;
+    overflow-x: auto;  /* Habilita el scroll horizontal */
     white-space: nowrap;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* Para scroll suave en móviles */
     padding: 10px 0;
 }
 
@@ -84,7 +87,7 @@
 .arrival-image {
     width: 100%;
     height: 180px;
-    object-fit: cover;
+    object-fit: scale-down;
 }
 
 /* 📌 Texto y Precios de productos */
@@ -219,9 +222,9 @@
         width: 90%;
     }
 
-    .new-arrival-card {
+    /* .new-arrival-card {
         width: 160px;
-    }
+    } */
 
     .modal {
         width: 90%;
@@ -241,7 +244,8 @@
 }
 
 @media (max-width: 768px) {
-    .new-arrivals-container {
+    
+    /* .new-arrivals-container {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
@@ -249,7 +253,7 @@
 
     .new-arrival-card {
         width: 100%;
-    }
+    } */
 
     .carousel-image {
         height: 300px;

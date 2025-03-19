@@ -1,0 +1,234 @@
+/* =================== PRODUCT DETAIL =================== */
+.parent-ProductDetail {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+/* Sección de Imágenes */
+.product-img {
+    grid-column: span 2 / span 2;
+    grid-row: span 5 / span 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: contain; /* 🔥 Asegura que las imágenes no se deformen */
+}
+
+/* Sección de Información */
+.product-info {
+    grid-column: span 3 / span 3;
+    grid-row: span 5 / span 5;
+    grid-column-start: 3;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-info h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.producto-precio {
+    font-size: 22px;
+    font-weight: bold;
+    color: #d9534f;
+}
+
+.btn-comprar {
+    background: #1a1a3d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.btn-comprar:hover {
+    background: #3f3f93;
+}
+
+/* 📌 Sección de Productos Similares */
+.product-related {
+    grid-column: span 5 / span 5;
+    grid-row: span 3 / span 3;
+    grid-row-start: 6;
+    text-align: center;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: -50px;
+}
+
+.product-related h2 {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+/* 📌 Contenedor de Productos Similares */
+.productos-similares-container {
+    overflow-x: auto; /* 🔥 Permite desplazamiento horizontal */
+    white-space: nowrap;
+    padding: 10px 0;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+/* Ocultar scrollbar en móviles */
+.productos-similares-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* 📌 Lista de productos */
+.productos-similares-lista {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+/* 📌 Tarjetas de productos similares */
+.producto-similar {
+    flex: 0 0 auto;
+    width: 180px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    background: white;
+    text-align: center;
+    padding: 10px;
+}
+
+.producto-similar:hover {
+    transform: translateY(-5px);
+}
+
+/* 📌 Imagen dentro de cada tarjeta */
+.producto-similar img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain; /* 🔥 Evita distorsión en imágenes */
+}
+
+/* ✅ Diseño RESPONSIVO para móviles */
+@media (max-width: 768px) {
+    .parent-ProductDetail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    /* 📌 Sección de Imágenes */
+    .product-img {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .carousel img {
+        width: 100%;
+        height: auto;
+        max-height: 300px; /* 🔥 Ajusta la altura de la imagen en móviles */
+        object-fit: contain;
+        margin: 0 auto;
+    }
+
+    /* 📌 Sección de Información */
+    .product-info {
+        width: 100%;
+        max-width: 600px;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .btn-comprar {
+        width: 90%;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+
+    /* 📌 Sección de Productos Similares */
+    .product-related {
+        width: 100%;
+        max-width: 100%;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .productos-similares-container {
+        overflow-x: auto; /* 🔥 Permite desplazamiento horizontal */
+        white-space: nowrap;
+        padding: 10px 0;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+
+    /* Ocultar scrollbar en móviles */
+    .productos-similares-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 📌 Lista de productos */
+    .productos-similares-lista {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 10px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        justify-content: flex-start;
+    }
+
+    /* 📌 Tarjetas de productos similares */
+    .producto-similar {
+        flex: 0 0 auto;
+        width: 160px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        overflow: hidden;
+        background: white;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .producto-similar:hover {
+        transform: translateY(-5px);
+    }
+
+    /* 📌 Imagen dentro de cada tarjeta */
+    .producto-similar img {
+        width: 100%;
+        height: 160px;
+        object-fit: contain;
+    }
+}
+
+@media (max-width: 480px) {
+    .producto-similar {
+        width: 150px;
+    }
+}

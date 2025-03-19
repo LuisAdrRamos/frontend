@@ -1,0 +1,252 @@
+/* Estilos Comunes */
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  /* background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1028%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='rgba(255%2c 242%2c 225%2c 1)'%3e%3c/rect%3e%3cpath d='M0%2c589.504C113.108%2c615.391%2c254.938%2c604.482%2c333.747%2c519.32C414.109%2c432.479%2c353.53%2c289.592%2c383.466%2c175.123C406.413%2c87.376%2c492.379%2c20.437%2c487.903%2c-70.15C483.313%2c-163.043%2c407.046%2c-231.553%2c359.422%2c-311.441C300.424%2c-410.408%2c279.66%2c-547.582%2c174.811%2c-595.351C69.815%2c-643.187%2c-62.54%2c-608.605%2c-161.078%2c-548.582C-251.742%2c-493.355%2c-281.391%2c-380.767%2c-331.292%2c-287.066C-370.258%2c-213.899%2c-403.9%2c-141.644%2c-420.994%2c-60.53C-439.152%2c25.631%2c-465.287%2c115.857%2c-433.511%2c197.978C-401.083%2c281.784%2c-314.847%2c325.911%2c-248.158%2c386.141C-167.149%2c459.305%2c-106.407%2c565.151%2c0%2c589.504' fill='%23ffe8c9'%3e%3c/path%3e%3cpath d='M1440 1004.576C1538.689 998.7149999999999 1636.606 1042.993 1730.488 1012.008 1839.104 976.1600000000001 1971.638 927.447 2005.098 818.072 2039.2350000000001 706.485 1925.971 606.027 1888.492 495.517 1859.272 409.36 1857.461 317.22900000000004 1809.105 240.168 1754.857 153.71800000000002 1687.431 74.25400000000002 1595.863 29.178999999999974 1494.32-20.80600000000004 1375.27-61.928999999999974 1267.857-26.264999999999986 1161.085 9.186000000000035 1111.35 126.42700000000002 1040.286 213.64600000000002 971.606 297.939 860.79 367.66499999999996 858.323 476.367 855.85 585.356 981.854 649.387 1028.158 748.082 1073.75 845.26 1035.34 991.137 1126.4560000000001 1047.884 1217.866 1104.8139999999999 1332.501 1010.961 1440 1004.576' fill='%23fffcf9'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1028'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e"); */
+  box-sizing: border-box;
+}
+
+/* Estilos de la marca */
+.brand {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #D4AF37;
+  transition: color 0.3s ease, transform 0.3s ease;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-left: 15px;
+  margin-top: 15px;
+}
+.text-center{
+  font-size: 1.6rem;
+}
+.brand:hover {
+  color: #0056b3;
+  transform: scale(1.05);
+}
+
+.brand-content {
+  display: flex;
+  align-items: center;
+}
+
+.brand-icon {
+  margin-right: 8px;
+  transition: transform 0.3s ease-in-out, color 0.3s ease;
+}
+
+.brand-icon:hover {
+  transform: scale(1.3);
+  cursor: pointer;
+  color: #0056b3;
+}
+
+.brand-text {
+  font-size: 1.5em;
+  color: #D4AF37;
+}
+
+/* Estilos del Link */
+.register-link, .login-link, .forgot-link, .confirmar-link {
+  color: #29295fda;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.register-link:hover, .login-link:hover, .forgot-link:hover, .confirmar-link:hover {
+  color: #013d58;
+  text-decoration: underline;
+}
+
+/* Estilos del Login, Registro y Olvido de contraseña */
+.login-body, .forgot-body, .register-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 88vh;
+  background-image: url('public/Imagenes/Shiny Overlay.svg'); /* Aquí puedes agregar tu imagen de fondo elegante */
+  background-size:cover;
+  background-position: center;
+  color: #b82d2d;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  padding: 20px;
+}
+
+.login-wrapper, .forgot-wrapper, .register-wrapper {
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(187, 19, 19, 0.2);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  color: white;
+  width: 100%;
+  max-width: 500px;
+  padding: 40px 50px;
+  border-radius: 15px;
+  font-size: 1.2em;
+  margin-top: 80px;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #f5f5f5;
+}
+
+.form-control {
+  font-size: 1.2rem;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #1a1a3dda;
+  outline: none;
+}
+
+/* Botón de submit */
+.btn.btn-primary {
+  background-color: #1a1a3dda;
+  border: 2px solid #1a1a3dda;
+  color: white;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  width: 70%;
+  border-radius: 15px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-left: 60px;
+  margin-top: 15px;
+}
+
+.btn.btn-primary:hover {
+  background-color: #1a1a3dda;
+  transform: translateY(-2px);
+}
+
+/* Mensajes de éxito y error */
+.mensaje-success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  padding: 10px;
+  color: #155724;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.mensaje-error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  color: #721c24;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Diseño del componente confirmar */
+.confirmar-circle {
+  background-color: #1a1a3dda;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 30px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.confirmar-icon {
+  font-size: 3rem;
+  color: white;
+}
+
+.confirmar-texto-gracias {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-top: 20px;
+  color: #f5f5f5;
+}
+
+.confirmar-texto-iniciar {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  color: #cccccc;
+}
+
+.confirmar-link {
+  font-size: 1.2rem;
+  text-decoration: underline;
+  display: block;
+  margin: 0 auto;
+  width: fit-content;
+  color: #1a1a3dda;
+}
+
+.confirmar-link:hover {
+  color: #1a1a3dda;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+  .brand {
+    font-size: 1.5rem;
+    top: 10px;
+    left: 10px;
+  }
+
+  .login-wrapper, .forgot-wrapper, .register-wrapper {
+    width: 90%;
+    padding: 30px 40px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .form-control {
+    font-size: 1rem;
+    padding: 12px;
+  }
+
+  .btn.btn-primary {
+    font-size: 1.1rem;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand {
+    font-size: 1.2rem;
+  }
+
+  .login-wrapper, .forgot-wrapper, .register-wrapper {
+    width: 95%;
+    padding: 25px 30px;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  .form-control {
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  .btn.btn-primary {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+}

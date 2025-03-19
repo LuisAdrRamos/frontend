@@ -46,7 +46,8 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
 
     return (
         <>
-            {sidebarOpen && <div className="overlay" onClick={toggleSidebar}></div>}
+            {/* 📌 Overlay que oscurece el fondo */}
+            <div className={`overlay ${sidebarOpen ? "active" : ""}`} onClick={toggleSidebar}></div>
 
             <aside className={`sidebar ${sidebarOpen ? "active" : ""}`}>
                 {/* 📌 Botón para cerrar */}
@@ -56,8 +57,8 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
 
                 {/* 📌 Barra de Búsqueda */}
                 <form className="form-inline d-flex">
-                    <input className="form-control mr-sm-2" type="search" placeholder="Buscar..." aria-label="Search" />
-                    <button className="btn btn-outline-success my-2 my-sm-0 ms-2" type="submit">Buscar</button>
+                    <input className="form-control" type="search" placeholder="Buscar..." aria-label="Search" />
+                    <button className="btn btn-outline-success ms-2" type="submit">Buscar</button>
                 </form>
 
                 {/* 📌 Etiquetas */}
@@ -93,7 +94,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
                 {/* 📌 Lista de Sucursales */}
                 <ul className="sucursales-list">
                     {SUCURSALES.map((item, idx) => (
-                        <li key={idx} onClick={() => setMapSrc(item.src)} style={{ cursor: "pointer", marginBottom: "5px" }}>
+                        <li key={idx} onClick={() => setMapSrc(item.src)}>
                             {item.label}
                         </li>
                     ))}

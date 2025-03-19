@@ -13,10 +13,10 @@ const Navbar = ({ toggleSidebar }) => {
             </button>
 
             {/* 📌 Logo + Nombre */}
-            <div className="navbar-logo">
+            <Link to="/" className="navbar-logo">
                 <img src="/logo.png" alt="Logo" />
                 <span className="navbar-title">Megadisfraz</span>
-            </div>
+            </Link>
 
             {/* 📅 Meses del Año (solo en escritorio) */}
             <ul className="navbar-meses">

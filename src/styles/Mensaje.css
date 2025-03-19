@@ -1,0 +1,56 @@
+.mensaje-container {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-left-width: 4px;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .mensaje-container.success {
+    background-color: #e6fbe8;
+    border-color: #34d399;
+  }
+  
+  .mensaje-container.error {
+    background-color: #fbe7e7;
+    border-color: #ef4444;
+  }
+  
+  .mensaje-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+  }
+  
+  .mensaje-container.success .mensaje-icon {
+    color: #34d399;
+  }
+  
+  .mensaje-container.error .mensaje-icon {
+    color: #ef4444;
+  }
+  
+  .mensaje-text {
+    margin-left: 1rem;
+    font-size: 1rem;
+    color: inherit;
+  }
+  
+
+.success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+.error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.mensaje-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}

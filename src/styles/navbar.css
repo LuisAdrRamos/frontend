@@ -30,6 +30,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    text-decoration: none; /* 🔹 Elimina el subrayado */
+    color: inherit; /* 🔹 Mantiene el color original del texto */
 }
 
 .navbar-logo img {
