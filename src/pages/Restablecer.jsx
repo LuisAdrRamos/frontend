@@ -55,7 +55,7 @@ const Restablecer = () => {
             <Link className="brand" to="/">
                 <div className="brand-content">
                     <img
-                        src="public/Imagenes/logo.png"
+                        src="public/logo.png"
                         alt="Logo Megadisfraz"
                         className="header-logo-img"
                     />

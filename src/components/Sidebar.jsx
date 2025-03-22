@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPhone, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faSignInAlt, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { faFacebookF, faWhatsapp, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import "../styles/sidebar.css";
 
@@ -50,10 +52,33 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
             <div className={`overlay ${sidebarOpen ? "active" : ""}`} onClick={toggleSidebar}></div>
 
             <aside className={`sidebar ${sidebarOpen ? "active" : ""}`}>
-                {/* 📌 Botón para cerrar */}
-                <button className="close-btn" onClick={toggleSidebar}>
-                    <FontAwesomeIcon icon={faTimes} />
-                </button>
+                {/* 📌 Botón para cerrar y autenticación */}
+                <div className="sidebar-top">
+                    <button className="close-btn" onClick={toggleSidebar}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </button>
+
+                    <div className="sidebar-auth-icons">
+                        {!localStorage.getItem("token") ? (
+                            <Link to="/login" className="icon-btn login-icon" title="Iniciar Sesión">
+                                <FontAwesomeIcon icon={faSignInAlt} />
+                            </Link>
+                        ) : (
+                            <>
+                                <Link to="/perfil" className="icon-btn profile-icon" title="Perfil">
+                                    <FontAwesomeIcon icon={faUser} />
+                                </Link>
+                                <button className="icon-btn logout-icon" title="Cerrar Sesión" onClick={() => {
+                                    localStorage.removeItem("token");
+                                    localStorage.removeItem("tipoUsuario");
+                                    window.location.reload();
+                                }}>
+                                    <FontAwesomeIcon icon={faSignOutAlt} />
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </div>
 
                 {/* 📌 Barra de Búsqueda */}
                 <form className="form-inline d-flex">

@@ -3,7 +3,10 @@ body, html {
   height: 100%;
   margin: 0;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  /* background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1028%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='rgba(255%2c 242%2c 225%2c 1)'%3e%3c/rect%3e%3cpath d='M0%2c589.504C113.108%2c615.391%2c254.938%2c604.482%2c333.747%2c519.32C414.109%2c432.479%2c353.53%2c289.592%2c383.466%2c175.123C406.413%2c87.376%2c492.379%2c20.437%2c487.903%2c-70.15C483.313%2c-163.043%2c407.046%2c-231.553%2c359.422%2c-311.441C300.424%2c-410.408%2c279.66%2c-547.582%2c174.811%2c-595.351C69.815%2c-643.187%2c-62.54%2c-608.605%2c-161.078%2c-548.582C-251.742%2c-493.355%2c-281.391%2c-380.767%2c-331.292%2c-287.066C-370.258%2c-213.899%2c-403.9%2c-141.644%2c-420.994%2c-60.53C-439.152%2c25.631%2c-465.287%2c115.857%2c-433.511%2c197.978C-401.083%2c281.784%2c-314.847%2c325.911%2c-248.158%2c386.141C-167.149%2c459.305%2c-106.407%2c565.151%2c0%2c589.504' fill='%23ffe8c9'%3e%3c/path%3e%3cpath d='M1440 1004.576C1538.689 998.7149999999999 1636.606 1042.993 1730.488 1012.008 1839.104 976.1600000000001 1971.638 927.447 2005.098 818.072 2039.2350000000001 706.485 1925.971 606.027 1888.492 495.517 1859.272 409.36 1857.461 317.22900000000004 1809.105 240.168 1754.857 153.71800000000002 1687.431 74.25400000000002 1595.863 29.178999999999974 1494.32-20.80600000000004 1375.27-61.928999999999974 1267.857-26.264999999999986 1161.085 9.186000000000035 1111.35 126.42700000000002 1040.286 213.64600000000002 971.606 297.939 860.79 367.66499999999996 858.323 476.367 855.85 585.356 981.854 649.387 1028.158 748.082 1073.75 845.26 1035.34 991.137 1126.4560000000001 1047.884 1217.866 1104.8139999999999 1332.501 1010.961 1440 1004.576' fill='%23fffcf9'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1028'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e"); */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1098%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='rgba(255%2c 214%2c 124%2c 1)'%3e%3c/rect%3e%3cpath d='M 0%2c77 C 96%2c70.2 288%2c32.4 480%2c43 C 672%2c53.6 768%2c134.6 960%2c130 C 1152%2c125.4 1344%2c42 1440%2c20L1440 560L0 560z' fill='rgba(255%2c 227%2c 171%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c250 C 96%2c240.8 288%2c208.4 480%2c204 C 672%2c199.6 768%2c229.4 960%2c228 C 1152%2c226.6 1344%2c203.2 1440%2c197L1440 560L0 560z' fill='rgba(255%2c 230%2c 185%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c376 C 96%2c363.6 288%2c307.4 480%2c314 C 672%2c320.6 768%2c402.8 960%2c409 C 1152%2c415.2 1344%2c357.8 1440%2c345L1440 560L0 560z' fill='rgba(255%2c 242%2c 197%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c558 C 96%2c538.2 288%2c461.4 480%2c459 C 672%2c456.6 768%2c550 960%2c546 C 1152%2c542 1344%2c460.4 1440%2c439L1440 560L0 560z' fill='rgba(255%2c 250%2c 229%2c 1)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1098'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+  background-repeat: repeat;
+  background-size: cover;
+  background-attachment: fixed; /* ✅ mantiene el fondo al hacer scroll */
   box-sizing: border-box;
 }
 
@@ -21,6 +24,7 @@ body, html {
   font-weight: bold;
   margin-left: 15px;
   margin-top: 15px;
+  
 }
 .text-center{
   font-size: 1.6rem;
@@ -39,6 +43,13 @@ body, html {
   margin-right: 8px;
   transition: transform 0.3s ease-in-out, color 0.3s ease;
 }
+
+.header-logo-img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
 
 .brand-icon:hover {
   transform: scale(1.3);
@@ -70,7 +81,6 @@ body, html {
   justify-content: center;
   align-items: center;
   min-height: 88vh;
-  background-image: url('public/Imagenes/Shiny Overlay.svg'); /* Aquí puedes agregar tu imagen de fondo elegante */
   background-size:cover;
   background-position: center;
   color: #b82d2d;
@@ -79,17 +89,25 @@ body, html {
 }
 
 .login-wrapper, .forgot-wrapper, .register-wrapper {
-  background: rgba(0, 0, 0, 0.6);
-  border: 2px solid rgba(187, 19, 19, 0.2);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-  color: white;
+  /* Fondo semitransparente */
+  background: rgba(255, 255, 255, 0); 
+  /* Efecto borroso en el fondo */
+  backdrop-filter: blur(5px); 
+  /* Sombra sutil para resaltar las cajas */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4); 
+  /* Texto en color blanco para contraste */
+  color: Black; 
+  /* Ajustes generales de tamaño */
   width: 100%;
   max-width: 500px;
-  padding: 40px 50px;
-  border-radius: 15px;
-  font-size: 1.2em;
-  margin-top: 80px;
+  /* Espaciado interno */
+  padding: 40px 50px; 
+  /* Esquinas redondeadas */
+  border-radius: 15px; 
+  /* Tamaño de fuente mayor */
+  font-size: 1.2em; 
+  /* Separación desde la parte superior */
+  margin-top: 80px; 
 }
 
 h2 {

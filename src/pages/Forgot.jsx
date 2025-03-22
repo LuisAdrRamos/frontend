@@ -35,14 +35,14 @@ const Forgot = () => {
         <>
             <div className="login-body">
                 <Link className="brand" to="/">
-                        <div className="brand-content">
-                          <img
-                            src="/Imagenes/logo.png"
+                    <div className="brand-content">
+                        <img
+                            src="/logo.png"
                             alt="Logo Megadisfraz"
                             className="header-logo-img"
-                          />
-                          <span className="brand-text">Megadisfraz</span>
-                        </div>
+                        />
+                        <span className="brand-text">Megadisfraz</span>
+                    </div>
                 </Link>
                 <div className="login-wrapper">
                     {mensaje.respuesta && <Mensaje tipo={mensaje.tipo}>{mensaje.respuesta}</Mensaje>}

@@ -78,7 +78,7 @@ const ProductDetail = () => {
                             >
                                 <img src={item.img} alt={item.name} />
                                 <p>{item.name}</p>
-                            </div>
+                            </div>  
                         ))}
                     </div>
                 </div>

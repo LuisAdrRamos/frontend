@@ -7,7 +7,7 @@ export const NotFound = () => {
     return (
         <div className="not-found-container">
             <img
-                src="public/Imagenes/logo.png"
+                src="public/logo.png"
                 alt="Logo Megadisfraz"
                 className="header-logo-img"
             />

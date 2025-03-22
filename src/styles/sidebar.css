@@ -1,7 +1,9 @@
 /* 🏗️ Sidebar - General */
 .sidebar {
     width: 250px;
-    background: rgb(243, 238, 206); /* Color de fondo acorde a la paleta */
+    /* background: white; */
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(5px); 
     padding: 15px;
     padding-top: 0px;
     border-radius: 10px;
@@ -22,6 +24,13 @@
 .sidebar.active {
     transform: translateX(250px); /* ✅ Se despliega suavemente */
     opacity: 1;
+}
+
+.sidebar-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
 }
 
 /* 📌 Overlay (Fondo oscuro para cerrar sidebar al hacer clic fuera) */
@@ -53,6 +62,37 @@
     display: block;
     margin: 10px;
     color: black;
+}
+
+/* Solo se muestran los íconos de autenticación en móviles */
+.sidebar-auth-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-btn {
+    font-size: 20px;
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.icon-btn:hover {
+    transform: scale(1.1);
+}
+
+.login-icon:hover {
+    color: green;
+}
+
+.logout-icon:hover {
+    color: red;
+}
+
+.profile-icon:hover {
+    color: #555;
 }
 
 /* 📌 Contacto y Redes Sociales */

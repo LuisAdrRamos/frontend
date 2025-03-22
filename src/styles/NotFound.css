@@ -1,5 +1,4 @@
 /* NotFound.css */
-
 .not-found-container {
     display: flex;
     flex-direction: column;
@@ -16,6 +15,7 @@
     width: 100px;
     height:100px;
     margin-bottom: 1px;
+    object-fit: contain;
 }
 .brand-text {
     font-size: 35px;
