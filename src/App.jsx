@@ -8,8 +8,8 @@ import { DisfracesProvider } from "./context/ProductosProvider";
 // Pages
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./pages/login";
+import Register from "./pages/register";
 import Confirm from "./pages/Confirmar";
 import ForgotPassword from "./pages/Forgot";
 import ResetPassword from "./pages/Restablecer";
@@ -33,7 +33,7 @@ function App() {
                                     <Route index element={<Home />} />
                                     <Route path="productos/:id" element={<ProductDetail />} /> {/* ✅ Corregido */}
                                     <Route 
-                                        path="profile" 
+                                        path="perfil" 
                                         element={
                                             <PrivateRoute allowedRoles={["admin", "user"]}>
                                                 <Profile />
@@ -50,7 +50,7 @@ function App() {
                                     <Route index element={<Register />} />
                                 </Route>
                                 <Route path="/confirm/:token" element={<Confirm />} />
-                                <Route path="/forgot-password/:id" element={<ForgotPassword />} />
+                                <Route path="/forgot/id" element={<ForgotPassword />} />
                                 <Route path="/reset-password/:token" element={<ResetPassword />} />
 
                                 {/* 📌 404 Page */}
