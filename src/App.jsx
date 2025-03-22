@@ -8,8 +8,8 @@ import { DisfracesProvider } from "./context/ProductosProvider";
 // Pages
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./pages/login";
+import Register from "./pages/register";
 import Confirm from "./pages/Confirmar";
 import ForgotPassword from "./pages/Forgot";
 import ResetPassword from "./pages/Restablecer";
