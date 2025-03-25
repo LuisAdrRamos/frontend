@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import Eventos from "./Eventos"
 
 // Componentes
 import Card from "../components/Card";
@@ -145,6 +146,8 @@ export default function MainPage() {
                     </div>
                 </div>
             )}
+
+            <Eventos />
         </div>
     );
 }
