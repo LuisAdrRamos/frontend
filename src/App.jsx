@@ -15,10 +15,12 @@ import ForgotPassword from "./pages/Forgot";
 import ResetPassword from "./pages/Restablecer";
 import Profile from "./pages/perfil";
 import NotFound from "./pages/NotFound";
+import Eventos from "./pages/Eventos";
 
 // Routes
 import AuthLayout from "./layout/Auth";
 import PrivateRoute from "./routes/PrivateRoutes";
+import Disfraces from "./pages/Disfraces";
 
 function App() {
     return (
@@ -39,6 +41,20 @@ function App() {
                                                 <Profile />
                                             </PrivateRoute>
                                         } 
+                                    />
+                                    <Route path= "eventos"
+                                    element={
+                                        <PrivateRoute allowedRoles={["admin"]}>
+                                            <Eventos />
+                                        </PrivateRoute>
+                                    }
+                                    />
+                                    <Route path= "disfraces"
+                                    element={
+                                        <PrivateRoute allowedRoles={["admin"]}>
+                                            <Disfraces />
+                                        </PrivateRoute>
+                                    }
                                     />
                                 </Route>
 

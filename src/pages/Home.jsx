@@ -22,6 +22,7 @@ import zapatillas from "../assets/zapatillas.jpg";
 import vestido from "../assets/vestido.jpg";
 import sudadera from "../assets/sudadera.jpg";
 import bolso from "../assets/bolso.jpg";
+import Disfraces from "./Disfraces";
 
 // Datos de productos
 export const products = [
@@ -146,8 +147,7 @@ export default function MainPage() {
                     </div>
                 </div>
             )}
-
-            <Eventos />
+            <Disfraces />
         </div>
     );
 }
