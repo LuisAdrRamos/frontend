@@ -183,7 +183,7 @@ const Perfil = () => {
               onChange={handleChange}
             />
           </div>
-          <button type="submit" className="btn btn-primary profile-button">
+          <button type="submit" className="btn btn-success profile-button">
             Actualizar Contraseña
           </button>
         </form>

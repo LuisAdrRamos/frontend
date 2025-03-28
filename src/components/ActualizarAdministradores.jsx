@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import '../styles/c_ac_admin.css';
 
 const ActualizarAdministradores = () => {
     const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ const ActualizarAdministradores = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2>Crear Administrador</h2>
+            <h2>Actualizar Administrador</h2>
             <div>
                 <label htmlFor="nombre">Nombre:</label>
                 <input
@@ -93,7 +94,7 @@ const ActualizarAdministradores = () => {
                     required
                 />
             </div>
-            <button type="submit">Crear Administrador</button>
+            <button type="submit">Actualizar Administrador</button>
         </form>
     );
 };
