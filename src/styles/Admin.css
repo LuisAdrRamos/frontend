@@ -1,0 +1,109 @@
+/* styles.css */
+.admin-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    padding: 50px;
+    background: rgba(255, 255, 255, 0.261);
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.admin-title {
+    font-size: 45px;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.admin-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.admin-button {
+    padding: 12px 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    font-size: 16px;
+}
+
+.admin-button:hover {
+    transform: scale(1.05);
+}
+
+.button-crear { background-color: #00008b94; }
+.button-actualizar { background-color:  #00008b94;}
+.button-buscar { background-color: #00008b94; }
+.button-eliminar { background-color: #00008b94;  }
+
+.admin-module-container {
+    background-color: #ffff0018;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 600px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-container {
+        padding: 30px;
+    }
+    
+    .admin-title {
+        font-size: 22px;
+    }
+    
+    .admin-buttons-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 10px;
+    }
+    
+    .admin-button {
+        width: 48%;
+        font-size: 14px;
+    }
+    
+    .admin-module-container {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-container {
+        padding: 20px;
+    }
+    
+    .admin-title {
+        font-size: 20px;
+    }
+    
+    .admin-button {
+        padding: 10px 14px;
+        font-size: 13px;
+        width: 48%; /* Ensures two buttons per row */
+    }
+}

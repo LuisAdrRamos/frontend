@@ -106,7 +106,7 @@ const Perfil = () => {
           <table className="profile-table">
             <thead>
               <tr>
-                <th>ID de Usuario</th>
+                <th class="hidden-on-mobile">ID de Usuario</th>
                 <th>Correo Electrónico</th>
                 <th>Nombre</th>
                 <th>Apellido</th>
@@ -114,7 +114,7 @@ const Perfil = () => {
             </thead>
             <tbody>
               <tr>
-                <td>{auth.usuario._id}</td>
+                <td class="hidden-on-mobile">{auth.usuario._id}</td>
                 <td>{auth.usuario.email}</td>
                 <td>{auth.usuario.nombre}</td>
                 <td>{auth.usuario.apellido}</td>

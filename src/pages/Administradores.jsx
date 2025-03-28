@@ -3,6 +3,7 @@ import CrearAdministradores from "../components/CrearAdministradores";
 import ActualizarAdministradores from "../components/ActualizarAdministradores";
 import BuscarAdministradores from "../components/BuscarAdministradores";
 import EliminarAdministradores from "../components/EliminarAdministradores";
+import "../styles/Admin.css";
 
 const administradoresIniciales = [
     {
@@ -32,16 +33,24 @@ const Administradores = () => {
     };
 
     return (
-        <div>
-            <h1>Gestión de Administradores</h1>
-            <div>
-                <button onClick={() => setModuloActivo("crear")}>Crear Administrador</button>
-                <button onClick={() => setModuloActivo("actualizar")}>Actualizar Administrador</button>
-                <button onClick={() => setModuloActivo("buscar")}>Buscar Administrador</button>
-                <button onClick={() => setModuloActivo("eliminar")}>Eliminar Administrador</button>
+        <div className="admin-container">
+            <h1 className="admin-title">Gestión de Administradores</h1>
+            <div className="admin-buttons-container">
+                <button className="admin-button button-crear" onClick={() => setModuloActivo("crear")}>
+                    Crear Administrador
+                </button>
+                <button className="admin-button button-actualizar" onClick={() => setModuloActivo("actualizar")}>
+                    Actualizar Administrador
+                </button>
+                <button className="admin-button button-buscar" onClick={() => setModuloActivo("buscar")}>
+                    Buscar Administrador
+                </button>
+                <button className="admin-button button-eliminar" onClick={() => setModuloActivo("eliminar")}>
+                    Eliminar Administrador
+                </button>
             </div>
 
-            <div style={{ marginTop: "20px" }}>
+            <div className="admin-module-container">
                 {moduloActivo === "crear" && <CrearAdministradores />}
                 {moduloActivo === "actualizar" && <ActualizarAdministradores />}
                 {moduloActivo === "buscar" && <BuscarAdministradores administradores={administradores} />}
