@@ -215,4 +215,9 @@
     .overlay {
         display: none;
     }
+
+    /* Ocultar íconos de autenticación en pantallas grandes */
+    .sidebar-auth-icons {
+        display: none;
+    }
 }
