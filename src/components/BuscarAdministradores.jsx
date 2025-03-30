@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/c_ac_bsc_elim_admin.css";
 
 const BuscarAdministradores = ({ administradores }) => {
     const [emailBusqueda, setEmailBusqueda] = useState("");
@@ -18,20 +19,21 @@ const BuscarAdministradores = ({ administradores }) => {
 
     return (
         <div>
-            <h2>Buscar Administrador</h2>
-            <form onSubmit={handleSearch}>
+            <h2 className="title-eliminar">Buscar Administrador</h2>
+            <form onSubmit={handleSearch} className="form-content">
                 <div>
-                    <label htmlFor="email">Correo Electrónico:</label>
+                    <label htmlFor="email" >Correo Electrónico:</label>
                     <input
                         type="email"
                         id="email"
                         name="email"
+                        className="form-input"
                         value={emailBusqueda}
                         onChange={handleChange}
                         required
                     />
                 </div>
-                <button type="submit">Buscar</button>
+                <button type="submit" className="form-button">Buscar</button>
             </form>
 
             {resultado ? (

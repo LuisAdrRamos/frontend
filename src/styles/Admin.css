@@ -48,6 +48,7 @@
 
 .admin-button:hover {
     transform: scale(1.05);
+    background-color: #1f2937;
 }
 
 .button-crear { background-color: #00008b94; }
@@ -57,8 +58,8 @@
 
 .admin-module-container {
     background-color: #ffff0018;
-    padding: 30px;
-    border-radius: 10px;
+    padding: 40px;
+    border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
     max-width: 600px;
@@ -70,7 +71,6 @@
     .admin-container {
         padding: 30px;
     }
-    
     .admin-title {
         font-size: 22px;
     }
@@ -79,7 +79,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
-        gap: 10px;
+        gap: 5px;
     }
     
     .admin-button {
@@ -88,7 +88,7 @@
     }
     
     .admin-module-container {
-        max-width: 90%;
+        max-width: 100%;
     }
 }
 

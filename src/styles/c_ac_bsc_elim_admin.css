@@ -1,0 +1,141 @@
+/* Contenido del formulario */
+.form-content {
+    width: 100%;
+    text-align:center;
+}
+
+/* Título del formulario */
+.form-content h2 {
+    margin-bottom: 30px;
+    font-size: 24px;
+    color: #333;
+}
+
+.title-eliminar{
+    margin-left: 120px;
+    font-weight: bold;
+    font-size: 23px;
+    margin-bottom: 30px;
+}
+
+/* Grupo de formulario */
+.form-group {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.form-container1{
+    align-items: center;
+}
+
+.admin-item{
+    margin-left: -47px;
+}
+
+/* Etiquetas de los inputs */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Inputs del formulario */
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+}
+
+/* Botón del formulario */
+.form-button {
+    background-color: #1f2937;
+    color: white;
+    padding: 10px 20px;
+    border: 0.3px solid #010101;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.form-button_eliminar{
+    background-color: #81142d;
+    color: white;
+    padding: 10px 20px;
+    border: 0.3px solid #010101;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-left: 170px;
+    width: 30%;
+    box-sizing: border-box;
+}
+
+.form-button:hover {
+    background-color: #5e7ba2;
+}
+
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .form-content {
+        padding: 8px;
+    }
+
+    .form-button {
+        padding: 10px;
+    }
+
+    .title-eliminar{
+        margin-left: 0px;
+        margin-bottom: 30px;
+    }
+
+    .form-button_eliminar{
+        background-color: #81142d;
+        color: white;
+        padding: 10px 20px;
+        border: 0.3px solid #010101;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-top: 20px;
+        margin-left: 10px;
+        width: 50%;
+        box-sizing: border-box;
+    }
+
+    .admin-item{
+        margin-left: -47px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-content {
+        padding: 8px;
+    }
+
+    .form-button {
+        padding: 10px;
+    }
+
+    .title-eliminar{
+        margin-left: 0px;
+        margin-bottom: 30px;
+    }
+
+    .form-button_eliminar{
+        background-color: #81142d;
+        color: white;
+        padding: 10px 20px;
+        border: 0.3px solid #010101;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-top: 20px;
+        margin-left: 10px;
+        width: 50%;
+        box-sizing: border-box;
+    }
+}

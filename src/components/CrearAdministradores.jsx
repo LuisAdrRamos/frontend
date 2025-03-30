@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import '../styles/c_ac_bsc_elim_admin.css';
 
 const CrearAdministradores = () => {
     const [formData, setFormData] = useState({
@@ -25,76 +26,84 @@ const CrearAdministradores = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Crear Administrador</h2>
-            <div>
-                <label htmlFor="nombre">Nombre:</label>
-                <input
-                    type="text"
-                    id="nombre"
-                    name="nombre"
-                    value={formData.nombre}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label htmlFor="apellido">Apellido:</label>
-                <input
-                    type="text"
-                    id="apellido"
-                    name="apellido"
-                    value={formData.apellido}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label htmlFor="direccion">Dirección:</label>
-                <input
-                    type="text"
-                    id="direccion"
-                    name="direccion"
-                    value={formData.direccion}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label htmlFor="telefono">Teléfono:</label>
-                <input
-                    type="tel"
-                    id="telefono"
-                    name="telefono"
-                    value={formData.telefono}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label htmlFor="email">Email:</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label htmlFor="contraseña">Contraseña:</label>
-                <input
-                    type="password"
-                    id="contraseña"
-                    name="contraseña"
-                    value={formData.contraseña}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <button type="submit">Crear Administrador</button>
-        </form>
+        <div className="form-container">
+            <form onSubmit={handleSubmit} className="form-content">
+                <h2>Crear Administrador</h2>
+                <div className="form-group">
+                    <label htmlFor="nombre">Nombre:</label>
+                    <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        className="form-input"
+                        value={formData.nombre}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="apellido">Apellido:</label>
+                    <input
+                        type="text"
+                        id="apellido"
+                        name="apellido"
+                        className="form-input"
+                        value={formData.apellido}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="direccion">Dirección:</label>
+                    <input
+                        type="text"
+                        id="direccion"
+                        name="direccion"
+                        className="form-input"
+                        value={formData.direccion}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="telefono">Teléfono:</label>
+                    <input
+                        type="tel"
+                        id="telefono"
+                        name="telefono"
+                        className="form-input"
+                        value={formData.telefono}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="email">Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        className="form-input"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="contraseña">Contraseña:</label>
+                    <input
+                        type="password"
+                        id="contraseña"
+                        name="contraseña"
+                        className="form-input"
+                        value={formData.contraseña}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <button type="submit" className="form-button">Crear</button>
+            </form>
+        </div>
     );
 };
 
