@@ -23,52 +23,59 @@ const EditarEventos = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="mes">Mes:</label>
-                <input
-                    type="text"
-                    id="mes"
-                    name="mes"
-                    value={formData.mes}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label htmlFor="dia">Día:</label>
-                <input
-                    type="number"
-                    id="dia"
-                    name="dia"
-                    value={formData.dia}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label htmlFor="nombre">Nombre del evento o festividad:</label>
-                <input
-                    type="text"
-                    id="nombre"
-                    name="nombre"
-                    value={formData.nombre}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label htmlFor="descripcion">Descripción de la festividad:</label>
-                <textarea
-                    id="descripcion"
-                    name="descripcion"
-                    value={formData.descripcion}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <button type="submit">Actualizar Evento</button>
-        </form>
+        <div className="form-container">
+            <h2 className="tittle-editarev">Editar Evento</h2>
+            <form onSubmit={handleSubmit} className="form-content">
+                <div className="form-group1">
+                    <label htmlFor="mes">Mes:</label>
+                    <input
+                        type="text"
+                        id="mes"
+                        name="mes"
+                        className="form-input3"
+                        value={formData.mes}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group1">
+                    <label htmlFor="dia">Día:</label>
+                    <input
+                        type="number"
+                        id="dia"
+                        name="dia"
+                        className="form-input3"
+                        value={formData.dia}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group1">
+                    <label htmlFor="nombre">Nombre del evento o festividad:</label>
+                    <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        className="form-input3"
+                        value={formData.nombre}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group1">
+                    <label htmlFor="descripcion">Descripción de la festividad:</label>
+                    <textarea
+                        id="descripcion"
+                        name="descripcion"
+                        className="form-input3"
+                        value={formData.descripcion}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <button type="submit" className="form-button">Editar</button>
+            </form>
+        </div>
     );
 };
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/c_ac_bsc_elim_admin.css"; // Asegúrate de importar el archivo CSS
 
 const EliminarEvento = ({ eventosIniciales, onEliminar }) => {
     const [eventos, setEventos] = useState(eventosIniciales);
@@ -13,19 +14,20 @@ const EliminarEvento = ({ eventosIniciales, onEliminar }) => {
 
     return (
         <div>
-            <h2>Eliminar Evento</h2>
+            <h2 className="tittle-eliminarev">Eliminar Evento</h2>
             {eventos.length > 0 ? (
-                <ul>
+                <ul className="custom-list">
                     {eventos.map((evento, index) => (
-                        <li key={index}>
+                        <li key={index} className="form-content2">
                             {evento.nombre} - {evento.mes}/{evento.dia}
-                            <button onClick={() => handleEliminar(index)}>Eliminar</button>
+                            <button onClick={() => handleEliminar(index)} className="form-button_eliminar1">Eliminar</button>
                         </li>
                     ))}
                 </ul>
             ) : (
                 <p>No hay eventos disponibles.</p>
             )}
+            
         </div>
     );
 };

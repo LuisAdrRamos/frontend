@@ -32,43 +32,46 @@ const BuscarEvento = ({ eventos }) => {
     };
 
     return (
-        <div>
-            <h2>Buscar Evento</h2>
-            <form onSubmit={handleSearch}>
-                <div>
+        <div className="form-container">
+            <h2 className="tittle-buscarev">Buscar Evento</h2>
+            <form onSubmit={handleSearch} className="form-content">
+                <div className="form-group1">
                     <label htmlFor="mes">Mes:</label>
                     <input
                         type="text"
                         id="mes"
                         name="mes"
+                        className="form-input3"
                         value={searchCriteria.mes}
                         onChange={handleChange}
                     />
                 </div>
-                <div>
+                <div className="form-group1">
                     <label htmlFor="dia">Día:</label>
                     <input
                         type="number"
                         id="dia"
                         name="dia"
+                        className="form-input3"
                         value={searchCriteria.dia}
                         onChange={handleChange}
                     />
                 </div>
-                <div>
+                <div className="form-group1">
                     <label htmlFor="nombre">Nombre del evento:</label>
                     <input
                         type="text"
                         id="nombre"
                         name="nombre"
+                        className="form-input3"
                         value={searchCriteria.nombre}
                         onChange={handleChange}
                     />
                 </div>
-                <button type="submit">Buscar</button>
+                <button type="submit" className="form-button">Buscar</button>
             </form>
 
-            <h3>Resultados:</h3>
+            <h3 className="tittle-resultadoev">Resultados:</h3>
             <ul>
                 {resultados.length > 0 ? (
                     resultados.map((evento, index) => (
