@@ -3,6 +3,7 @@ import CrearEventos from "../components/CrearEventos";
 import EditarEventos from "../components/EditarEventos";
 import BuscarEvento from "../components/BuscarEvento";
 import EliminarEvento from "../components/EliminarEvento";
+import "../styles/Admin.css";
 
 const eventosIniciales = [
     { mes: "Marzo", dia: "25", nombre: "Cumpleaños de Juan" },
@@ -18,24 +19,27 @@ const Eventos = () => {
     };
 
     return (
-        <div>
-            <h1>Gestión de Eventos</h1>
-            <div>
-                <button onClick={() => setModuloActivo("crear")}>Crear Evento</button>
-                <button onClick={() => setModuloActivo("editar")}>Editar Evento</button>
-                <button onClick={() => setModuloActivo("buscar")}>Buscar Evento</button>
-                <button onClick={() => setModuloActivo("eliminar")}>Eliminar Evento</button>
+        <div className="admin-container">
+            <h1 className="admin-title">Gestión de Eventos</h1>
+            <div className="admin-buttons-container">
+                <button className="admin-button button-crear" onClick={() => setModuloActivo("crear")}>Crear Evento</button>
+                <button className="admin-button button-actualizar" onClick={() => setModuloActivo("editar")}>Editar Evento</button>
+                <button className="admin-button button-buscar" onClick={() => setModuloActivo("buscar")}>Buscar Evento</button>
+                <button className="admin-button button-eliminar" onClick={() => setModuloActivo("eliminar")}>Eliminar Evento</button>
             </div>
 
-            <div style={{ marginTop: "20px" }}>
-                {moduloActivo === "crear" && <CrearEventos />}
-                {moduloActivo === "editar" && <EditarEventos />}
-                {moduloActivo === "buscar" && <BuscarEvento eventos={eventos} />}
-                {moduloActivo === "eliminar" && (
-                    <EliminarEvento
-                        eventosIniciales={eventos}
-                        onEliminar={handleActualizarEventos}
-                    />
+            <div 
+                className="admin-module-container"
+                style={{ marginTop: "20px" }}>
+
+                    {moduloActivo === "crear" && <CrearEventos />}
+                    {moduloActivo === "editar" && <EditarEventos />}
+                    {moduloActivo === "buscar" && <BuscarEvento eventos={eventos} />}
+                    {moduloActivo === "eliminar" && (
+                        <EliminarEvento
+                            eventosIniciales={eventos}
+                            onEliminar={handleActualizarEventos}
+                        />
                 )}
             </div>
         </div>

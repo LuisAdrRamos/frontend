@@ -3,11 +3,11 @@ import React from "react";
 const BuscarDisfraz = ({ disfraces }) => {
     return (
         <div>
-            <h2>Lista de Disfraces</h2>
+            <h2 className="title-disfraces">Lista de Disfraces</h2>
             {disfraces.length > 0 ? (
                 <ul>
                     {disfraces.map((disfraz, index) => (
-                        <li key={index}>
+                        <ul key={index} className="form-content1">
                             <strong>Nombre:</strong> {disfraz.nombre} <br />
                             <strong>Talla:</strong> {disfraz.talla} <br />
                             <strong>Calidad:</strong> {disfraz.calidad} <br />
@@ -23,7 +23,7 @@ const BuscarDisfraz = ({ disfraces }) => {
                                 />
                             )}
                             <hr />
-                        </li>
+                        </ul>
                     ))}
                 </ul>
             ) : (

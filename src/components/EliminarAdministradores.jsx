@@ -23,7 +23,7 @@ const EliminarAdministradores = ({ administradoresIniciales, onEliminar }) => {
     };
 
     return (
-        <div className="form-container1">
+        <div className="form-container">
             <h2 className="title-eliminar">Eliminar Administradores</h2>
             {administradores.length > 0 ? (
                 <ul className="admin-list">

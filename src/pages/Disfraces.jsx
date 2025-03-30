@@ -46,16 +46,16 @@ const Disfraces = () => {
     };
 
     return (
-        <div>
-            <h1>Gestión de Disfraces</h1>
-            <div>
-                <button onClick={() => setModuloActivo("crear")}>Crear Disfraz</button>
-                <button onClick={() => setModuloActivo("editar")}>Editar Disfraz</button>
-                <button onClick={() => setModuloActivo("buscar")}>Buscar Disfraz</button>
-                <button onClick={() => setModuloActivo("eliminar")}>Eliminar Disfraz</button>
+        <div className="admin-container">
+            <h1 className="admin-title">Gestión de Disfraces</h1>
+            <div className="admin-buttons-container">
+                <button className="admin-button button-crear" onClick={() => setModuloActivo("crear")}>Crear Disfraz</button>
+                <button className="admin-button button-actualizar" onClick={() => setModuloActivo("editar")}>Editar Disfraz</button>
+                <button className="admin-button button-buscar" onClick={() => setModuloActivo("buscar")}>Buscar Disfraz</button>
+                <button className="admin-button button-eliminar" onClick={() => setModuloActivo("eliminar")}>Eliminar Disfraz</button>
             </div>
 
-            <div style={{ marginTop: "20px" }}>
+            <div className="admin-module-container" style={{ marginTop: "20px" }}>
                 {moduloActivo === "crear" && <CrearDisfraz />}
                 {moduloActivo === "editar" && <ActualizarDisfraz />}
                 {moduloActivo === "buscar" && <BuscarDisfraz disfraces={disfraces} />}
