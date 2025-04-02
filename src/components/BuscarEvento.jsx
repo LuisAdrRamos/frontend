@@ -1,12 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const BuscarEvento = ({ eventos }) => {
+const BuscarEvento = () => {
     const [searchCriteria, setSearchCriteria] = useState({
         mes: "",
         dia: "",
         nombre: ""
     });
+    const [eventos, setEventos] = useState([]);
     const [resultados, setResultados] = useState([]);
+
+    
+    useEffect(() => {
+        const fetchEventos = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/festividad/festividades`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}` 
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error("Error al obtener los eventos");
+                }
+
+                const data = await response.json();
+                setEventos(data);
+            } catch (error) {
+                console.error("Error al cargar los eventos:", error);
+            }
+        };
+
+        fetchEventos();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -23,7 +48,7 @@ const BuscarEvento = ({ eventos }) => {
         const filteredEventos = eventos.filter((evento) => {
             return (
                 (mes && evento.mes === mes) ||
-                (dia && evento.dia === dia) ||
+                (dia && evento.dia === parseInt(dia)) ||
                 (nombre && evento.nombre.toLowerCase().includes(nombre.toLowerCase()))
             );
         });
