@@ -16,10 +16,29 @@ const CrearEventos = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Evento creado:", formData);
-    
+        try {
+            
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/festividad/crear`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}` 
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al crear el evento");
+            }
+
+            const data = await response.json();
+           
+            alert("Evento creado exitosamente");
+        } catch (error) {
+            alert("Hubo un problema al crear el evento");
+        }
     };
 
     return (
