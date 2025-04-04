@@ -38,7 +38,7 @@ function App() {
                                     <Route 
                                         path="perfil" 
                                         element={
-                                            <PrivateRoute allowedRoles={["admin", "user"]}>
+                                            <PrivateRoute allowedRoles={["admin", "usuario"]}>
                                                 <Profile />
                                             </PrivateRoute>
                                         } 
@@ -75,7 +75,7 @@ function App() {
                                 </Route>
                                 <Route path="/confirm/:token" element={<Confirm />} />
                                 <Route path="/forgot/id" element={<ForgotPassword />} />
-                                <Route path="/reset-password/:token" element={<ResetPassword />} />
+                                <Route path="/recuperar-password/:token" element={<ResetPassword />} />
 
                                 {/* 📌 404 Page */}
                                 <Route path="*" element={<NotFound />} />
