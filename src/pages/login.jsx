@@ -26,9 +26,13 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const url = form.tipoUsuario === "admin"
-        ? `${import.meta.env.VITE_BACKEND_URL}/admin/login`
-        : `${import.meta.env.VITE_BACKEND_URL}/usuario/login`;
+      // Determinar la URL según el tipo de usuario
+      const url =
+        form.tipoUsuario === "admin"
+          ? `${import.meta.env.VITE_BACKEND_URL}/admin/login`
+          : form.tipoUsuario === "moderador"
+            ? `${import.meta.env.VITE_BACKEND_URL}/admin/login`
+            : `${import.meta.env.VITE_BACKEND_URL}/usuario/login`;
 
       const respuesta = await axios.post(url, form);
 
@@ -37,12 +41,14 @@ const Login = () => {
 
         if (respuesta.data.token) {
           localStorage.setItem('token', respuesta.data.token);
-          localStorage.setItem('tipoUsuario', respuesta.data.rol); // Guardar el rol correctamente
+          localStorage.setItem('tipoUsuario', respuesta.data.rol);
 
-          console.log("Rol guardado en localStorage:", respuesta.data.rol); // Debug
+          console.log("Rol guardado en localStorage:", respuesta.data.rol);
 
           // Redirigir según el rol
           if (respuesta.data.rol === "admin") {
+            navigate('/');
+          } else if (respuesta.data.rol === "moderador") {
             navigate('/');
           } else if (respuesta.data.rol === "usuario") {
             navigate('/');
@@ -78,6 +84,7 @@ const Login = () => {
           <span className="brand-text">Megadisfraz</span>
         </div>
       </Link>
+
       <div className="login-wrapper">
         <h2 className="text-center mb-4">Iniciar sesión</h2>
         <form id="login-form" onSubmit={handleSubmit}>
@@ -90,8 +97,10 @@ const Login = () => {
               name="email"
               value={form.email}
               onChange={handleChange}
+              required
             />
           </div>
+
           <div className="form-group">
             <label htmlFor="password">Contraseña:</label>
             <input
@@ -101,25 +110,38 @@ const Login = () => {
               name="password"
               value={form.password}
               onChange={handleChange}
+              required
             />
           </div>
+
           <div className="form-group">
             <label>Tipo de usuario:</label>
-            <select name="tipoUsuario" className="form-control" onChange={handleChange} value={form.tipoUsuario}>
+            <select
+              name="tipoUsuario"
+              className="form-control"
+              onChange={handleChange}
+              value={form.tipoUsuario}
+            >
               <option value="usuario">Usuario</option>
               <option value="admin">Administrador</option>
+              <option value="moderador">Moderador</option>
             </select>
           </div>
 
           <p className="forgot-password">
-            <Link to="/forgot/id" className="forgot-link">¿Olvidaste tu contraseña?</Link>
+            <Link to="/forgot/id" className="forgot-link">
+              ¿Olvidaste tu contraseña?
+            </Link>
           </p>
+
           <button type="submit" className="btn btn-primary">Iniciar sesión</button>
+
           <p className="text-center mt-3">
             ¿No tienes una cuenta?{' '}
             <Link to="/register" className="register-link">Regístrate</Link>
           </p>
         </form>
+
         {mensaje.respuesta && (
           <Mensaje tipo={mensaje.tipo ? 'success' : 'error'}>
             {mensaje.respuesta}

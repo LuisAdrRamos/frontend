@@ -38,21 +38,21 @@ function App() {
                                     <Route 
                                         path="perfil" 
                                         element={
-                                            <PrivateRoute allowedRoles={["admin", "usuario"]}>
+                                            <PrivateRoute allowedRoles={["admin", "usuario", "moderador"]}>
                                                 <Profile />
                                             </PrivateRoute>
                                         } 
                                     />
                                     <Route path= "eventos"
                                     element={
-                                        <PrivateRoute allowedRoles={["admin"]}>
+                                        <PrivateRoute allowedRoles={["admin", "moderador"]}>
                                             <Eventos />
                                         </PrivateRoute>
                                     }
                                     />
                                     <Route path= "disfraces"
                                     element={
-                                        <PrivateRoute allowedRoles={["admin"]}>
+                                        <PrivateRoute allowedRoles={["admin", "moderador"]}>
                                             <Disfraces />
                                         </PrivateRoute>
                                     }
