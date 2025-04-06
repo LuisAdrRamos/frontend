@@ -30,9 +30,9 @@ const Login = () => {
       const url =
         form.tipoUsuario === "admin"
           ? `${import.meta.env.VITE_BACKEND_URL}/admin/login`
-          : form.tipoUsuario === "moderador"
-            ? `${import.meta.env.VITE_BACKEND_URL}/admin/login`
-            : `${import.meta.env.VITE_BACKEND_URL}/usuario/login`;
+        : form.tipoUsuario === "moderador"
+          ? `${import.meta.env.VITE_BACKEND_URL}/admin/login`
+        : `${import.meta.env.VITE_BACKEND_URL}/usuario/login`;
 
       const respuesta = await axios.post(url, form);
 
