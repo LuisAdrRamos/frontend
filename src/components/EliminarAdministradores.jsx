@@ -1,59 +1,81 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/c_ac_bsc_elim_admin.css";
-import "../styles/modal.css";
 
-const EliminarAdministradores = ({ administradoresIniciales, onEliminar }) => {
-    const [administradores, setAdministradores] = useState(administradoresIniciales);
-    const [showModal, setShowModal] = useState(false);
-    const [adminToDelete, setAdminToDelete] = useState(null);
+const EliminarAdministradores = () => {
+    const [administradores, setAdministradores] = useState([]); // Lista de administradores
 
-    const handleEliminar = (index) => {
-        setAdminToDelete(index);
-        setShowModal(true);
-    };
+    // Obtener la lista de administradores al montar el componente
+    useEffect(() => {
+        const fetchAdministradores = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/admin/listar-moderadores`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
+                    }
+                });
 
-    const confirmEliminar = () => {
-        const nuevosAdministradores = administradores.filter((_, i) => i !== adminToDelete);
-        setAdministradores(nuevosAdministradores);
-        if (onEliminar) {
-            onEliminar(nuevosAdministradores);
+                if (!response.ok) {
+                    throw new Error("Error al obtener la lista de administradores");
+                }
+
+                const data = await response.json();
+                setAdministradores(data); // Guardar la lista de administradores
+            } catch (error) {
+                console.error("Error al cargar los administradores:", error);
+                alert("Hubo un problema al cargar los administradores");
+            }
+        };
+
+        fetchAdministradores();
+    }, []);
+
+    // Eliminar un administrador por ID
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este administrador?");
+        if (!confirmDelete) return;
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/admin/eliminar-moderador/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al eliminar el administrador");
+            }
+
+            alert("Administrador eliminado exitosamente");
+            // Actualizar la lista de administradores después de eliminar
+            setAdministradores(administradores.filter((admin) => admin.id !== id));
+        } catch (error) {
+            console.error("Error al eliminar el administrador:", error);
+            alert("Hubo un problema al eliminar el administrador");
         }
-        setShowModal(false);
-        setAdminToDelete(null);
     };
 
     return (
         <div className="form-container">
-            <h2 className="title-eliminar">Eliminar Administradores</h2>
+            <h2 className="title-eliminar">Lista de Administradores</h2>
             {administradores.length > 0 ? (
                 <ul className="admin-list">
-                    {administradores.map((admin, index) => (
-                        <ul key={index} className="admin-item">
-                            <strong>Nombre:</strong> {admin.nombre} <br />
-                            <strong>Apellido:</strong> {admin.apellido} <br />
-                            <strong>Dirección:</strong> {admin.direccion} <br />
-                            <strong>Teléfono:</strong> {admin.telefono} <br />
+                    {administradores.map((admin) => (
+                        <li key={admin.id} className="admin-item">
+                            <strong>Nombre:</strong> {admin.nombre} {admin.apellido} <br />
                             <strong>Email:</strong> {admin.email} <br />
-                            <button onClick={() => handleEliminar(index)} className="form-button_eliminar">Eliminar</button>
+                            <button
+                                onClick={() => handleDelete(admin.id)}
+                                className="delete-button"
+                            >
+                                Eliminar
+                            </button>
                             <hr />
-                        </ul>
+                        </li>
                     ))}
                 </ul>
             ) : (
                 <p>No hay administradores disponibles.</p>
-            )}
-            {showModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <div className="modal-body">
-                            <p>¿Estás seguro de que deseas eliminar este administrador?</p>
-                        </div>
-                        <div className="modal-footer">
-                            <button onClick={() => setShowModal(false)} className="modal-button confirm">Cancelar</button>
-                            <button onClick={confirmEliminar} className="modal-button confirm">Aceptar</button>
-                        </div>
-                    </div>
-                </div>
             )}
         </div>
     );
