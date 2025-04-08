@@ -3,24 +3,22 @@ import React, { useState, useEffect } from "react";
 const CrearDisfraz = () => {
     const [formData, setFormData] = useState({
         nombre: "",
-        talla: "",
-        calidad: "",
-        categoria: "",
-        precio: "",
+        etiquetas: [], // Lista de etiquetas seleccionadas
         festividad: "",
         descripcion: "",
-        imagenes: [] // Archivos seleccionados
+        imagenes: [] 
     });
 
     const [eventos, setEventos] = useState([]); // Lista de eventos disponibles
+    const [etiquetasDisponibles, setEtiquetasDisponibles] = useState([]); // Lista de etiquetas disponibles
 
-    // Obtener la lista de eventos al montar el componente
+
     useEffect(() => {
         const fetchEventos = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/festividad/festividades`, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
+                        Authorization: `Bearer ${localStorage.getItem("token")}` 
                     }
                 });
 
@@ -29,14 +27,35 @@ const CrearDisfraz = () => {
                 }
 
                 const data = await response.json();
-                setEventos(data); // Guardar la lista de eventos
+                setEventos(data); 
             } catch (error) {
                 console.error("Error al cargar las festividades:", error);
                 alert("Hubo un problema al cargar las festividades");
             }
         };
 
+        const fetchEtiquetas = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiquetas`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}` 
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error("Error al obtener las etiquetas");
+                }
+
+                const data = await response.json();
+                setEtiquetasDisponibles(data); 
+            } catch (error) {
+                console.error("Error al cargar las etiquetas:", error);
+                alert("Hubo un problema al cargar las etiquetas");
+            }
+        };
+
         fetchEventos();
+        fetchEtiquetas();
     }, []);
 
     const handleChange = (e) => {
@@ -44,6 +63,23 @@ const CrearDisfraz = () => {
         setFormData({
             ...formData,
             [name]: value
+        });
+    };
+
+    const handleEtiquetaChange = (e) => {
+        const value = e.target.value;
+        if (value && !formData.etiquetas.includes(value)) {
+            setFormData({
+                ...formData,
+                etiquetas: [...formData.etiquetas, value]
+            });
+        }
+    };
+
+    const handleRemoveEtiqueta = (etiqueta) => {
+        setFormData({
+            ...formData,
+            etiquetas: formData.etiquetas.filter((e) => e !== etiqueta)
         });
     };
 
@@ -92,11 +128,9 @@ const CrearDisfraz = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        
         const imageUrls = await uploadImagesToCloudinary();
         if (!imageUrls) return;
 
-        
         const dataToSend = {
             ...formData,
             imagenes: imageUrls 
@@ -107,7 +141,7 @@ const CrearDisfraz = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
+                    Authorization: `Bearer ${localStorage.getItem("token")}` 
                 },
                 body: JSON.stringify(dataToSend)
             });
@@ -142,52 +176,34 @@ const CrearDisfraz = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="talla">Talla:</label>
-                    <input
-                        type="text"
-                        id="talla"
-                        name="talla"
+                    <label htmlFor="etiquetas">Etiquetas:</label>
+                    <select
+                        id="etiquetas"
+                        name="etiquetas"
                         className="form-input1"
-                        value={formData.talla}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="calidad">Calidad:</label>
-                    <input
-                        type="text"
-                        id="calidad"
-                        name="calidad"
-                        className="form-input"
-                        value={formData.calidad}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="categoria">Categoría:</label>
-                    <input
-                        type="text"
-                        id="categoria"
-                        name="categoria"
-                        className="form-input"
-                        value={formData.categoria}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="precio">Precio:</label>
-                    <input
-                        type="number"
-                        id="precio"
-                        name="precio"
-                        className="form-input1"
-                        value={formData.precio}
-                        onChange={handleChange}
-                        required
-                    />
+                        onChange={handleEtiquetaChange}
+                    >
+                        <option value="">Seleccione una etiqueta</option>
+                        {etiquetasDisponibles.map((etiqueta) => (
+                            <option key={etiqueta.id} value={etiqueta.nombre}>
+                                {etiqueta.nombre}
+                            </option>
+                        ))}
+                    </select>
+                    <ul className="etiquetas-list">
+                        {formData.etiquetas.map((etiqueta, index) => (
+                            <li key={index}>
+                                {etiqueta}{" "}
+                                <button
+                                    type="button"
+                                    onClick={() => handleRemoveEtiqueta(etiqueta)}
+                                    className="remove-button"
+                                >
+                                    X
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
                 <div className="form-group">
                     <label htmlFor="festividad">Festividad:</label>

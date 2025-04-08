@@ -2,25 +2,23 @@ import React, { useState, useEffect } from "react";
 
 const ActualizarDisfraz = () => {
     const [disfraces, setDisfraces] = useState([]); // Lista de disfraces
+    const [etiquetasDisponibles, setEtiquetasDisponibles] = useState([]); // Lista de etiquetas disponibles
     const [formData, setFormData] = useState({
         nombre: "",
-        talla: "",
-        calidad: "",
-        categoria: "",
-        precio: "",
         festividad: "",
         descripcion: "",
+        etiquetas: [], // Lista de etiquetas seleccionadas
         imagen: null
     });
     const [selectedId, setSelectedId] = useState(null); // ID del disfraz seleccionado
 
-    // Obtener la lista de disfraces al montar el componente
+    // Obtener la lista de disfraces y etiquetas al montar el componente
     useEffect(() => {
         const fetchDisfraces = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/disfraz/listar`, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}` 
+                        Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
                     }
                 });
 
@@ -29,22 +27,43 @@ const ActualizarDisfraz = () => {
                 }
 
                 const data = await response.json();
-                setDisfraces(data); 
+                setDisfraces(data); // Guardar la lista de disfraces
             } catch (error) {
                 console.error("Error al cargar los disfraces:", error);
                 alert("Hubo un problema al cargar los disfraces");
             }
         };
 
+        const fetchEtiquetas = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiquetas`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error("Error al obtener las etiquetas");
+                }
+
+                const data = await response.json();
+                setEtiquetasDisponibles(data); // Guardar la lista de etiquetas
+            } catch (error) {
+                console.error("Error al cargar las etiquetas:", error);
+                alert("Hubo un problema al cargar las etiquetas");
+            }
+        };
+
         fetchDisfraces();
+        fetchEtiquetas();
     }, []);
 
-    
+    // Obtener los detalles de un disfraz específico
     const fetchDetalleDisfraz = async (id) => {
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/disfraz/detalle/${id}`, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}` 
+                    Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
                 }
             });
 
@@ -53,8 +72,8 @@ const ActualizarDisfraz = () => {
             }
 
             const data = await response.json();
-            setFormData(data); 
-            setSelectedId(id); 
+            setFormData(data); // Rellenar el formulario con los datos del disfraz
+            setSelectedId(id); // Guardar el ID del disfraz seleccionado
         } catch (error) {
             console.error("Error al cargar los detalles del disfraz:", error);
             alert("Hubo un problema al cargar los detalles del disfraz");
@@ -69,6 +88,23 @@ const ActualizarDisfraz = () => {
         });
     };
 
+    const handleEtiquetaChange = (e) => {
+        const value = e.target.value;
+        if (value && !formData.etiquetas.includes(value)) {
+            setFormData({
+                ...formData,
+                etiquetas: [...formData.etiquetas, value]
+            });
+        }
+    };
+
+    const handleRemoveEtiqueta = (etiqueta) => {
+        setFormData({
+            ...formData,
+            etiquetas: formData.etiquetas.filter((e) => e !== etiqueta)
+        });
+    };
+
     const handleFileChange = (e) => {
         setFormData({
             ...formData,
@@ -79,11 +115,15 @@ const ActualizarDisfraz = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        
+        // Crear un objeto FormData para enviar datos con archivos
         const formDataToSend = new FormData();
         Object.keys(formData).forEach((key) => {
             if (key === "imagen" && formData.imagen) {
                 formDataToSend.append("imagen", formData.imagen);
+            } else if (key === "etiquetas") {
+                formData.etiquetas.forEach((etiqueta) => {
+                    formDataToSend.append("etiquetas[]", etiqueta);
+                });
             } else {
                 formDataToSend.append(key, formData[key]);
             }
@@ -93,7 +133,7 @@ const ActualizarDisfraz = () => {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/disfraz/actualizar/${selectedId}`, {
                 method: "PUT",
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}` 
+                    Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
                 },
                 body: formDataToSend
             });
@@ -150,52 +190,34 @@ const ActualizarDisfraz = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="talla">Talla:</label>
-                        <input
-                            type="text"
-                            id="talla"
-                            name="talla"
+                        <label htmlFor="etiquetas">Etiquetas:</label>
+                        <select
+                            id="etiquetas"
+                            name="etiquetas"
                             className="form-input1"
-                            value={formData.talla}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="calidad">Calidad:</label>
-                        <input
-                            type="text"
-                            id="calidad"
-                            name="calidad"
-                            className="form-input"
-                            value={formData.calidad}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="categoria">Categoría:</label>
-                        <input
-                            type="text"
-                            id="categoria"
-                            name="categoria"
-                            className="form-input"
-                            value={formData.categoria}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="precio">Precio:</label>
-                        <input
-                            type="number"
-                            id="precio"
-                            name="precio"
-                            className="form-input1"
-                            value={formData.precio}
-                            onChange={handleChange}
-                            required
-                        />
+                            onChange={handleEtiquetaChange}
+                        >
+                            <option value="">Seleccione una etiqueta</option>
+                            {etiquetasDisponibles.map((etiqueta) => (
+                                <option key={etiqueta.id} value={etiqueta.nombre}>
+                                    {etiqueta.nombre}
+                                </option>
+                            ))}
+                        </select>
+                        <ul className="etiquetas-list">
+                            {formData.etiquetas.map((etiqueta, index) => (
+                                <li key={index}>
+                                    {etiqueta}{" "}
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveEtiqueta(etiqueta)}
+                                        className="remove-button"
+                                    >
+                                        X
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                     <div className="form-group">
                         <label htmlFor="festividad">Festividad:</label>
