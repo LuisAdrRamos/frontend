@@ -8,8 +8,8 @@ const CrearAdministradores = () => {
         direccion: "",
         telefono: "",
         email: "",
-        contraseña: "",
-        tipo: "moderador", // valor por defecto
+        password: "", // este nombre debe coincidir con lo que espera el backend
+        rol: "moderador", // por defecto, no editable
     });
 
     const [mensaje, setMensaje] = useState("");
@@ -29,7 +29,7 @@ const CrearAdministradores = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`, // Asegúrate de tener token guardado
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
                 },
                 body: JSON.stringify(formData),
             });
@@ -59,98 +59,20 @@ const CrearAdministradores = () => {
 
                 {mensaje && <p className="mensaje">{mensaje}</p>}
 
-                <div className="form-group">
-                    <label htmlFor="nombre">Nombre:</label>
-                    <input
-                        type="text"
-                        id="nombre"
-                        name="nombre"
-                        className="form-input"
-                        value={formData.nombre}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="apellido">Apellido:</label>
-                    <input
-                        type="text"
-                        id="apellido"
-                        name="apellido"
-                        className="form-input"
-                        value={formData.apellido}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="direccion">Dirección:</label>
-                    <input
-                        type="text"
-                        id="direccion"
-                        name="direccion"
-                        className="form-input"
-                        value={formData.direccion}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="telefono">Teléfono:</label>
-                    <input
-                        type="text"
-                        id="telefono"
-                        name="telefono"
-                        className="form-input"
-                        value={formData.telefono}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="email">Correo:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        className="form-input"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="password">Contraseña:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        className="form-input"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="tipo">Tipo de Administrador:</label>
-                    <select
-                        id="tipo"
-                        name="tipo"
-                        className="form-input"
-                        value={formData.tipo}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="moderador">Moderador</option>
-                        <option value="general">General</option>
-                    </select>
-                </div>
+                {["nombre", "apellido", "direccion", "telefono", "email", "password"].map((field) => (
+                    <div className="form-group" key={field}>
+                        <label htmlFor={field}>{field.charAt(0).toUpperCase() + field.slice(1)}:</label>
+                        <input
+                            type={field === "password" ? "password" : field === "email" ? "email" : "text"}
+                            id={field}
+                            name={field}
+                            className="form-input"
+                            value={formData[field]}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                ))}
 
                 <button type="submit" className="form-button">Crear</button>
             </form>
