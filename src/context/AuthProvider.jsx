@@ -13,7 +13,7 @@ const AuthProvider = ({ children }) => {
       const tipoUsuario = localStorage.getItem("tipoUsuario");
       if (!tipoUsuario) throw new Error("Tipo de usuario no definido");
 
-      const url = tipoUsuario === "admin"
+      const url = tipoUsuario === "admin" || "moderador"
         ? `${urlBase}/admin/perfil`
         : `${urlBase}/usuario/perfil/${auth.usuario?._id}`;
 
