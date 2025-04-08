@@ -1,23 +1,30 @@
 import React, { useState, useEffect } from "react";
 
 const EditarEventos = () => {
-    const [eventos, setEventos] = useState([]); 
+    const mesesDelAnio = [
+        "Enero", "Febrero", "Marzo", "Abril",
+        "Mayo", "Junio", "Julio", "Agosto",
+        "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+
+    const [eventos, setEventos] = useState([]); // Lista de eventos
     const [formData, setFormData] = useState({
         mes: "",
         dia: "",
         nombre: "",
         descripcion: ""
     });
-    const [isEditing, setIsEditing] = useState(false);
-    const [selectedId, setSelectedId] = useState(null); 
+    const [diasDisponibles, setDiasDisponibles] = useState([]); // Días disponibles según el mes
+    const [isEditing, setIsEditing] = useState(false); // Estado para saber si se está editando
+    const [selectedId, setSelectedId] = useState(null); // ID del evento seleccionado
 
-
+    // Obtener la lista de eventos al montar el componente
     useEffect(() => {
         const fetchEventos = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/festividad/festividades`, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}` 
+                        Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
                     }
                 });
 
@@ -26,7 +33,7 @@ const EditarEventos = () => {
                 }
 
                 const data = await response.json();
-                setEventos(data); 
+                setEventos(data); // Guardar la lista de eventos
             } catch (error) {
                 console.error("Error al cargar las festividades:", error);
                 alert("Hubo un problema al cargar las festividades");
@@ -36,13 +43,29 @@ const EditarEventos = () => {
         fetchEventos();
     }, []);
 
-    
+    // Función para determinar cuántos días tiene el mes seleccionado
+    const obtenerDiasDelMes = (mes) => {
+        const mesesCon30 = ["Abril", "Junio", "Septiembre", "Noviembre"];
+        if (mes === "Febrero") return Array.from({ length: 29 }, (_, i) => i + 1); // Incluye 29 por si acaso
+        return mesesCon30.includes(mes)
+            ? Array.from({ length: 30 }, (_, i) => i + 1)
+            : Array.from({ length: 31 }, (_, i) => i + 1);
+    };
+
+    // Actualizar días disponibles cuando cambia el mes
+    useEffect(() => {
+        if (formData.mes) {
+            setDiasDisponibles(obtenerDiasDelMes(formData.mes));
+            setFormData(prev => ({ ...prev, dia: "" })); // Limpiar día si se cambia el mes
+        }
+    }, [formData.mes]);
+
     const handleEdit = (id) => {
         const evento = eventos.find((evento) => evento.id === id);
         if (evento) {
-            setFormData(evento); 
-            setSelectedId(id); 
-            setIsEditing(true); 
+            setFormData(evento); // Rellenar el formulario con los datos del evento
+            setSelectedId(id); // Guardar el ID del evento seleccionado
+            setIsEditing(true); // Cambiar a modo edición
         }
     };
 
@@ -61,9 +84,12 @@ const EditarEventos = () => {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}` 
+                    Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    ...formData,
+                    dia: parseInt(formData.dia, 10) // Convertir a número base 10
+                })
             });
 
             if (!response.ok) {
@@ -71,12 +97,12 @@ const EditarEventos = () => {
             }
 
             const data = await response.json();
-            alert("Evento actualizado exitosamente");
+            alert("✅ Evento actualizado exitosamente");
             console.log("Evento actualizado:", data);
-            setIsEditing(false);
+            setIsEditing(false); // Salir del modo edición
         } catch (error) {
             console.error("Error al actualizar el evento:", error);
-            alert("Hubo un problema al actualizar el evento");
+            alert("❌ Hubo un problema al actualizar el evento");
         }
     };
 
@@ -103,30 +129,45 @@ const EditarEventos = () => {
                 <>
                     <h2 className="tittle-editarev">Editar Evento</h2>
                     <form onSubmit={handleSubmit} className="form-content">
+
+                        {/* MES */}
                         <div className="form-group1">
                             <label htmlFor="mes">Mes:</label>
-                            <input
-                                type="text"
+                            <select
                                 id="mes"
                                 name="mes"
                                 className="form-input3"
                                 value={formData.mes}
                                 onChange={handleChange}
                                 required
-                            />
+                            >
+                                <option value="">-- Selecciona un mes --</option>
+                                {mesesDelAnio.map((mes, index) => (
+                                    <option key={index} value={mes}>{mes}</option>
+                                ))}
+                            </select>
                         </div>
+
+                        {/* DÍA */}
                         <div className="form-group1">
                             <label htmlFor="dia">Día:</label>
-                            <input
-                                type="number"
+                            <select
                                 id="dia"
                                 name="dia"
                                 className="form-input3"
                                 value={formData.dia}
                                 onChange={handleChange}
                                 required
-                            />
+                                disabled={!formData.mes}
+                            >
+                                <option value="">-- Selecciona un día --</option>
+                                {diasDisponibles.map(dia => (
+                                    <option key={dia} value={dia.toString()}>{dia}</option>
+                                ))}
+                            </select>
                         </div>
+
+                        {/* NOMBRE */}
                         <div className="form-group1">
                             <label htmlFor="nombre">Nombre del evento o festividad:</label>
                             <input
@@ -139,6 +180,8 @@ const EditarEventos = () => {
                                 required
                             />
                         </div>
+
+                        {/* DESCRIPCIÓN */}
                         <div className="form-group1">
                             <label htmlFor="descripcion">Descripción de la festividad:</label>
                             <textarea
@@ -150,6 +193,7 @@ const EditarEventos = () => {
                                 required
                             />
                         </div>
+
                         <button type="submit" className="form-button">Guardar Cambios</button>
                         <button
                             type="button"

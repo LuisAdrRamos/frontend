@@ -22,6 +22,7 @@ import AuthLayout from "./layout/Auth";
 import PrivateRoute from "./routes/PrivateRoutes";
 import Disfraces from "./pages/Disfraces";
 import Administradores from "./pages/Administradores";
+import Etiquetas from "./pages/Etiquetas";
 
 function App() {
     return (
@@ -54,6 +55,13 @@ function App() {
                                     element={
                                         <PrivateRoute allowedRoles={["admin", "moderador"]}>
                                             <Disfraces />
+                                        </PrivateRoute>
+                                    }
+                                    />
+                                    <Route path= "etiquetas"
+                                    element={
+                                        <PrivateRoute allowedRoles={["admin", "moderador"]}>
+                                            <Etiquetas />
                                         </PrivateRoute>
                                     }
                                     />
