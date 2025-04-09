@@ -3,54 +3,39 @@ import React, { useState, useEffect } from "react";
 const CrearDisfraz = () => {
     const [formData, setFormData] = useState({
         nombre: "",
-        etiquetas: [], // Lista de etiquetas seleccionadas
+        etiquetas: [],
         festividad: "",
         descripcion: "",
-        imagenes: [] 
+        imagenes: []
     });
 
-    const [eventos, setEventos] = useState([]); // Lista de eventos disponibles
-    const [etiquetasDisponibles, setEtiquetasDisponibles] = useState([]); // Lista de etiquetas disponibles
-
+    const [eventos, setEventos] = useState([]);
+    const [etiquetasDisponibles, setEtiquetasDisponibles] = useState([]);
 
     useEffect(() => {
         const fetchEventos = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/festividad/festividades`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}` 
-                    }
+                const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/festividad/festividades`, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
                 });
-
-                if (!response.ok) {
-                    throw new Error("Error al obtener las festividades");
-                }
-
-                const data = await response.json();
-                setEventos(data); 
+                const data = await res.json();
+                setEventos(data);
             } catch (error) {
-                console.error("Error al cargar las festividades:", error);
-                alert("Hubo un problema al cargar las festividades");
+                console.error("Error al cargar festividades:", error);
+                alert("❌ Hubo un problema al cargar las festividades");
             }
         };
 
         const fetchEtiquetas = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiquetas`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}` 
-                    }
+                const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiqueta/listar`, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
                 });
-
-                if (!response.ok) {
-                    throw new Error("Error al obtener las etiquetas");
-                }
-
-                const data = await response.json();
-                setEtiquetasDisponibles(data); 
+                const data = await res.json();
+                setEtiquetasDisponibles(data);
             } catch (error) {
-                console.error("Error al cargar las etiquetas:", error);
-                alert("Hubo un problema al cargar las etiquetas");
+                console.error("Error al cargar etiquetas:", error);
+                alert("❌ Hubo un problema al cargar las etiquetas");
             }
         };
 
@@ -60,102 +45,104 @@ const CrearDisfraz = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleEtiquetaChange = (e) => {
-        const value = e.target.value;
-        if (value && !formData.etiquetas.includes(value)) {
-            setFormData({
-                ...formData,
-                etiquetas: [...formData.etiquetas, value]
-            });
+        const id = parseInt(e.target.value);
+        if (id === -1) {
+            window.location.href = "/crear-etiqueta";
+            return;
+        }
+
+        if (!formData.etiquetas.includes(id) && formData.etiquetas.length < 5) {
+            setFormData({ ...formData, etiquetas: [...formData.etiquetas, id] });
         }
     };
 
-    const handleRemoveEtiqueta = (etiqueta) => {
+    const handleRemoveEtiqueta = (id) => {
         setFormData({
             ...formData,
-            etiquetas: formData.etiquetas.filter((e) => e !== etiqueta)
+            etiquetas: formData.etiquetas.filter((et) => et !== id)
         });
     };
 
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
-        if (files.length > 3) {
-            alert("Solo puedes subir un máximo de 3 imágenes");
+        if (files.length + formData.imagenes.length > 3) {
+            alert("❌ Solo puedes subir un máximo de 3 imágenes");
             return;
         }
-        setFormData({
-            ...formData,
-            imagenes: files
+
+        files.forEach((file) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData((prev) => ({
+                    ...prev,
+                    imagenes: [...prev.imagenes, { file, preview: reader.result }]
+                }));
+            };
+            reader.readAsDataURL(file);
         });
     };
 
+    const removePreview = (index) => {
+        const nuevas = [...formData.imagenes];
+        nuevas.splice(index, 1);
+        setFormData({ ...formData, imagenes: nuevas });
+    };
+
     const uploadImagesToCloudinary = async () => {
-        const uploadedImageUrls = [];
+        const urls = [];
+        for (const item of formData.imagenes) {
+            const data = new FormData();
+            data.append("file", item.file);
+            data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
 
-        for (const image of formData.imagenes) {
-            const formDataToUpload = new FormData();
-            formDataToUpload.append("file", image);
-            formDataToUpload.append("upload_preset", "tu_upload_preset"); 
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                method: "POST",
+                body: data
+            });
 
-            try {
-                const response = await fetch("https://api.cloudinary.com/v1_1/tu_cloud_name/image/upload", {
-                    method: "POST",
-                    body: formDataToUpload
-                });
-
-                if (!response.ok) {
-                    throw new Error("Error al subir la imagen a Cloudinary");
-                }
-
-                const data = await response.json();
-                uploadedImageUrls.push(data.secure_url); 
-            } catch (error) {
-                console.error("Error al subir la imagen:", error);
-                alert("Hubo un problema al subir las imágenes");
-                return null;
-            }
+            if (!res.ok) throw new Error("❌ Error al subir imagen");
+            const fileData = await res.json();
+            urls.push(fileData.secure_url);
         }
-
-        return uploadedImageUrls;
+        return urls;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const imageUrls = await uploadImagesToCloudinary();
-        if (!imageUrls) return;
-
-        const dataToSend = {
-            ...formData,
-            imagenes: imageUrls 
-        };
+        if (formData.imagenes.length === 0) {
+            alert("❌ Debes subir al menos una imagen");
+            return;
+        }
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/disfraz/registro`, {
+            const imagenes = await uploadImagesToCloudinary();
+            const dataToSend = {
+                nombre: formData.nombre,
+                descripcion: formData.descripcion,
+                festividadId: formData.festividad,
+                etiquetas: formData.etiquetas,
+                imagenes
+            };
+
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/disfraz/registro`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}` 
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
                 },
                 body: JSON.stringify(dataToSend)
             });
 
-            if (!response.ok) {
-                throw new Error("Error al crear el disfraz");
-            }
-
-            const data = await response.json();
-            alert("Disfraz creado exitosamente");
-            console.log("Disfraz creado:", data);
+            if (!res.ok) throw new Error("❌ Error al crear el disfraz");
+            alert("✅ Disfraz creado exitosamente");
         } catch (error) {
-            console.error("Error al crear el disfraz:", error);
-            alert("Hubo un problema al crear el disfraz");
+            console.error(error);
+            alert("❌ Hubo un problema al crear el disfraz");
         }
     };
 
@@ -163,6 +150,7 @@ const CrearDisfraz = () => {
         <div className="form-container">
             <form onSubmit={handleSubmit} className="form-content">
                 <h2>Crear Disfraz</h2>
+
                 <div className="form-group">
                     <label htmlFor="nombre">Nombre:</label>
                     <input
@@ -175,8 +163,9 @@ const CrearDisfraz = () => {
                         required
                     />
                 </div>
+
                 <div className="form-group">
-                    <label htmlFor="etiquetas">Etiquetas:</label>
+                    <label htmlFor="etiquetas">Etiquetas (máx. 5):</label>
                     <select
                         id="etiquetas"
                         name="etiquetas"
@@ -184,27 +173,31 @@ const CrearDisfraz = () => {
                         onChange={handleEtiquetaChange}
                     >
                         <option value="">Seleccione una etiqueta</option>
-                        {etiquetasDisponibles.map((etiqueta) => (
-                            <option key={etiqueta.id} value={etiqueta.nombre}>
-                                {etiqueta.nombre}
-                            </option>
+                        {etiquetasDisponibles.map((et) => (
+                            <option key={et.id} value={et.id}>{et.nombre}</option>
                         ))}
+                        <option value="-1">➕ Crear nueva etiqueta</option>
                     </select>
                     <ul className="etiquetas-list">
-                        {formData.etiquetas.map((etiqueta, index) => (
-                            <li key={index}>
-                                {etiqueta}{" "}
-                                <button
-                                    type="button"
-                                    onClick={() => handleRemoveEtiqueta(etiqueta)}
-                                    className="remove-button"
-                                >
-                                    X
-                                </button>
-                            </li>
-                        ))}
+                        {formData.etiquetas.map((id, idx) => {
+                            const etiqueta = etiquetasDisponibles.find(e => e.id === id);
+                            return (
+                                <li key={idx}>
+                                    {etiqueta?.nombre || "Etiqueta desconocida"}{" "}
+                                    <button
+                                        type="button"
+                                        className="remove-button"
+                                        onClick={() => handleRemoveEtiqueta(id)}
+                                    >
+                                        X
+                                    </button>
+                                </li>
+                            );
+                        })}
                     </ul>
+                    <p>{formData.etiquetas.length} / 5 etiquetas seleccionadas</p>
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="festividad">Festividad:</label>
                     <select
@@ -212,40 +205,67 @@ const CrearDisfraz = () => {
                         name="festividad"
                         className="form-input1"
                         value={formData.festividad}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                            if (e.target.value === "crear") {
+                                window.location.href = "/crear-evento";
+                            } else {
+                                handleChange(e);
+                            }
+                        }}
                         required
                     >
                         <option value="">Seleccione una festividad</option>
-                        {eventos.map((evento) => (
-                            <option key={evento.id} value={evento.id}>
-                                {evento.nombre} - {evento.mes}/{evento.dia}
+                        {eventos.map((ev) => (
+                            <option key={ev.id} value={ev.id}>
+                                {ev.nombre} - {ev.mes}/{ev.dia}
                             </option>
                         ))}
+                        <option value="crear">➕ Crear nueva festividad</option>
                     </select>
                 </div>
+
                 <div className="form-group">
-                    <label htmlFor="descripcion">Descripción:</label>
+                    <label htmlFor="descripcion">Descripción (máx. 250 caracteres):</label>
                     <textarea
                         id="descripcion"
                         name="descripcion"
                         className="form-input1"
+                        maxLength={250}
                         value={formData.descripcion}
                         onChange={handleChange}
                         required
                     />
+                    <p>{formData.descripcion.length} / 250 caracteres</p>
                 </div>
+
                 <div className="form-group">
-                    <label htmlFor="imagenes">Imágenes (máximo 3):</label>
-                    <input
-                        type="file"
-                        id="imagenes"
-                        name="imagenes"
-                        className="form-input2"
-                        onChange={handleFileChange}
-                        multiple
-                        required
-                    />
+                    <label>Imágenes (máximo 3):</label>
+                    <div className="image-preview-container">
+                        {formData.imagenes.map((img, idx) => (
+                            <div key={idx} className="image-box">
+                                <img src={img.preview} alt={`img-${idx}`} className="preview-img" />
+                                <button type="button" className="remove-button" onClick={() => removePreview(idx)}>
+                                    X
+                                </button>
+                            </div>
+                        ))}
+                        {formData.imagenes.length < 3 && (
+                            <div className="image-box upload-box">
+                                <label className="add-image-label">
+                                    +
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        hidden
+                                    />
+                                </label>
+                                <p>Añadir otra imagen</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
+
                 <button type="submit" className="form-button">Crear Disfraz</button>
             </form>
         </div>

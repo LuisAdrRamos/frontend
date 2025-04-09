@@ -9,7 +9,7 @@ const BuscarEtiquetas = () => {
     useEffect(() => {
         const fetchEtiquetas = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiquetas`, {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiqueta/listar`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
                     }

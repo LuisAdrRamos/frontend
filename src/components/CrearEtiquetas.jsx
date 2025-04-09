@@ -17,7 +17,7 @@ const CrearEtiquetas = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiquetas/crear`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiqueta/crear`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
