@@ -197,8 +197,53 @@
     background: #2e67a8;
 }
 
+.admin-btn-container {
+    text-align: center;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.btn-admin-panel {
+    background-color: #2e67a8;
+    border-radius: 20px;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    justify-content: center;
+    width: 100%;
+}
+
+.admin-dropdown {
+    background: rgb(255, 255, 255);
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-dropdown button {
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.admin-dropdown button:hover {
+    background-color: #fded3f70;
+}
+
 /* 📌 Ocultar sidebar en escritorio */
 @media (min-width: 769px) {
+    
     .sidebar {
         position: static;
         width: auto;
@@ -219,5 +264,10 @@
     /* Ocultar íconos de autenticación en pantallas grandes */
     .sidebar-auth-icons {
         display: none;
+    }
+
+    .admin-btn-container {
+        display: none;
+         /* Oculto por defecto */
     }
 }

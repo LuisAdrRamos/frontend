@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faPhone, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faPhone, faMapMarkerAlt, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { faUser, faSignInAlt, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { faFacebookF, faWhatsapp, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import "../styles/sidebar.css";
 
-// 📌 Información de las sucursales
 const SUCURSALES = [
     {
         label: "1ra Sucursal: YARUQUI CENTRO",
@@ -23,20 +22,21 @@ const SUCURSALES = [
 ];
 
 const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
-    // Estado para el mapa de sucursales
     const [mapSrc, setMapSrc] = useState(SUCURSALES[0].src);
-
-    // Estado para etiquetas activas
     const [etiquetasSeleccionadas, setEtiquetasSeleccionadas] = useState([]);
+    const [showDropdown, setShowDropdown] = useState(false);
 
-    // Función para seleccionar etiquetas
-    const handleEtiquetaSeleccionada = (etiqueta) => {
-        setEtiquetasSeleccionadas((prev) => {
-            return prev.includes(etiqueta) ? prev.filter((item) => item !== etiqueta) : [...prev, etiqueta];
-        });
+    const navigate = useNavigate();
+    const tipoUsuario = localStorage.getItem("tipoUsuario");
+
+    const toggleDropdown = () => setShowDropdown(!showDropdown);
+
+    const handleNavigate = (path) => {
+        navigate(path);
+        toggleSidebar();
+        setShowDropdown(false);
     };
 
-    // 🟢 Bloquear el scroll del fondo cuando la sidebar está abierta
     useEffect(() => {
         if (sidebarOpen) {
             document.body.classList.add("sidebar-open");
@@ -46,13 +46,18 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
         return () => document.body.classList.remove("sidebar-open");
     }, [sidebarOpen]);
 
+    const handleEtiquetaSeleccionada = (etiqueta) => {
+        setEtiquetasSeleccionadas((prev) =>
+            prev.includes(etiqueta) ? prev.filter((item) => item !== etiqueta) : [...prev, etiqueta]
+        );
+    };
+
     return (
         <>
-            {/* 📌 Overlay que oscurece el fondo */}
             <div className={`overlay ${sidebarOpen ? "active" : ""}`} onClick={toggleSidebar}></div>
 
             <aside className={`sidebar ${sidebarOpen ? "active" : ""}`}>
-                {/* 📌 Botón para cerrar y autenticación */}
+                {/* Cerrar y autenticación */}
                 <div className="sidebar-top">
                     <button className="close-btn" onClick={toggleSidebar}>
                         <FontAwesomeIcon icon={faTimes} />
@@ -68,11 +73,14 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
                                 <Link to="/perfil" className="icon-btn profile-icon" title="Perfil">
                                     <FontAwesomeIcon icon={faUser} />
                                 </Link>
-                                <button className="icon-btn logout-icon" title="Cerrar Sesión" onClick={() => {
-                                    localStorage.removeItem("token");
-                                    localStorage.removeItem("tipoUsuario");
-                                    window.location.reload();
-                                }}>
+                                <button
+                                    className="icon-btn logout-icon"
+                                    title="Cerrar Sesión"
+                                    onClick={() => {
+                                        localStorage.clear();
+                                        window.location.reload();
+                                    }}
+                                >
                                     <FontAwesomeIcon icon={faSignOutAlt} />
                                 </button>
                             </>
@@ -80,13 +88,32 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
                     </div>
                 </div>
 
-                {/* 📌 Barra de Búsqueda */}
+                {/* Botón Admin Panel con menú desplegable */}
+                {(tipoUsuario === "admin" || tipoUsuario === "moderador") && (
+                    <div className="admin-btn-container">
+                        <button className=" btn-admin-panel" onClick={toggleDropdown}>
+                            ⚙ <FontAwesomeIcon icon={faChevronDown} />
+                        </button>
+
+                        {showDropdown && (
+                            <div className="admin-dropdown">
+                                {tipoUsuario === "admin" && (
+                                    <button onClick={() => handleNavigate("/administradores")}>Administradores</button>
+                                )}
+                                <button className="btn-dir" onClick={() => handleNavigate("/disfraces")}>Disfraces</button>
+                                <button className="btn-dir" onClick={() => handleNavigate("/eventos")}>Eventos</button>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* Búsqueda */}
                 <form className="form-inline d-flex">
-                    <input className="form-control" type="search" placeholder="Buscar..." aria-label="Search" />
+                    <input className="form-control" type="search" placeholder="Buscar..." />
                     <button className="btn btn-outline-success ms-2" type="submit">Buscar</button>
                 </form>
 
-                {/* 📌 Etiquetas */}
+                {/* Etiquetas */}
                 <h2 className="sidebar-title">Etiquetas</h2>
                 <div className="tags-container">
                     {["Chaqueta decorada", "Capa Roja", "Pantalón blanco", "Cinturón negro", "Botas negras"].map((tag, index) => (
@@ -100,7 +127,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
                     ))}
                 </div>
 
-                {/* 📌 Mapa de Sucursales */}
+                {/* Mapa */}
                 <h2 className="sidebar-title">Mapa Sucursales</h2>
                 <div className="map-container">
                     <FontAwesomeIcon icon={faMapMarkerAlt} className="map-icon" />
@@ -116,7 +143,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
                     />
                 </div>
 
-                {/* 📌 Lista de Sucursales */}
+                {/* Lista de sucursales */}
                 <ul className="sucursales-list">
                     {SUCURSALES.map((item, idx) => (
                         <li key={idx} onClick={() => setMapSrc(item.src)}>
@@ -125,7 +152,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
                     ))}
                 </ul>
 
-                {/* 📌 Contacto y Redes Sociales */}
+                {/* Contacto y redes */}
                 <div className="sidebar-contact">
                     <button className="contact-btn">
                         <FontAwesomeIcon icon={faPhone} /> Contacto

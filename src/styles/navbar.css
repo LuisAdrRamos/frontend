@@ -27,6 +27,37 @@
     top: -5px;
 }
 
+.admin-menu-container {
+    text-align: center;
+    position: relative;
+}
+
+.admin-menu {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    min-width: 150px;
+    padding: 10px;
+    z-index: 10;
+    border-radius: 20px;
+}
+
+.admin-menu-item {
+    text-decoration: none;
+    padding: 8px 12px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.admin-menu-item:hover {
+    background-color: #f0f0f0;
+}
+
+
 /* 📌 Logo + Nombre */
 .navbar-logo {
     display: flex;
@@ -97,6 +128,17 @@
 }
 
 /* 📌 Responsive */
+
+.admin-menu-container {
+    display: none; /* Ocultar por defecto en pantallas pequeñas */
+}
+
+/* Mostrar menú de administración solo en pantallas grandes */
+@media (min-width: 1024px) { 
+    .admin-menu-container {
+        display: block; /* Mostrar en pantallas grandes */
+    }
+}
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
