@@ -102,6 +102,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
                                 )}
                                 <button className="btn-dir" onClick={() => handleNavigate("/disfraces")}>Disfraces</button>
                                 <button className="btn-dir" onClick={() => handleNavigate("/eventos")}>Eventos</button>
+                                <button className="btn-dir" onClick={() => handleNavigate("/etiquetas")}>Etiquetas</button>
                             </div>
                         )}
                     </div>

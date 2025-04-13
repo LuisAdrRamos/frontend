@@ -80,6 +80,7 @@ const Navbar = ({ toggleSidebar }) => {
                                         {/* Eventos y disfraces son visibles tanto para administradores como moderadores */}
                                         <Link to="/eventos" className="admin-menu-item">Eventos</Link>
                                         <Link to="/disfraces" className="admin-menu-item">Disfraces</Link>
+                                        <Link to="/etiquetas" className="admin-menu-item">Etiquetas</Link>
                                     </div>
                                 )}
                             </div>
