@@ -42,24 +42,11 @@ const Administradores = () => {
                 <button className="admin-button button-actualizar" onClick={() => setModuloActivo("actualizar")}>
                     Actualizar Administrador
                 </button>
-                <button className="admin-button button-buscar" onClick={() => setModuloActivo("buscar")}>
-                    Buscar Administrador
-                </button>
-                <button className="admin-button button-eliminar" onClick={() => setModuloActivo("eliminar")}>
-                    Eliminar Administrador
-                </button>
             </div>
 
             <div className="admin-module-container">
                 {moduloActivo === "crear" && <CrearAdministradores />}
                 {moduloActivo === "actualizar" && <ActualizarAdministradores />}
-                {moduloActivo === "buscar" && <BuscarAdministradores administradores={administradores} />}
-                {moduloActivo === "eliminar" && (
-                    <EliminarAdministradores
-                        administradoresIniciales={administradores}
-                        onEliminar={handleActualizarAdministradores}
-                    />
-                )}
             </div>
         </div>
     );

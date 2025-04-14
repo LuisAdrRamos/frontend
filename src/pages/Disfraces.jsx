@@ -51,20 +51,11 @@ const Disfraces = () => {
             <div className="admin-buttons-container">
                 <button className="admin-button button-crear" onClick={() => setModuloActivo("crear")}>Crear Disfraz</button>
                 <button className="admin-button button-actualizar" onClick={() => setModuloActivo("editar")}>Editar Disfraz</button>
-                <button className="admin-button button-buscar" onClick={() => setModuloActivo("buscar")}>Buscar Disfraz</button>
-                <button className="admin-button button-eliminar" onClick={() => setModuloActivo("eliminar")}>Eliminar Disfraz</button>
             </div>
 
             <div className="admin-module-container" style={{ marginTop: "20px" }}>
                 {moduloActivo === "crear" && <CrearDisfraz />}
                 {moduloActivo === "editar" && <ActualizarDisfraz />}
-                {moduloActivo === "buscar" && <BuscarDisfraz disfraces={disfraces} />}
-                {moduloActivo === "eliminar" && (
-                     <EliminarDisfraces
-                     disfracesIniciales={disfraces}
-                     onEliminar={handleActualizarDisfraces}
-                 />
-                )}
             </div>
         </div>
     );

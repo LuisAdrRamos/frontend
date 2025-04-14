@@ -13,15 +13,12 @@ const Etiquetas = () => {
             <div className="admin-buttons-container">
                 <button className="admin-button button-crear" onClick={() => setModuloActivo("crear")}>Crear Etiqueta</button>
                 <button className="admin-button button-editar" onClick={() => setModuloActivo("editar")}>Actualizar Etiqueta</button>
-                <button className="admin-button button-buscar" onClick={() => setModuloActivo("buscar")}>Buscar Etiqueta</button>
-                <button className="admin-button button-eliminar" onClick={() => setModuloActivo("eliminar")}>Eliminar Etiqueta</button>
+
             </div>
 
             <div className="admin-module-container" style={{ marginTop: "20px" }}>
                 {moduloActivo === "crear" && <CrearEtiquetas />}
                 {moduloActivo === "editar" && <ActualizarEtiquetas />} 
-                {moduloActivo === "buscar" && <BuscarEtiquetas />}
-                {moduloActivo === "eliminar" && <EliminarEtiquetas />}
             </div>
         </div>
     );

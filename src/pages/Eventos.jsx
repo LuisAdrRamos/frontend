@@ -24,8 +24,6 @@ const Eventos = () => {
             <div className="admin-buttons-container">
                 <button className="admin-button button-crear" onClick={() => setModuloActivo("crear")}>Crear Evento</button>
                 <button className="admin-button button-actualizar" onClick={() => setModuloActivo("editar")}>Editar Evento</button>
-                <button className="admin-button button-buscar" onClick={() => setModuloActivo("buscar")}>Buscar Evento</button>
-                <button className="admin-button button-eliminar" onClick={() => setModuloActivo("eliminar")}>Eliminar Evento</button>
             </div>
 
             <div 
@@ -34,13 +32,6 @@ const Eventos = () => {
 
                     {moduloActivo === "crear" && <CrearEventos />}
                     {moduloActivo === "editar" && <EditarEventos />}
-                    {moduloActivo === "buscar" && <BuscarEvento eventos={eventos} />}
-                    {moduloActivo === "eliminar" && (
-                        <EliminarEvento
-                            eventosIniciales={eventos}
-                            onEliminar={handleActualizarEventos}
-                        />
-                )}
             </div>
         </div>
     );
