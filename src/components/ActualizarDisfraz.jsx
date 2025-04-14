@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 const ActualizarDisfraz = () => {
-    const [disfraces, setDisfraces] = useState([]);
-    const [etiquetasDisponibles, setEtiquetasDisponibles] = useState([]);
-    const [eventos, setEventos] = useState([]);
+    const [disfraces, setDisfraces] = useState([]); // Lista de disfraces
+    const [filteredDisfraces, setFilteredDisfraces] = useState([]); // Lista filtrada por búsqueda
+    const [etiquetasDisponibles, setEtiquetasDisponibles] = useState([]); // Lista de etiquetas disponibles
+    const [eventos, setEventos] = useState([]); // Lista de festividades
     const [formData, setFormData] = useState({
         nombre: "",
         festividad: "",
@@ -12,8 +13,10 @@ const ActualizarDisfraz = () => {
         imagenes: [],
         imagen: null
     });
-    const [selectedId, setSelectedId] = useState(null);
+    const [selectedId, setSelectedId] = useState(null); // ID del disfraz seleccionado
+    const [busqueda, setBusqueda] = useState(""); // Campo de búsqueda
 
+    // Obtener la lista de disfraces, etiquetas y festividades al montar el componente
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -24,6 +27,7 @@ const ActualizarDisfraz = () => {
                 ]);
                 const [disf, etq, evt] = await Promise.all([res1.json(), res2.json(), res3.json()]);
                 setDisfraces(disf);
+                setFilteredDisfraces(disf); // Inicializar la lista filtrada
                 setEtiquetasDisponibles(etq);
                 setEventos(evt);
             } catch (error) {
@@ -33,6 +37,22 @@ const ActualizarDisfraz = () => {
         };
         fetchData();
     }, []);
+
+    // Filtrar disfraces en tiempo real según el nombre, etiquetas o festividad
+    useEffect(() => {
+        if (busqueda.trim() === "") {
+            setFilteredDisfraces(disfraces); // Mostrar todos si no hay búsqueda
+        } else {
+            const filtered = disfraces.filter((disfraz) =>
+                disfraz.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+                disfraz.etiquetas?.some((etiqueta) =>
+                    etiqueta.nombre.toLowerCase().includes(busqueda.toLowerCase())
+                ) ||
+                disfraz.festividad?.nombre.toLowerCase().includes(busqueda.toLowerCase())
+            );
+            setFilteredDisfraces(filtered);
+        }
+    }, [busqueda, disfraces]);
 
     const fetchDetalleDisfraz = async (id) => {
         try {
@@ -54,6 +74,34 @@ const ActualizarDisfraz = () => {
         }
     };
 
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este disfraz?");
+        if (!confirmDelete) return;
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/disfraz/eliminar/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al eliminar el disfraz");
+            }
+
+            alert("Disfraz eliminado exitosamente");
+            // Actualizar la lista de disfraces después de eliminar
+            const updatedDisfraces = disfraces.filter((disfraz) => disfraz.id !== id);
+            setDisfraces(updatedDisfraces);
+            setFilteredDisfraces(updatedDisfraces); // Actualizar la lista filtrada
+            setBusqueda(""); // Limpiar el campo de búsqueda
+        } catch (error) {
+            console.error("Error al eliminar el disfraz:", error);
+            alert("Hubo un problema al eliminar el disfraz");
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -72,47 +120,14 @@ const ActualizarDisfraz = () => {
         setFormData({ ...formData, etiquetas: formData.etiquetas.filter((e) => e !== id) });
     };
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setFormData({
-                ...formData,
-                imagen: file,
-                imagenes: [...formData.imagenes, reader.result]
-            });
-        };
-        reader.readAsDataURL(file);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let imagenes = formData.imagenes;
-        if (formData.imagen) {
-            const data = new FormData();
-            data.append("file", formData.imagen);
-            data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
-
-            try {
-                const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, {
-                    method: "POST",
-                    body: data
-                });
-                const file = await res.json();
-                imagenes = [file.secure_url];
-            } catch (error) {
-                alert("Error al subir imagen");
-                return;
-            }
-        }
-
         const dataToSend = {
             nombre: formData.nombre,
             descripcion: formData.descripcion,
             festividadId: formData.festividad,
             etiquetas: formData.etiquetas,
-            imagenes
+            imagenes: formData.imagenes
         };
 
         try {
@@ -134,26 +149,60 @@ const ActualizarDisfraz = () => {
     return (
         <div className="form-container">
             <h2>Lista de Disfraces</h2>
-            <ul>
-                {disfraces.map((disfraz) => (
-                    <li key={disfraz.id}>
+
+            {/* Buscador en tiempo real */}
+            <div className="form-content">
+                <label htmlFor="busqueda">Buscar por Nombre, Etiqueta o Festividad:</label>
+                <input
+                    type="text"
+                    id="busqueda"
+                    name="busqueda"
+                    className="form-input"
+                    value={busqueda}
+                    onChange={(e) => setBusqueda(e.target.value)}
+                    placeholder="Ingrese un nombre, etiqueta o festividad"
+                />
+            </div>
+
+            {/* Lista filtrada de disfraces */}
+            <ul className="disfraz-list">
+                {filteredDisfraces.map((disfraz) => (
+                    <li key={disfraz.id} className="disfraz-item">
                         <strong>Nombre:</strong> {disfraz.nombre} <br />
                         <strong>Etiquetas:</strong> {disfraz.etiquetas?.map(e => e.nombre).join(", ") || "Sin etiquetas"}<br />
                         <strong>Festividad:</strong> {disfraz.festividad?.nombre || "Sin festividad"}<br />
-                        <button onClick={() => fetchDetalleDisfraz(disfraz.id)} className="edit-button">
+                        <button
+                            onClick={() => fetchDetalleDisfraz(disfraz.id)}
+                            className="edit-button"
+                        >
                             Editar
+                        </button>
+                        <button
+                            onClick={() => handleDelete(disfraz.id)}
+                            className="delete-button"
+                        >
+                            Eliminar
                         </button>
                         <hr />
                     </li>
                 ))}
             </ul>
 
+            {/* Formulario de actualización */}
             {selectedId && (
                 <form onSubmit={handleSubmit} className="form-content">
                     <h2>Editar Disfraz</h2>
                     <div className="form-group">
                         <label htmlFor="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" className="form-input" value={formData.nombre} onChange={handleChange} required />
+                        <input
+                            type="text"
+                            id="nombre"
+                            name="nombre"
+                            className="form-input"
+                            value={formData.nombre}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
 
                     <div className="form-group">
@@ -181,7 +230,13 @@ const ActualizarDisfraz = () => {
 
                     <div className="form-group">
                         <label htmlFor="festividad">Festividad:</label>
-                        <select className="form-input1" name="festividad" value={formData.festividad} onChange={handleChange} required>
+                        <select
+                            className="form-input1"
+                            name="festividad"
+                            value={formData.festividad}
+                            onChange={handleChange}
+                            required
+                        >
                             <option value="">Seleccione una festividad</option>
                             {eventos.map(ev => (
                                 <option key={ev.id} value={ev.id}>
@@ -193,40 +248,16 @@ const ActualizarDisfraz = () => {
 
                     <div className="form-group">
                         <label htmlFor="descripcion">Descripción:</label>
-                        <textarea id="descripcion" name="descripcion" className="form-input1" value={formData.descripcion} onChange={handleChange} maxLength={250} required />
+                        <textarea
+                            id="descripcion"
+                            name="descripcion"
+                            className="form-input1"
+                            value={formData.descripcion}
+                            onChange={handleChange}
+                            maxLength={250}
+                            required
+                        />
                         <p>{formData.descripcion.length} / 250 caracteres</p>
-                    </div>
-
-                    <div className="form-group">
-                        <label>Imágenes (máx. 3):</label>
-                        <div className="image-preview-container">
-                            {formData.imagenes.map((url, idx) => (
-                                <div key={idx} className="image-box">
-                                    <img src={url} alt={`img-${idx}`} className="preview-img" />
-                                    <button type="button" className="remove-button" onClick={() => {
-                                        const nuevas = [...formData.imagenes];
-                                        nuevas.splice(idx, 1);
-                                        setFormData({ ...formData, imagenes: nuevas });
-                                    }}>
-                                        X
-                                    </button>
-                                </div>
-                            ))}
-                            {formData.imagenes.length < 3 && (
-                                <div className="image-box upload-box">
-                                    <label className="add-image-label">
-                                        +
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={handleFileChange}
-                                            hidden
-                                        />
-                                    </label>
-                                    <p>Añadir otra imagen</p>
-                                </div>
-                            )}
-                        </div>
                     </div>
 
                     <button type="submit" className="form-button">Guardar Cambios</button>

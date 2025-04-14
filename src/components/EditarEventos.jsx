@@ -8,6 +8,7 @@ const EditarEventos = () => {
     ];
 
     const [eventos, setEventos] = useState([]); // Lista de eventos
+    const [filteredEventos, setFilteredEventos] = useState([]); // Lista filtrada por búsqueda
     const [formData, setFormData] = useState({
         mes: "",
         dia: "",
@@ -17,6 +18,7 @@ const EditarEventos = () => {
     const [diasDisponibles, setDiasDisponibles] = useState([]); // Días disponibles según el mes
     const [isEditing, setIsEditing] = useState(false); // Estado para saber si se está editando
     const [selectedId, setSelectedId] = useState(null); // ID del evento seleccionado
+    const [busqueda, setBusqueda] = useState(""); // Campo de búsqueda
 
     // Obtener la lista de eventos al montar el componente
     useEffect(() => {
@@ -29,19 +31,34 @@ const EditarEventos = () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error("Error al obtener las festividades");
+                    throw new Error("Error al obtener los eventos");
                 }
 
                 const data = await response.json();
                 setEventos(data); // Guardar la lista de eventos
+                setFilteredEventos(data); // Inicializar la lista filtrada
             } catch (error) {
-                console.error("Error al cargar las festividades:", error);
-                alert("Hubo un problema al cargar las festividades");
+                console.error("Error al cargar los eventos:", error);
+                alert("Hubo un problema al cargar los eventos");
             }
         };
 
         fetchEventos();
     }, []);
+
+    // Filtrar eventos en tiempo real según el nombre, día o mes ingresado
+    useEffect(() => {
+        if (busqueda.trim() === "") {
+            setFilteredEventos(eventos); // Mostrar todos si no hay búsqueda
+        } else {
+            const filtered = eventos.filter((evento) =>
+                evento.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+                evento.mes.toLowerCase().includes(busqueda.toLowerCase()) ||
+                evento.dia.toString().includes(busqueda)
+            );
+            setFilteredEventos(filtered);
+        }
+    }, [busqueda, eventos]);
 
     // Función para determinar cuántos días tiene el mes seleccionado
     const obtenerDiasDelMes = (mes) => {
@@ -66,6 +83,34 @@ const EditarEventos = () => {
             setFormData(evento); // Rellenar el formulario con los datos del evento
             setSelectedId(id); // Guardar el ID del evento seleccionado
             setIsEditing(true); // Cambiar a modo edición
+        }
+    };
+
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este evento?");
+        if (!confirmDelete) return;
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/festividad/eliminar/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al eliminar el evento");
+            }
+
+            alert("Evento eliminado exitosamente");
+            // Actualizar la lista de eventos después de eliminar
+            const updatedEventos = eventos.filter((evento) => evento.id !== id);
+            setEventos(updatedEventos);
+            setFilteredEventos(updatedEventos); // Actualizar la lista filtrada
+            setBusqueda(""); // Limpiar el campo de búsqueda
+        } catch (error) {
+            console.error("Error al eliminar el evento:", error);
+            alert("Hubo un problema al eliminar el evento");
         }
     };
 
@@ -100,6 +145,13 @@ const EditarEventos = () => {
             alert("✅ Evento actualizado exitosamente");
             console.log("Evento actualizado:", data);
             setIsEditing(false); // Salir del modo edición
+            // Actualizar la lista de eventos después de la actualización
+            setEventos((prev) =>
+                prev.map((evento) => (evento.id === selectedId ? { ...evento, ...formData } : evento))
+            );
+            setFilteredEventos((prev) =>
+                prev.map((evento) => (evento.id === selectedId ? { ...evento, ...formData } : evento))
+            );
         } catch (error) {
             console.error("Error al actualizar el evento:", error);
             alert("❌ Hubo un problema al actualizar el evento");
@@ -111,8 +163,24 @@ const EditarEventos = () => {
             {!isEditing ? (
                 <>
                     <h2 className="tittle-editarev">Lista de Festividades</h2>
+
+                    {/* Buscador en tiempo real */}
+                    <div className="form-content">
+                        <label htmlFor="busqueda">Buscar por Nombre, Mes o Día:</label>
+                        <input
+                            type="text"
+                            id="busqueda"
+                            name="busqueda"
+                            className="form-input"
+                            value={busqueda}
+                            onChange={(e) => setBusqueda(e.target.value)}
+                            placeholder="Ingrese un nombre, mes o día"
+                        />
+                    </div>
+
+                    {/* Lista filtrada de eventos */}
                     <ul className="event-list">
-                        {eventos.map((evento) => (
+                        {filteredEventos.map((evento) => (
                             <li key={evento.id} className="event-item">
                                 {evento.nombre} - {evento.mes}/{evento.dia}
                                 <button
@@ -120,6 +188,12 @@ const EditarEventos = () => {
                                     className="edit-button"
                                 >
                                     Actualizar
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(evento.id)}
+                                    className="delete-button"
+                                >
+                                    Eliminar
                                 </button>
                             </li>
                         ))}
@@ -129,7 +203,6 @@ const EditarEventos = () => {
                 <>
                     <h2 className="tittle-editarev">Editar Evento</h2>
                     <form onSubmit={handleSubmit} className="form-content">
-
                         {/* MES */}
                         <div className="form-group1">
                             <label htmlFor="mes">Mes:</label>
