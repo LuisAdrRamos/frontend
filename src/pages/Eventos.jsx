@@ -1,22 +1,12 @@
 import React, { useState } from "react";
 import CrearEventos from "../components/CrearEventos";
 import EditarEventos from "../components/EditarEventos";
-import BuscarEvento from "../components/BuscarEvento";
-import EliminarEvento from "../components/EliminarEvento";
+// import BuscarEvento from "../components/BuscarEvento";
+// import EliminarEvento from "../components/EliminarEvento";
 import "../styles/Admin.css";
 
-const eventosIniciales = [
-    { mes: "Marzo", dia: "25", nombre: "Cumpleaños de Juan" },
-    { mes: "Abril", dia: "10", nombre: "Día del Libro" }
-];
-
 const Eventos = () => {
-    const [eventos, setEventos] = useState(eventosIniciales);
     const [moduloActivo, setModuloActivo] = useState(null);
-
-    const handleActualizarEventos = (nuevosEventos) => {
-        setEventos(nuevosEventos);
-    };
 
     return (
         <div className="admin-container">

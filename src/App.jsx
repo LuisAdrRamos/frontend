@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./layout/Dashboard";
 import { AuthProvider } from "./context/AuthProvider";
 import { DisfracesProvider } from "./context/ProductosProvider";
+import { EventosProvider } from "./context/EventosProvider"
 
 // Pages
 import Home from "./pages/Home";
@@ -27,6 +28,7 @@ import Etiquetas from "./pages/Etiquetas";
 function App() {
     return (
         <AuthProvider>
+            <EventosProvider>
             <DisfracesProvider>
                 <Router>
                     <div className="app-container">
@@ -92,6 +94,7 @@ function App() {
                     </div>
                 </Router>
             </DisfracesProvider>
+            </EventosProvider>
         </AuthProvider>
     );
 }

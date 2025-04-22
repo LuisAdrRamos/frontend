@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CrearEtiquetas from "../components/CrearEtiquetas";
-import BuscarEtiquetas from "../components/BuscarEtiquetas";
-import EliminarEtiquetas from "../components/EliminarEtiquetas";
+// import BuscarEtiquetas from "../components/BuscarEtiquetas";
+// import EliminarEtiquetas from "../components/EliminarEtiquetas";
 import ActualizarEtiquetas from "../components/ActualizarEtiquetas";
 
 const Etiquetas = () => {

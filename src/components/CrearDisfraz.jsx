@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import '../styles/modal.css';
 
 const CrearDisfraz = () => {
     const [formData, setFormData] = useState({
@@ -93,22 +94,27 @@ const CrearDisfraz = () => {
     };
 
     const uploadImagesToCloudinary = async () => {
-        const urls = [];
-        for (const item of formData.imagenes) {
-            const data = new FormData();
-            data.append("file", item.file);
-            data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+        try {
+            const uploadPromises = formData.imagenes.map(async (item) => {
+                const data = new FormData();
+                data.append("file", item.file);
+                data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
 
-            const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, {
-                method: "POST",
-                body: data
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                    method: "POST",
+                    body: data
+                });
+
+                if (!res.ok) throw new Error("Error al subir imagen");
+                return res.json();
             });
 
-            if (!res.ok) throw new Error("❌ Error al subir imagen");
-            const fileData = await res.json();
-            urls.push(fileData.secure_url);
+            const results = await Promise.all(uploadPromises);
+            return results.map(result => result.secure_url);
+        } catch (error) {
+            console.error("Error al subir imágenes:", error);
+            throw error;
         }
-        return urls;
     };
 
     const handleSubmit = async (e) => {
@@ -120,13 +126,16 @@ const CrearDisfraz = () => {
         }
 
         try {
+            // Mostrar un indicador de carga
+            alert("Subiendo imágenes, por favor espere...");
+
             const imagenes = await uploadImagesToCloudinary();
             const dataToSend = {
                 nombre: formData.nombre,
                 descripcion: formData.descripcion,
                 festividadId: formData.festividad,
                 etiquetas: formData.etiquetas,
-                imagenes
+                imagenes // Esto ahora debería contener todas las URLs
             };
 
             const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/disfraz/registro`, {
@@ -138,11 +147,24 @@ const CrearDisfraz = () => {
                 body: JSON.stringify(dataToSend)
             });
 
-            if (!res.ok) throw new Error("❌ Error al crear el disfraz");
+            const responseData = await res.json();
+
+            if (!res.ok) {
+                throw new Error(responseData.msg || "❌ Error al crear el disfraz");
+            }
+
             alert("✅ Disfraz creado exitosamente");
+            // Redirigir o resetear el formulario
+            setFormData({
+                nombre: "",
+                etiquetas: [],
+                festividad: "",
+                descripcion: "",
+                imagenes: []
+            });
         } catch (error) {
             console.error(error);
-            alert("❌ Hubo un problema al crear el disfraz");
+            alert(error.message || "❌ Hubo un problema al crear el disfraz");
         }
     };
 
@@ -207,7 +229,7 @@ const CrearDisfraz = () => {
                         value={formData.festividad}
                         onChange={(e) => {
                             if (e.target.value === "crear") {
-                                window.location.href = "/crear-evento";
+                                window.location.href = "/eventos";
                             } else {
                                 handleChange(e);
                             }
@@ -238,29 +260,36 @@ const CrearDisfraz = () => {
                     <p>{formData.descripcion.length} / 250 caracteres</p>
                 </div>
 
-                <div className="form-group">
+                <div className={["form-group"]}>
                     <label>Imágenes (máximo 3):</label>
-                    <div className="image-preview-container">
+                    <div className={["image-preview-container"]}>
                         {formData.imagenes.map((img, idx) => (
-                            <div key={idx} className="image-box">
-                                <img src={img.preview} alt={`img-${idx}`} className="preview-img" />
-                                <button type="button" className="remove-button" onClick={() => removePreview(idx)}>
+                            <div key={idx} className={["image-box"]}>
+                                <img src={img.preview} alt={`preview-${idx}`} className={["preview-img"]} />
+                                <button
+                                    type="button"
+                                    className={["remove-button"]}
+                                    onClick={() => removePreview(idx)}
+                                    aria-label="Eliminar imagen"
+                                >
                                     X
                                 </button>
                             </div>
                         ))}
                         {formData.imagenes.length < 3 && (
-                            <div className="image-box upload-box">
-                                <label className="add-image-label">
+                            <div className={`${["image-box"]} ${["upload-box"]}`}>
+                                <label className={["add-image-label"]}>
                                     +
                                     <input
                                         type="file"
                                         accept="image/*"
                                         onChange={handleFileChange}
                                         hidden
+                                        multiple
+                                        aria-label="Añadir imagen"
                                     />
                                 </label>
-                                <p>Añadir otra imagen</p>
+                                <p className={["add-image-text"]}>Añadir otra imagen</p>
                             </div>
                         )}
                     </div>
