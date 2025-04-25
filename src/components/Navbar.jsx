@@ -30,6 +30,10 @@ const Navbar = ({ toggleSidebar }) => {
         setShowAdminMenu(!showAdminMenu); // Toggle para mostrar/ocultar el menú
     };
 
+    const handleMonthClick = (mes) => {
+        navigate(`/searches?month=${mes}`); // Redirigir a la página searches con el mes como parámetro
+    };
+
     return (
         <nav className="navbar px-4">
             <button className="menu-btn" onClick={toggleSidebar}>
@@ -44,7 +48,9 @@ const Navbar = ({ toggleSidebar }) => {
             <ul className="navbar-meses">
                 {["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"].map((mes, index) => (
                     <li className="nav-item" key={index}>
-                        <Link className="nav-link" to="/">{mes}</Link>
+                        <button className="nav-link" onClick={() => handleMonthClick(mes)}>
+                            {mes}
+                        </button>
                     </li>
                 ))}
             </ul>

@@ -17,15 +17,13 @@ const SUCURSALES = [
     },
     {
         label: "3ra Sucursal: YARUQUI - UPC",
-        src: "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d249.36266087396976!2d-78.3181939994935!3d-0.16097235436319585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2sec!4v1740273880460!5m2!1ses-419!2sec"
+        src: "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d249.36266087396976!2d-78.3181939994935!3d-0.16097235436319585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2sec"
     }
 ];
 
 const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
     const [mapSrc, setMapSrc] = useState(SUCURSALES[0].src);
-    const [etiquetasSeleccionadas, setEtiquetasSeleccionadas] = useState([]);
-    const [showDropdown, setShowDropdown] = useState(false);
-
+    const [etiquetas, setEtiquetas] = useState([]); // Lista de etiquetas obtenidas del backend
     const navigate = useNavigate();
     const tipoUsuario = localStorage.getItem("tipoUsuario");
 
@@ -34,7 +32,36 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
     const handleNavigate = (path) => {
         navigate(path);
         toggleSidebar();
-        setShowDropdown(false);
+    };
+
+    // Obtener etiquetas desde el backend
+    useEffect(() => {
+        const fetchEtiquetas = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiqueta/listar`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error("Error al obtener las etiquetas");
+                }
+
+                const data = await response.json();
+                setEtiquetas(data); // Guardar las etiquetas obtenidas
+            } catch (error) {
+                console.error("Error al cargar las etiquetas:", error);
+            }
+        };
+
+        fetchEtiquetas();
+    }, []);
+
+    // Redirigir a la página Searches con la etiqueta seleccionada
+    const handleEtiquetaClick = (etiqueta) => {
+        navigate(`/searches?etiqueta=${etiqueta}`);
+        toggleSidebar();
     };
 
     useEffect(() => {
@@ -45,12 +72,6 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
         }
         return () => document.body.classList.remove("sidebar-open");
     }, [sidebarOpen]);
-
-    const handleEtiquetaSeleccionada = (etiqueta) => {
-        setEtiquetasSeleccionadas((prev) =>
-            prev.includes(etiqueta) ? prev.filter((item) => item !== etiqueta) : [...prev, etiqueta]
-        );
-    };
 
     return (
         <>
@@ -88,43 +109,17 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
                     </div>
                 </div>
 
-                {/* Botón Admin Panel con menú desplegable */}
-                {(tipoUsuario === "admin" || tipoUsuario === "moderador") && (
-                    <div className="admin-btn-container">
-                        <button className=" btn-admin-panel" onClick={toggleDropdown}>
-                            ⚙ <FontAwesomeIcon icon={faChevronDown} />
-                        </button>
-
-                        {showDropdown && (
-                            <div className="admin-dropdown">
-                                {tipoUsuario === "admin" && (
-                                    <button onClick={() => handleNavigate("/administradores")}>Administradores</button>
-                                )}
-                                <button className="btn-dir" onClick={() => handleNavigate("/disfraces")}>Disfraces</button>
-                                <button className="btn-dir" onClick={() => handleNavigate("/eventos")}>Eventos</button>
-                                <button className="btn-dir" onClick={() => handleNavigate("/etiquetas")}>Etiquetas</button>
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* Búsqueda */}
-                <form className="form-inline d-flex">
-                    <input className="form-control" type="search" placeholder="Buscar..." />
-                    <button className="btn btn-outline-success ms-2" type="submit">Buscar</button>
-                </form>
-
                 {/* Etiquetas */}
                 <h2 className="sidebar-title">Etiquetas</h2>
                 <div className="tags-container">
-                    {["Chaqueta decorada", "Capa Roja", "Pantalón blanco", "Cinturón negro", "Botas negras"].map((tag, index) => (
-                        <span
-                            className={`tag ${etiquetasSeleccionadas.includes(tag) ? "active" : ""}`}
-                            key={index}
-                            onClick={() => handleEtiquetaSeleccionada(tag)}
+                    {etiquetas.map((etiqueta) => (
+                        <button
+                            key={etiqueta.id}
+                            className="tag-button"
+                            onClick={() => handleEtiquetaClick(etiqueta.nombre)}
                         >
-                            {tag}
-                        </span>
+                            {etiqueta.nombre}
+                        </button>
                     ))}
                 </div>
 
@@ -152,24 +147,6 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
                         </li>
                     ))}
                 </ul>
-
-                {/* Contacto y redes */}
-                <div className="sidebar-contact">
-                    <button className="contact-btn">
-                        <FontAwesomeIcon icon={faPhone} /> Contacto
-                    </button>
-                    <div className="social-icons">
-                        <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
-                            <FontAwesomeIcon icon={faFacebookF} className="social-icon facebook" />
-                        </a>
-                        <a href="https://www.whatsapp.com/" target="_blank" rel="noopener noreferrer">
-                            <FontAwesomeIcon icon={faWhatsapp} className="social-icon whatsapp" />
-                        </a>
-                        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
-                            <FontAwesomeIcon icon={faInstagram} className="social-icon instagram" />
-                        </a>
-                    </div>
-                </div>
             </aside>
         </>
     );
