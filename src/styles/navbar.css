@@ -11,6 +11,7 @@
     backdrop-filter: blur(5px); 
     color: black;
     position: relative;
+    z-index: 5000;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -90,6 +91,42 @@
     display: flex;
     gap: 15px;
     align-items: center;
+}
+
+.nav-item {
+    position: relative;
+}
+
+/* 🔹 Estilos del menú de festividades */
+.event-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 200px;
+    list-style: none;
+    z-index: 9999; /* 🔹 Asegurar que siempre esté sobre otros elementos */
+    border-radius: 8px; /* 🔹 Agregar esquinas redondeadas */
+}
+
+/* 📌 Mostrar el menú cuando el mes está en hover */
+.nav-item:hover .event-dropdown {
+    display: block; /* ✅ Se muestra al hacer hover */
+}
+
+/* 📌 Estilos para los eventos */
+.event-item {
+    padding: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.event-item:hover {
+    background: #f0f0f0;
 }
 
 /* Estilo base para los íconos */

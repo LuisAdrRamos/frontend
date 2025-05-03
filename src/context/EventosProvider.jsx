@@ -9,7 +9,7 @@ const EventosProvider = ({ children }) => {
     // ✅ Listar todos los eventos
     const listarEventos = async () => {
         try {
-            const url = `${import.meta.env.VITE_BACKEND_URL}/festividad`; // URL corregida
+            const url = `${import.meta.env.VITE_BACKEND_URL}/festividad/festividades`; // URL corregida
             const respuesta = await axios.get(url);
             setEventos(respuesta.data);
         } catch (error) {

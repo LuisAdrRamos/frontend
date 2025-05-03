@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import DisfracesContext from "../context/ProductosProvider"; // Importa el contexto
 import Card from "../components/Card";
 import CardContent from "../components/CardContent";
@@ -9,10 +8,22 @@ import "../styles/home.css";
 
 export default function MainPage() {
     const navigate = useNavigate();
-    const { disfraces } = useContext(DisfracesContext);
+    const { disfraces = [] } = useContext(DisfracesContext); // ✅ Se asegura que `disfraces` esté inicializado
+
+    // Obtener el mes actual
+    const meses = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+    const mesActual = meses[new Date().getMonth()];
+
+    // Filtrar disfraces por el mes actual
+    const disfracesFiltrados = disfraces.length > 0 ? disfraces.filter(disfraz => 
+        disfraz.festividad && disfraz.festividad.mes === mesActual
+    ) : [];
 
     const handleProductClick = (disfraz) => {
-        navigate(`/productos/${disfraz.id}`); // Ahora utiliza el `id`
+        navigate(`/productos/${disfraz.id}`);
     };
 
     return (
@@ -41,7 +52,7 @@ export default function MainPage() {
                                 onClick={() => handleProductClick(disfraz)}
                             >
                                 <img
-                                    src={disfraz.imagenes[0]} // Usamos siempre la primera imagen del arreglo
+                                    src={disfraz.imagenes[0]}
                                     alt={disfraz.nombre}
                                     className="carousel-image"
                                     style={{
@@ -68,20 +79,42 @@ export default function MainPage() {
                     </button>
                 </div>
             </section>
-            
 
-            {/* Nuevas llegadas */}
+            {/* Disfraces del mes */}
             <section className="new-arrivals">
-                <h2 className="titulo">Batalla de Pichincha - 24 de Mayo</h2>
+                <h2 className="titulo">Disfraces de {mesActual}</h2>
                 <div className="new-arrivals-container">
-                    {disfraces.map((disfraz) => (
-                        <Card key={disfraz.id} className="new-arrival-card" onClick={() => handleProductClick(disfraz)}>
-                            <img src={disfraz.imagenes[0]} alt={disfraz.nombre} className="arrival-image" />
-                            <CardContent>
-                                <p>{disfraz.nombre}</p>
-                            </CardContent>
-                        </Card>
-                    ))}
+                    {disfracesFiltrados.length > 0 ? (
+                        disfracesFiltrados.map((disfraz) => (
+                            <Card key={disfraz.id} className="new-arrival-card" onClick={() => handleProductClick(disfraz)}>
+                                <img src={disfraz.imagenes[0]} alt={disfraz.nombre} className="arrival-image" />
+                                <CardContent>
+                                    <p>{disfraz.nombre}</p>
+                                </CardContent>
+                            </Card>
+                        ))
+                    ) : (
+                        <p className="no-disfraces">No hay disfraces disponibles para {mesActual}.</p>
+                    )}
+                </div>
+            </section>
+
+            {/* Todos los disfraces */}
+            <section className="all-disfraces">
+                <h2 className="all-title">Todos los Disfraces</h2>
+                <div className="all-container">
+                    {disfraces.length > 0 ? (
+                        disfraces.map((disfraz) => (
+                            <Card key={disfraz.id} className="all-card" onClick={() => handleProductClick(disfraz)}>
+                                <img src={disfraz.imagenes[0]} alt={disfraz.nombre} className="all-image" />
+                                <CardContent>
+                                    <p>{disfraz.nombre}</p>
+                                </CardContent>
+                            </Card>
+                        ))
+                    ) : (
+                        <p className="no-disfraces">Cargando disfraces...</p>
+                    )}
                 </div>
             </section>
         </div>

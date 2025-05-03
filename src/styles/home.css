@@ -26,19 +26,25 @@
 
 /* 📌 Carrusel */
 .carousel-section {
-    width: 2500px;
-    height: 500px;
-    /* margin: 20px auto; */
+    width: 100%;
+    height: auto; /* ✅ Permitir ajuste dinámico */
     background-color: white;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* ✅ Centrar contenido verticalmente */
 }
 
 .carousel-image {
     width: 100%;
-    height: 400px;
-    object-fit: cover;
+    height: auto; /* ✅ Ajustar altura automáticamente */
+    object-fit: contain; /* ✅ Mantener proporciones sin recortar */
+    position: relative;
+    z-index: 2;
 }
 
 .carousel-text {
@@ -216,6 +222,87 @@
     cursor: pointer;
 }
 
+/* 📌 Disfraces destacados */
+.featured-disfraces {
+    text-align: center;
+    padding: 20px;
+    background-color: #F8FFE5;
+    border-radius: 15px;
+    margin: 20px auto;
+    width: 90%;
+}
+
+.featured-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap; /* 📌 Hace que los elementos se distribuyan en filas */
+    justify-content: center;
+}
+
+.featured-card {
+    width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    background: white;
+}
+
+.featured-card:hover {
+    transform: translateY(-5px);
+}
+
+.featured-image {
+    width: 100%;
+    height: 180px;
+    object-fit: scale-down;
+}
+
+/* 📌 Todos los disfraces */
+.all-disfraces {
+    text-align: center;
+    padding: 20px;
+    background-color: #F8FFE5;
+    border-radius: 15px;
+    margin: 20px auto;
+    width: 90%;
+}
+
+.all-card {
+    width: 100%;
+    max-width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    background: white;
+}
+
+.all-card:hover {
+    transform: translateY(-5px);
+}
+
+.all-image {
+    width: 100%;
+    height: 180px;
+    object-fit: scale-down;
+}
+
+.all-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    gap: 20px;
+    justify-content: center;
+}
+
+/* 📌 Vista móvil: Mostrar 2 disfraces por fila */
+@media (max-width: 768px) {
+    .all-container {
+        grid-template-columns: repeat(2, 1fr); /* 📌 Dos disfraces por fila */
+        max-width: 100%;
+    }
+}
+
 /* 📌 Responsive */
 @media (max-width: 1024px) {
     .carousel-section {
@@ -244,16 +331,6 @@
 }
 
 @media (max-width: 768px) {
-    
-    /* .new-arrivals-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-
-    .new-arrival-card {
-        width: 100%;
-    } */
 
     .carousel-image {
         height: 300px;
@@ -263,29 +340,6 @@
         width: 90%;
         bottom: 60px;
         left: 5%;
-    }
-
-    .info-button {
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 100;
-    }
-}
-
-@media (max-width: 480px) {
-    .carousel-image {
-        height: 250px;
-    }
-
-    .modal {
-        width: 90%;
-        bottom: 50px;
-        left: 5%;
-        padding: 10px;
     }
 
     .info-button {

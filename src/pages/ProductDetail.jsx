@@ -74,10 +74,10 @@ const ProductDetail = () => {
 
             {/* Sección de Información */}
             <div className="product-info">
-                <p><strong>NOMBRE:</strong> {product.nombre}</p>
-                <p><strong>DESCRIPCIÓN:</strong> {product.descripcion || "No hay descripción disponible."}</p>
-                <p><strong>EVENTO:</strong> {product.evento || "Batalla de Pichincha - 24 de Mayo"}</p>
-                <p><strong>PRENDAS:</strong></p>
+                <p><strong>Nombre:</strong> {product.nombre}</p>
+                <p><strong>Descripción:</strong> {product.descripcion || "No hay descripción disponible."}</p>
+                <p><strong>Evento:</strong> {product.festividad ? `${product.festividad.nombre} - ${product.festividad.dia} de ${product.festividad.mes}` : "Evento no disponible"}</p>
+                <p><strong>Etiquetas:</strong></p>
                 <ul className="product-prendas">
                     {product.etiquetas && product.etiquetas.length > 0 ? (
                         product.etiquetas.map((etiqueta, index) => (

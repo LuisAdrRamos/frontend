@@ -64,6 +64,33 @@
     color: black;
 }
 
+.search-container {
+    display: flex;
+    gap: 5px;
+    margin: 5px;
+}
+
+.search-input {
+    width: 120px; /* Reducimos el ancho del input */
+    padding: 4px; /* Disminuimos el padding */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px; /* Ajustamos el tamaño de la fuente */
+}
+
+.search-btn {
+    background-color: #3b7abd;
+    color: white;
+    border: none;
+    padding: 6px 10px; /* Ajustamos el tamaño del botón */
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background-color: #0056b3;
+}
+
 /* Solo se muestran los íconos de autenticación en móviles */
 .sidebar-auth-icons {
     display: flex;
