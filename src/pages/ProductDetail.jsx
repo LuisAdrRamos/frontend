@@ -4,33 +4,77 @@ import "../styles/ProductDetail.css";
 import DisfracesContext from "../context/ProductosProvider";
 
 const ProductDetail = () => {
-    const { obtenerDetalleDisfraz } = useContext(DisfracesContext); // Método del contexto para obtener el detalle
-    const { disfraces } = useContext(DisfracesContext); // Todos los disfraces
-    const { id } = useParams(); // ID del disfraz desde la URL
+    const { obtenerDetalleDisfraz } = useContext(DisfracesContext);
+    const { disfraces } = useContext(DisfracesContext);
+    const { id } = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // Función para formatear la fecha de la festividad
+    const formatFestividad = (festividad) => {
+        return `${festividad.nombre} - ${festividad.dia} de ${festividad.mes}`;
+    };
+
+    // Ordenar festividades por mes y día
+    const ordenarFestividades = (festividades) => {
+        const mesesOrden = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+        
+        return [...festividades].sort((a, b) => {
+            const mesA = mesesOrden.indexOf(a.mes);
+            const mesB = mesesOrden.indexOf(b.mes);
+            
+            if (mesA !== mesB) return mesA - mesB;
+            return a.dia - b.dia;
+        });
+    };
 
     useEffect(() => {
         const cargarDetalle = async () => {
             try {
-                const disfraz = await obtenerDetalleDisfraz(id); // Llama al backend
-                setProduct(disfraz);
+                setLoading(true);
+                const disfraz = await obtenerDetalleDisfraz(id);
+                
+                if (disfraz) {
+                    // Ordenar las festividades si existen
+                    if (disfraz.festividades && disfraz.festividades.length > 0) {
+                        disfraz.festividades = ordenarFestividades(disfraz.festividades);
+                    }
+                    setProduct(disfraz);
+                } else {
+                    setError("Producto no encontrado");
+                }
+                setLoading(false);
             } catch (error) {
                 console.error("Error al cargar el detalle del disfraz:", error);
+                setError("Error al cargar los detalles del producto");
+                setLoading(false);
             }
         };
         cargarDetalle();
     }, [id, obtenerDetalleDisfraz]);
 
+    if (loading) {
+        return <div className="loading-message">Cargando detalles del producto...</div>;
+    }
+
+    if (error) {
+        return <div className="error-message">{error}</div>;
+    }
+
     if (!product) {
         return <div className="producto-no-encontrado">Producto no encontrado</div>;
     }
 
-    const productImages = product.imagenes || []; // Manejo seguro de las imágenes
-    const similares = disfraces.filter(item => item.id !== parseInt(id, 10)); // Filtrar disfraces similares
+    const productImages = product.imagenes || [];
+    const similares = disfraces.filter(item => item.id !== parseInt(id, 10));
 
     const handleProductClick = (item) => {
-        navigate(`/productos/${item.id}`); // Navegar al detalle del disfraz similar
+        navigate(`/productos/${item.id}`);
     };
 
     return (
@@ -72,23 +116,37 @@ const ProductDetail = () => {
                 </div>
             </div>
 
-            {/* Sección de Información */}
+            {/* Sección de Información - Manteniendo el formato exacto de la imagen */}
             <div className="product-info">
                 <p><strong>Nombre:</strong> {product.nombre}</p>
                 <p><strong>Descripción:</strong> {product.descripcion || "No hay descripción disponible."}</p>
-                <p><strong>Evento:</strong> {product.festividad ? `${product.festividad.nombre} - ${product.festividad.dia} de ${product.festividad.mes}` : "Evento no disponible"}</p>
+                
+                {/* Mostrar múltiples festividades */}
+                <p><strong>Evento:</strong> 
+                    {product.festividades && product.festividades.length > 0 ? (
+                        <ul className="festividades-list">
+                            {product.festividades.map((festividad, index) => (
+                                <li key={festividad.id || index}>
+                                    {formatFestividad(festividad)}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        "Evento no disponible"
+                    )}
+                </p>
+
                 <p><strong>Etiquetas:</strong></p>
                 <ul className="product-prendas">
                     {product.etiquetas && product.etiquetas.length > 0 ? (
-                        product.etiquetas.map((etiqueta, index) => (
-                            <li key={etiqueta.id}>{etiqueta.nombre}</li> // Accedemos directamente a la propiedad 'nombre'
+                        product.etiquetas.map((etiqueta) => (
+                            <li key={etiqueta.id}>{etiqueta.nombre}</li>
                         ))
                     ) : (
                         <li>No hay etiquetas disponibles.</li>
                     )}
                 </ul>
             </div>
-
 
             {/* Sección de Productos Similares */}
             <div className="product-related">

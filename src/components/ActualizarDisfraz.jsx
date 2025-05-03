@@ -8,32 +8,74 @@ const ActualizarDisfraz = () => {
     const [eventos, setEventos] = useState([]);
     const [formData, setFormData] = useState({
         nombre: "",
-        festividad: "",
+        festividades: [],
         descripcion: "",
         etiquetas: [],
-        imagenes: [],
-        imagen: null
+        imagenes: []
     });
     const [selectedId, setSelectedId] = useState(null);
     const [busqueda, setBusqueda] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Función para ordenar festividades por mes y día
+    const ordenarFestividades = (festividades) => {
+        const mesesOrden = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+        
+        return [...festividades].sort((a, b) => {
+            const mesA = mesesOrden.indexOf(a.mes);
+            const mesB = mesesOrden.indexOf(b.mes);
+            
+            if (mesA !== mesB) return mesA - mesB;
+            return a.dia - b.dia;
+        });
+    };
+
+    // Función para ordenar etiquetas alfabéticamente
+    const ordenarEtiquetas = (etiquetas) => {
+        return [...etiquetas].sort((a, b) => a.nombre.localeCompare(b.nombre));
+    };
 
     // Obtener datos iniciales
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [res1, res2, res3] = await Promise.all([
-                    fetch(`${import.meta.env.VITE_BACKEND_URL}/disfraz/listar`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }}),
-                    fetch(`${import.meta.env.VITE_BACKEND_URL}/etiqueta/listar`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }}),
-                    fetch(`${import.meta.env.VITE_BACKEND_URL}/festividad/festividades`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }})
+                setLoading(true);
+                const [resDisfraces, resEtiquetas, resFestividades] = await Promise.all([
+                    fetch(`${import.meta.env.VITE_BACKEND_URL}/disfraz/listar`, { 
+                        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+                    }),
+                    fetch(`${import.meta.env.VITE_BACKEND_URL}/etiqueta/listar`, { 
+                        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+                    }),
+                    fetch(`${import.meta.env.VITE_BACKEND_URL}/festividad/festividades`, { 
+                        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+                    })
                 ]);
-                const [disf, etq, evt] = await Promise.all([res1.json(), res2.json(), res3.json()]);
-                setDisfraces(disf);
-                setFilteredDisfraces(disf);
-                setEtiquetasDisponibles(etq);
-                setEventos(evt);
+
+                if (!resDisfraces.ok || !resEtiquetas.ok || !resFestividades.ok) {
+                    throw new Error("Error al cargar datos iniciales");
+                }
+
+                const [disfracesData, etiquetasData, festividadesData] = await Promise.all([
+                    resDisfraces.json(),
+                    resEtiquetas.json(),
+                    resFestividades.json()
+                ]);
+
+                setDisfraces(disfracesData);
+                setFilteredDisfraces(disfracesData);
+                setEtiquetasDisponibles(ordenarEtiquetas(etiquetasData || []));
+                setEventos(ordenarFestividades(festividadesData || []));
+                setLoading(false);
             } catch (error) {
                 console.error("❌ Error al cargar datos:", error);
-                alert("Hubo un problema al cargar la información inicial.");
+                setError("Hubo un problema al cargar la información inicial");
+                setLoading(false);
             }
         };
         fetchData();
@@ -46,10 +88,12 @@ const ActualizarDisfraz = () => {
         } else {
             const filtered = disfraces.filter((disfraz) =>
                 disfraz.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-                disfraz.etiquetas?.some((etiqueta) =>
+                disfraz.etiquetas?.some(etiqueta =>
                     etiqueta.nombre.toLowerCase().includes(busqueda.toLowerCase())
                 ) ||
-                disfraz.festividad?.nombre.toLowerCase().includes(busqueda.toLowerCase())
+                disfraz.festividades?.some(festividad =>
+                    festividad.nombre.toLowerCase().includes(busqueda.toLowerCase())
+                )
             );
             setFilteredDisfraces(filtered);
         }
@@ -63,23 +107,31 @@ const ActualizarDisfraz = () => {
             return;
         }
 
-        files.forEach((file) => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setFormData((prev) => ({
-                    ...prev,
-                    imagenes: [...prev.imagenes, { file, preview: reader.result }]
-                }));
-            };
-            reader.readAsDataURL(file);
+        const newImages = files.map(file => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    resolve({ file, preview: reader.result });
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        Promise.all(newImages).then(images => {
+            setFormData(prev => ({
+                ...prev,
+                imagenes: [...prev.imagenes, ...images]
+            }));
         });
     };
 
     // Función para eliminar previsualización de imagen
     const removePreview = (index) => {
-        const nuevas = [...formData.imagenes];
-        nuevas.splice(index, 1);
-        setFormData({ ...formData, imagenes: nuevas });
+        setFormData(prev => {
+            const nuevas = [...prev.imagenes];
+            nuevas.splice(index, 1);
+            return { ...prev, imagenes: nuevas };
+        });
     };
 
     // Función para subir imágenes a Cloudinary
@@ -93,12 +145,15 @@ const ActualizarDisfraz = () => {
                 data.append("file", item.file);
                 data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
 
-                const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, {
-                    method: "POST",
-                    body: data
-                });
+                const res = await fetch(
+                    `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+                    { method: "POST", body: data }
+                );
 
-                if (!res.ok) throw new Error("Error al subir imagen");
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    throw new Error(errorData.message || "Error al subir imagen");
+                }
                 return res.json();
             });
 
@@ -107,7 +162,7 @@ const ActualizarDisfraz = () => {
             
             // Combinar URLs existentes (que no tienen file) con las nuevas
             const existingUrls = formData.imagenes
-                .filter(img => !img.file && img.url)
+                .filter(img => !img.file && (img.url || img.preview))
                 .map(img => img.url || img.preview);
             
             return [...existingUrls, ...newUrls];
@@ -125,22 +180,22 @@ const ActualizarDisfraz = () => {
             });
             const data = await res.json();
             
-            // Preparar las imágenes para el estado (conservamos las URLs existentes)
+            // Preparar las imágenes para el estado
             const imagenesPreparadas = data.imagenes.map(img => ({
                 url: img,
-                preview: img // Usamos la URL como preview para imágenes existentes
+                preview: img
             }));
             
             setFormData({
                 nombre: data.nombre,
                 descripcion: data.descripcion,
-                festividad: data.festividad?.id || "",
+                festividades: data.festividades?.map(f => f.id) || [],
                 etiquetas: data.etiquetas?.map(et => et.id) || [],
-                imagenes: imagenesPreparadas,
-                imagen: null
+                imagenes: imagenesPreparadas
             });
             setSelectedId(id);
         } catch (error) {
+            console.error("Error al cargar detalles del disfraz:", error);
             alert("Error al cargar detalles del disfraz");
         }
     };
@@ -162,52 +217,118 @@ const ActualizarDisfraz = () => {
                 throw new Error("Error al eliminar el disfraz");
             }
 
-            alert("Disfraz eliminado exitosamente");
+            alert("✅ Disfraz eliminado exitosamente");
             const updatedDisfraces = disfraces.filter((disfraz) => disfraz.id !== id);
             setDisfraces(updatedDisfraces);
             setFilteredDisfraces(updatedDisfraces);
+            setSelectedId(null);
             setBusqueda("");
         } catch (error) {
-            console.error("Error al eliminar el disfraz:", error);
-            alert("Hubo un problema al eliminar el disfraz");
+            console.error("❌ Error al eliminar el disfraz:", error);
+            alert("❌ Hubo un problema al eliminar el disfraz");
         }
     };
 
     // Manejar cambios en otros campos del formulario
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     // Manejar cambios en etiquetas
     const handleEtiquetaChange = (e) => {
         const id = parseInt(e.target.value);
         if (id === -1) {
-            window.location.href = "/crear-etiqueta";
-        } else if (!formData.etiquetas.includes(id) && formData.etiquetas.length < 5) {
-            setFormData({ ...formData, etiquetas: [...formData.etiquetas, id] });
+            window.location.href = "/etiquetas";
+            return;
+        }
+
+        if (!formData.etiquetas.includes(id)) {
+            if (formData.etiquetas.length < 6) {
+                setFormData(prev => ({ 
+                    ...prev, 
+                    etiquetas: [...prev.etiquetas, id] 
+                }));
+            } else {
+                alert("❌ Máximo 6 etiquetas permitidas");
+            }
         }
     };
 
     // Eliminar etiqueta
     const handleRemoveEtiqueta = (id) => {
-        setFormData({ ...formData, etiquetas: formData.etiquetas.filter((e) => e !== id) });
+        setFormData(prev => ({
+            ...prev,
+            etiquetas: prev.etiquetas.filter(et => et !== id)
+        }));
+    };
+
+    // Manejar cambios en festividades
+    const handleFestividadChange = (e) => {
+        const id = parseInt(e.target.value);
+        if (id === -1) {
+            window.location.href = "/eventos";
+            return;
+        }
+
+        if (!formData.festividades.includes(id)) {
+            if (formData.festividades.length < 5) {
+                setFormData(prev => ({ 
+                    ...prev, 
+                    festividades: [...prev.festividades, id] 
+                }));
+            } else {
+                alert("❌ Máximo 5 festividades permitidas");
+            }
+        }
+    };
+
+    // Eliminar festividad
+    const handleRemoveFestividad = (id) => {
+        setFormData(prev => ({ 
+            ...prev, 
+            festividades: prev.festividades.filter(fest => fest !== id) 
+        }));
     };
 
     // Enviar formulario de actualización
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+        setIsSubmitting(true);
+
         try {
-            alert("Subiendo imágenes, por favor espere...");
-            
+            // Validaciones
+            if (formData.imagenes.length === 0) {
+                alert("❌ Debes tener al menos una imagen");
+                setIsSubmitting(false);
+                return;
+            }
+
+            if (formData.festividades.length === 0) {
+                alert("❌ Debes seleccionar al menos una festividad");
+                setIsSubmitting(false);
+                return;
+            }
+
+            if (formData.etiquetas.length > 6) {
+                alert("❌ Máximo 6 etiquetas permitidas");
+                setIsSubmitting(false);
+                return;
+            }
+
+            if (formData.descripcion.length > 250) {
+                alert("❌ La descripción no puede exceder los 250 caracteres");
+                setIsSubmitting(false);
+                return;
+            }
+
             // Subir imágenes nuevas a Cloudinary
             const imagenesUrls = await uploadImagesToCloudinary();
             
             const dataToSend = {
-                nombre: formData.nombre,
-                descripcion: formData.descripcion,
-                festividadId: formData.festividad,
+                nombre: formData.nombre.trim(),
+                descripcion: formData.descripcion.trim(),
+                festividades: formData.festividades,
                 etiquetas: formData.etiquetas,
                 imagenes: imagenesUrls
             };
@@ -224,7 +345,7 @@ const ActualizarDisfraz = () => {
             const result = await res.json();
             
             if (!res.ok) {
-                throw new Error(result.msg || "Error al actualizar disfraz");
+                throw new Error(result.msg || "❌ Error al actualizar disfraz");
             }
 
             alert("✅ Disfraz actualizado exitosamente");
@@ -237,10 +358,35 @@ const ActualizarDisfraz = () => {
             setFilteredDisfraces(updatedDisfraces);
             
         } catch (error) {
-            console.error("Error al actualizar disfraz:", error);
+            console.error("❌ Error al actualizar disfraz:", error);
             alert(error.message || "❌ Error al actualizar disfraz");
+        } finally {
+            setIsSubmitting(false);
         }
     };
+
+    if (loading) {
+        return (
+            <div className="form-container">
+                <div className="loading-spinner"></div>
+                <p>Cargando datos necesarios...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="form-container">
+                <p className="error-message">{error}</p>
+                <button 
+                    className="form-button"
+                    onClick={() => window.location.reload()}
+                >
+                    Reintentar
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className="form-container">
@@ -264,22 +410,25 @@ const ActualizarDisfraz = () => {
             <ul className="disfraz-list">
                 {filteredDisfraces.map((disfraz) => (
                     <li key={disfraz.id} className="disfraz-item">
-                        <strong>Nombre:</strong> {disfraz.nombre} <br />
-                        <strong>Etiquetas:</strong> {disfraz.etiquetas?.map(e => e.nombre).join(", ") || "Sin etiquetas"}<br />
-                        <strong>Festividad:</strong> {disfraz.festividad?.nombre || "Sin festividad"}<br />
-                        <button
-                            onClick={() => fetchDetalleDisfraz(disfraz.id)}
-                            className="edit-button"
-                        >
-                            Editar
-                        </button>
-                        <button
-                            onClick={() => handleDelete(disfraz.id)}
-                            className="delete-button"
-                        >
-                            Eliminar
-                        </button>
-                        <hr />
+                        <div className="disfraz-info">
+                            <strong>Nombre:</strong> {disfraz.nombre} <br />
+                            <strong>Etiquetas:</strong> {disfraz.etiquetas?.map(e => e.nombre).join(", ") || "Sin etiquetas"}<br />
+                            <strong>Festividades:</strong> {disfraz.festividades?.map(f => f.nombre).join(", ") || "Sin festividades"}<br />
+                        </div>
+                        <div className="disfraz-actions">
+                            <button
+                                onClick={() => fetchDetalleDisfraz(disfraz.id)}
+                                className="edit-button"
+                            >
+                                Editar
+                            </button>
+                            <button
+                                onClick={() => handleDelete(disfraz.id)}
+                                className="delete-button"
+                            >
+                                Eliminar
+                            </button>
+                        </div>
                     </li>
                 ))}
             </ul>
@@ -299,40 +448,55 @@ const ActualizarDisfraz = () => {
                             value={formData.nombre}
                             onChange={handleChange}
                             required
+                            maxLength={100}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="etiquetas">Etiquetas (máx. 5):</label>
-                        <select className="form-input1" onChange={handleEtiquetaChange}>
+                        <label htmlFor="etiquetas">Etiquetas (máx. 6):</label>
+                        <select
+                            id="etiquetas"
+                            name="etiquetas"
+                            className="form-input1"
+                            onChange={handleEtiquetaChange}
+                            value=""
+                        >
                             <option value="">Seleccione una etiqueta</option>
-                            {etiquetasDisponibles.map((e) => (
-                                <option key={e.id} value={e.id}>{e.nombre}</option>
+                            {etiquetasDisponibles.map(et => (
+                                <option key={et.id} value={et.id}>{et.nombre}</option>
                             ))}
                             <option value="-1">➕ Crear nueva etiqueta</option>
                         </select>
                         <ul className="etiquetas-list">
-                            {formData.etiquetas.map((id) => {
+                            {formData.etiquetas.map(id => {
                                 const etiqueta = etiquetasDisponibles.find(e => e.id === id);
                                 return (
                                     <li key={id}>
-                                        {etiqueta?.nombre || "Etiqueta desconocida"}{" "}
-                                        <button type="button" onClick={() => handleRemoveEtiqueta(id)} className="remove-button">X</button>
+                                        {etiqueta?.nombre || "Etiqueta desconocida"}
+                                        <button
+                                            type="button"
+                                            className="remove-button"
+                                            onClick={() => handleRemoveEtiqueta(id)}
+                                        >
+                                            X
+                                        </button>
                                     </li>
                                 );
                             })}
                         </ul>
-                        <p>{formData.etiquetas.length} / 5 etiquetas seleccionadas</p>
+                        <p className={formData.etiquetas.length >= 6 ? "text-error" : ""}>
+                            {formData.etiquetas.length} / 6 etiquetas seleccionadas
+                        </p>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="festividad">Festividad:</label>
+                        <label htmlFor="festividad">Festividades (máx. 5):</label>
                         <select
-                            className="form-input1"
+                            id="festividad"
                             name="festividad"
-                            value={formData.festividad}
-                            onChange={handleChange}
-                            required
+                            className="form-input1"
+                            onChange={handleFestividadChange}
+                            value=""
                         >
                             <option value="">Seleccione una festividad</option>
                             {eventos.map(ev => (
@@ -340,11 +504,32 @@ const ActualizarDisfraz = () => {
                                     {ev.nombre} - {ev.mes}/{ev.dia}
                                 </option>
                             ))}
+                            <option value="-1">➕ Crear nueva festividad</option>
                         </select>
+                        <ul className="festividades-list">
+                            {formData.festividades.map(id => {
+                                const festividad = eventos.find(ev => ev.id === id);
+                                return (
+                                    <li key={id}>
+                                        {festividad?.nombre || "Festividad desconocida"}
+                                        <button
+                                            type="button"
+                                            className="remove-button"
+                                            onClick={() => handleRemoveFestividad(id)}
+                                        >
+                                            X
+                                        </button>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                        <p className={formData.festividades.length >= 5 ? "text-error" : ""}>
+                            {formData.festividades.length} / 5 festividades seleccionadas
+                        </p>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="descripcion">Descripción:</label>
+                        <label htmlFor="descripcion">Descripción (máx. 250 caracteres):</label>
                         <textarea
                             id="descripcion"
                             name="descripcion"
@@ -354,10 +539,12 @@ const ActualizarDisfraz = () => {
                             maxLength={250}
                             required
                         />
-                        <p>{formData.descripcion.length} / 250 caracteres</p>
+                        <p className={formData.descripcion.length >= 250 ? "text-error" : ""}>
+                            {formData.descripcion.length} / 250 caracteres
+                            {formData.descripcion.length >= 250 && " (Límite alcanzado)"}
+                        </p>
                     </div>
 
-                    {/* Sección de imágenes (actualizada) */}
                     <div className="form-group">
                         <label>Imágenes (máximo 3):</label>
                         <div className="image-preview-container">
@@ -365,7 +552,7 @@ const ActualizarDisfraz = () => {
                                 <div key={idx} className="image-box">
                                     <img 
                                         src={img.preview || img.url} 
-                                        alt={`preview-${idx}`} 
+                                        alt={`Preview ${idx}`} 
                                         className="preview-img" 
                                     />
                                     <button
@@ -391,13 +578,19 @@ const ActualizarDisfraz = () => {
                                             aria-label="Añadir imagen"
                                         />
                                     </label>
-                                    <p className="add-image-text">Añadir otra imagen</p>
+                                    <p className="add-image-text">Añadir imagen</p>
                                 </div>
                             )}
                         </div>
                     </div>
 
-                    <button type="submit" className="form-button">Guardar Cambios</button>
+                    <button 
+                        type="submit" 
+                        className="form-button"
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? "Actualizando..." : "Guardar Cambios"}
+                    </button>
                 </form>
             )}
         </div>
