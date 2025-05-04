@@ -79,7 +79,7 @@
 }
 
 .search-btn {
-    background-color: #3b7abd;
+    background-color: #00008b94;
     color: white;
     border: none;
     padding: 6px 10px; /* Ajustamos el tamaño del botón */
@@ -187,6 +187,16 @@
     transition: background 0.3s ease-in-out;
 }
 
+.tag-button{
+    border-radius: 15px;
+    background-color: #00008b94;
+    color: white;
+}
+
+.tag-button:hover{
+    background: #0056b3;
+}
+
 .tag.active {
     background: #0267ff;
 }
@@ -208,16 +218,18 @@
     padding: 0;
     text-align: center;
     margin-top: 10px;
+    border-radius: 15px;
 }
 
 .sucursales-list li {
-    background: #4c7aaf;
+    background: #00008b94;
     color: white;
     padding: 8px;
     border-radius: 5px;
     margin: 5px 0;
     cursor: pointer;
     transition: background 0.3s ease-in-out;
+    border-radius: 20px;
 }
 
 .sucursales-list li:hover {
@@ -244,6 +256,7 @@
     justify-content: center;
     width: 100%;
 }
+
 
 .admin-dropdown {
     background: rgb(255, 255, 255);

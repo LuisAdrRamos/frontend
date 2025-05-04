@@ -94,6 +94,17 @@
     margin-left: 40px;
     margin-bottom: 40px;
 }
+
+.titlebusc{
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.listadmin{
+    margin-left: 90px;
+    align-items: center;
+    font: size 15px;;
+}
 /* Etiquetas de los inputs */
 .form-group label {
     display: block;
@@ -109,12 +120,30 @@
     color: #333;
 }
 
+/*Botones*/
+.edit-button{
+    background-color: rgba(0, 255, 115, 0.425);
+    border-radius: 25px;
+    margin: 15px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.delete-button{
+    background-color: rgba(255, 0, 0, 0.377);
+    border-radius: 25px;
+    margin: 15px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
 /* Inputs del formulario */
 .form-input {
     width: 100%;
     padding: 10px;
     border: 2px solid #ccc;
     border-radius: 15px;
+    margin-top: 15px;
 }
 
 .form-input1{
@@ -199,11 +228,36 @@
     font-size: 1.2em; 
 }
 
+.admin-item{
+    list-style-type: none; 
+    margin-top: 20px;
+    margin-left: 10px;
+    padding: 0;
+    position: relative;
+    padding-left: 1.8em; 
+    margin-bottom: 10px;
+    
+}
+
+.admin-item::before {
+    content: "👔"; 
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 1.2em; 
+}
+
 
 /* Estilos responsivos */
 @media (max-width: 768px) {
     .form-content {
         padding: 8px;
+    }
+    .listadmin{
+        margin-left: 15px;
+        align-items: center;
+        font-size: 18px;
+        font-weight: bold;
     }
 
     .form-button {
@@ -229,7 +283,7 @@
     }
 
     .admin-item{
-        margin-left: -47px;
+        margin-left: -17px;
     }
 
     .form-content1{
@@ -237,6 +291,13 @@
         margin-bottom: 30px;
     }
 
+    .edit-button{
+        margin: -40px;
+    }
+
+    .delete-button{
+        margin-left: 60px;
+    }
     .form-button_eliminar1{
         background-color: #81142d;
         color: white;

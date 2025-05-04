@@ -151,11 +151,11 @@ const ActualizarAdministradores = () => {
 
     return (
         <div className="form-container">
-            <h2>Lista de Administradores</h2>
+            <h2 className="listadmin">Lista de Administradores</h2>
 
             {/* Buscador por correo */}
             <div className="form-content">
-                <label htmlFor="email">Buscar por Correo Electrónico:</label>
+                <label className="titlebusc" htmlFor="email">Buscar por Correo Electrónico:</label>
                 <input
                     type="email"
                     id="email"
