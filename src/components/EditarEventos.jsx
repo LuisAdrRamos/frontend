@@ -185,13 +185,13 @@ const EditarEventos = () => {
                                 {evento.nombre} - {evento.mes}/{evento.dia}
                                 <button
                                     onClick={() => handleEdit(evento.id)}
-                                    className="edit-button"
+                                    className="edit-button1"
                                 >
                                     Actualizar
                                 </button>
                                 <button
                                     onClick={() => handleDelete(evento.id)}
-                                    className="delete-button"
+                                    className="delete-button1"
                                 >
                                     Eliminar
                                 </button>
@@ -267,7 +267,7 @@ const EditarEventos = () => {
                             />
                         </div>
 
-                        <button type="submit" className="form-button">Guardar Cambios</button>
+                        <button type="submit" className="form-buttonev">Guardar Cambios</button>
                         <button
                             type="button"
                             onClick={() => setIsEditing(false)}

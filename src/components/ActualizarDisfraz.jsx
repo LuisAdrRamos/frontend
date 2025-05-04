@@ -390,7 +390,7 @@ const ActualizarDisfraz = () => {
 
     return (
         <div className="form-container">
-            <h2>Lista de Disfraces</h2>
+            <h2 className="titlelistDis">Lista de Disfraces</h2>
 
             {/* Buscador */}
             <div className="form-content">

@@ -137,6 +137,22 @@
     font-weight: bold;
 }
 
+.edit-button1{
+    background-color: rgba(0, 255, 115, 0.425);
+    border-radius: 25px;
+    margin: 15px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.delete-button1{
+    background-color: rgba(255, 0, 0, 0.377);
+    border-radius: 25px;
+    margin: 15px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
 /* Inputs del formulario */
 .form-input {
     width: 100%;
@@ -172,12 +188,26 @@
     color: white;
     padding: 10px 20px;
     border: 0.3px solid #010101;
-    border-radius: 15px;
+    border-radius: 20px;
     cursor: pointer;
     margin-top: 20px;
     width: 50%;
     box-sizing: border-box;
 }
+
+.form-buttonev,.cancel-button{
+    background-color: #1f2937;
+    color: white;
+    padding: 10px 20px;
+    border: 0.3px solid #010101;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-left: 10px;
+    width: 50%;
+    box-sizing: border-box;
+}
+
 
 .form-button_eliminar{
     background-color: #81142d;
@@ -247,6 +277,25 @@
     font-size: 1.2em; 
 }
 
+.event-item{
+    list-style-type: none; 
+    margin-top: 20px;
+    margin-left: 10px;
+    padding: 0;
+    position: relative;
+    padding-left: 1.8em; 
+    margin-bottom: 20px;
+}
+
+.event-item::before {
+    margin-top: 25px;
+    content: ""; 
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 1.2em; 
+}
+
 
 /* Estilos responsivos */
 @media (max-width: 768px) {
@@ -259,7 +308,24 @@
         font-size: 18px;
         font-weight: bold;
     }
-
+    .event-item{
+        list-style-type: none; 
+        margin-top: 20px;
+        margin-left: -25px;
+        padding: 0;
+        position: relative;
+        padding-left: 1.8em; 
+        margin-bottom: 20px;
+    }
+    
+    .event-item::before {
+        margin-top: 3px;
+        content: "🎭"; 
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.2em; 
+    }
     .form-button {
         padding: 10px;
     }
@@ -298,6 +364,16 @@
     .delete-button{
         margin-left: 60px;
     }
+
+    .edit-button1{
+        margin: 20px;
+        margin-left: -55px;
+    }
+    
+    .delete-button1{
+        margin-left: -10px;
+    }
+
     .form-button_eliminar1{
         background-color: #81142d;
         color: white;
