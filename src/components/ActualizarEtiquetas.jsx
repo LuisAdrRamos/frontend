@@ -149,13 +149,13 @@ const ActualizarEtiquetas = () => {
                         <strong>Descripción:</strong> {etiqueta.descripcion} <br />
                         <button
                             onClick={() => handleSelect(etiqueta.id)}
-                            className="edit-button"
+                            className="edit-button3"
                         >
                             Editar
                         </button>
                         <button
                             onClick={() => handleDelete(etiqueta.id)}
-                            className="delete-button"
+                            className="delete-button3"
                         >
                             Eliminar
                         </button>

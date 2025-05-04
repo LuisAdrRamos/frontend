@@ -175,6 +175,22 @@
     font-weight: bold;
 }
 
+.edit-button3{
+    background-color: rgba(0, 255, 115, 0.425);
+    border-radius: 25px;
+    margin: 15px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.delete-button3{
+    background-color: rgba(255, 0, 0, 0.377);
+    border-radius: 25px;
+    margin: 15px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
 /* Inputs del formulario */
 .form-input {
     width: 100%;
@@ -330,7 +346,26 @@
 
 .disfraz-item::before {
     margin-top: 25px;
-    content: ""; 
+    content: "🥼"; 
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 1.2em; 
+}
+
+.etiqueta-item{
+    list-style-type: none; 
+    margin-top: 20px;
+    margin-left: 10px;
+    padding: 0;
+    position: relative;
+    padding-left: 1.8em; 
+    margin-bottom: 20px;
+}
+
+.etiqueta-item::before {
+    margin-top: 5px;
+    content: "🥼"; 
     position: absolute;
     left: 0;
     top: 0;
@@ -387,6 +422,25 @@
     
     .disfraz-item::before {
         margin-top: 25px;
+        content: ""; 
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.2em; 
+    }
+
+    .etiqueta-item{
+        list-style-type: none; 
+        margin-top: 20px;
+        margin-left: -60px;
+        padding: 0;
+        position: relative;
+        padding-left: 1.8em; 
+        margin-bottom: 20px;
+    }
+    
+    .etiqueta-item::before {
+        margin-top: 5px;
         content: ""; 
         position: absolute;
         left: 0;
