@@ -66,6 +66,12 @@
     margin-left: 130px;
 }
 
+.titlelistDis{
+    font-weight: bold;
+    font-size: 40px;
+    margin-bottom: 30px;
+    margin-left: 95px;
+}
 
 /* Grupo de formulario */
 .form-group {
@@ -146,6 +152,22 @@
 }
 
 .delete-button1{
+    background-color: rgba(255, 0, 0, 0.377);
+    border-radius: 25px;
+    margin: 15px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.edit-button2{
+    background-color: rgba(0, 255, 115, 0.425);
+    border-radius: 25px;
+    margin: 15px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.delete-button2{
     background-color: rgba(255, 0, 0, 0.377);
     border-radius: 25px;
     margin: 15px;
@@ -296,6 +318,24 @@
     font-size: 1.2em; 
 }
 
+.disfraz-item{
+    list-style-type: none; 
+    margin-top: 20px;
+    margin-left: 10px;
+    padding: 0;
+    position: relative;
+    padding-left: 1.8em; 
+    margin-bottom: 20px;
+}
+
+.disfraz-item::before {
+    margin-top: 25px;
+    content: ""; 
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 1.2em; 
+}
 
 /* Estilos responsivos */
 @media (max-width: 768px) {
@@ -307,6 +347,14 @@
         align-items: center;
         font-size: 18px;
         font-weight: bold;
+    }
+
+    .titlelistDis{
+        margin-left: 130px;
+        font-weight: bold;
+        font-size: 25px;
+        margin-bottom: 10px;
+        margin-left: 3px;
     }
     .event-item{
         list-style-type: none; 
@@ -321,6 +369,25 @@
     .event-item::before {
         margin-top: 3px;
         content: "🎭"; 
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.2em; 
+    }
+
+    .disfraz-item{
+        list-style-type: none; 
+        margin-top: 20px;
+        margin-left: -25px;
+        padding: 0;
+        position: relative;
+        padding-left: 1.8em; 
+        margin-bottom: 20px;
+    }
+    
+    .disfraz-item::before {
+        margin-top: 25px;
+        content: ""; 
         position: absolute;
         left: 0;
         top: 0;
@@ -371,6 +438,15 @@
     }
     
     .delete-button1{
+        margin-left: -10px;
+    }
+
+    .edit-button2{
+        margin: 20px;
+        margin-left: -35px;
+    }
+    
+    .delete-button2{
         margin-left: -10px;
     }
 

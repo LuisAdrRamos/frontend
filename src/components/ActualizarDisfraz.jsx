@@ -418,13 +418,13 @@ const ActualizarDisfraz = () => {
                         <div className="disfraz-actions">
                             <button
                                 onClick={() => fetchDetalleDisfraz(disfraz.id)}
-                                className="edit-button"
+                                className="edit-button2"
                             >
                                 Editar
                             </button>
                             <button
                                 onClick={() => handleDelete(disfraz.id)}
-                                className="delete-button"
+                                className="delete-button2"
                             >
                                 Eliminar
                             </button>
