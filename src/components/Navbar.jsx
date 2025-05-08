@@ -71,7 +71,7 @@ const Navbar = ({ toggleSidebar }) => {
 
             {/* Meses con hover para festividades */}
             <ul className="navbar-meses">
-                {["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"].map((mes, index) => (
+                {["| Enero |", "| Febrero |", "| Marzo |", "| Abril |", "| Mayo |", "| Junio |", "| Julio |", "| Agosto| ", "| Septiembre| ", "| Octubre |", "| Noviembre |", "| Diciembre |"].map((mes, index) => (
                     <li
                         className="nav-item"
                         key={index}
