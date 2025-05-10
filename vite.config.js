@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  base: './', // Si tu sitio está en un subdirectorio, ajusta la ruta
+  base: './', // Si el sitio esta en un subdirectorio, ajusta la ruta
   plugins: [react()],
   build: {
     rollupOptions: {
