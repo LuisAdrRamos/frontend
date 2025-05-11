@@ -193,7 +193,7 @@ const EditarEventos = () => {
                                     onClick={() => handleDelete(evento.id)}
                                     className="delete-button1"
                                 >
-                                    Eliminar.
+                                    Eliminar
                                 </button>
                             </li>
                         ))}
