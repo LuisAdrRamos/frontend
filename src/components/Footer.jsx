@@ -13,8 +13,8 @@ const Footer = () => {
             <ul className="footer-links">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">News</a></li>
-                <li><a href="https://wa.me/593939232766"><FaWhatsapp/>Whatsapp</a></li>
-                <li><a href="webmegadisfraz513@gmail.com">Gmail</a></li>
+                <li><a href="https://wa.me/593939232766"><FaWhatsapp/>Whatsapp.</a></li>
+                <li><a href="webmegadisfraz513@gmail.com">Gmail.</a></li>
             </ul>
             <p className="footer-text">© 2025 Megadisfraz</p>
         </footer>
