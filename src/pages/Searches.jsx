@@ -21,115 +21,105 @@ const Searches = () => {
         "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
     ];
-    const mesActual = meses[new Date().getMonth()];
 
+    // Función para limpiar el parámetro de mes (eliminar | y espacios)
+    const cleanMonthParam = (monthParam) => {
+        if (!monthParam) return "";
+        return monthParam.replace(/\|/g, "").trim();
+    };
+
+    // Obtener los parámetros de la URL
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
+        const rawMonth = queryParams.get("month") || "";
+
         setSearchQuery(queryParams.get("query") || "");
-        setMonth(queryParams.get("month") || "");
+        setMonth(cleanMonthParam(rawMonth)); // Limpiamos el parámetro month
         setEtiqueta(queryParams.get("etiqueta") || "");
         setEvent(queryParams.get("event") || "");
 
-        console.log("🔎 Parámetros de búsqueda:", {
+        console.log("🔍 Parámetros de búsqueda (limpios):", {
             query: queryParams.get("query"),
-            month: queryParams.get("month"),
+            month: cleanMonthParam(rawMonth),
             etiqueta: queryParams.get("etiqueta"),
             event: queryParams.get("event"),
         });
     }, [location]);
 
-    // Función para ordenar disfraces por proximidad de mes
+    // ✅ Filtros combinados: Se aplican TODOS los seleccionados
+    const disfracesFiltrados = disfraces.filter(disfraz => {
+        // Normalizamos las comparaciones
+        const normalizedMonth = month.toLowerCase();
+        const normalizedEtiqueta = etiqueta.toLowerCase();
+        const normalizedEvent = event.toLowerCase();
+        const normalizedSearch = searchQuery.toLowerCase();
+
+        return (
+            // Filtro por búsqueda
+            (!searchQuery ||
+                disfraz.nombre.toLowerCase().includes(normalizedSearch) ||
+                (disfraz.descripcion && disfraz.descripcion.toLowerCase().includes(normalizedSearch))) &&
+
+            // Filtro por mes (comparación insensible a mayúsculas/minúsculas)
+            (!month ||
+                (disfraz.festividades &&
+                    disfraz.festividades.some(f =>
+                        f && f.mes && f.mes.toLowerCase() === normalizedMonth))) &&
+
+            // Filtro por etiqueta
+            (!etiqueta ||
+                (disfraz.etiquetas &&
+                    disfraz.etiquetas.some(e =>
+                        e && e.nombre && e.nombre.toLowerCase() === normalizedEtiqueta))) &&
+
+            // Filtro por evento
+            (!event ||
+                (disfraz.festividades &&
+                    disfraz.festividades.some(f =>
+                        f && f.nombre && f.nombre.toLowerCase().includes(normalizedEvent)))
+            )
+        );
+    });
+
+    // Función para ordenar por mes más cercano (similar a home.jsx)
     const ordenarPorMesMasReciente = (disfraces) => {
-        const mesesOrden = [...meses];
-        const mesActualIndex = mesesOrden.indexOf(mesActual);
-        
+        if (!disfraces || disfraces.length === 0) return [];
+
+        const mesActual = meses[new Date().getMonth()];
+        const mesActualIndex = meses.indexOf(mesActual);
+
         // Reordenar meses para que el actual sea primero
         const mesesReordenados = [
-            ...mesesOrden.slice(mesActualIndex),
-            ...mesesOrden.slice(0, mesActualIndex)
-        ];
+            ...meses.slice(mesActualIndex),
+            ...meses.slice(0, mesActualIndex)
+        ].reverse();
 
         return [...disfraces].sort((a, b) => {
-            // Si no hay festividades, van al final
-            if (!a.festividades || a.festividades.length === 0) return 1;
-            if (!b.festividades || b.festividades.length === 0) return -1;
-            
-            // Obtener el índice del mes más cercano para cada disfraz
-            const getMesMasCercano = (disfraz) => {
-                let minIndex = Infinity;
+            if (!a.festividades || !b.festividades) return 0;
+
+            // Obtener el mes más reciente de cada disfraz
+            const getMesMasReciente = (disfraz) => {
+                let maxMesIndex = -1;
                 disfraz.festividades.forEach(festividad => {
+                    if (!festividad || !festividad.mes) return;
                     const index = mesesReordenados.indexOf(festividad.mes);
-                    if (index !== -1 && index < minIndex) minIndex = index;
+                    if (index > maxMesIndex) maxMesIndex = index;
                 });
-                return minIndex;
+                return maxMesIndex;
             };
 
-            const indexA = getMesMasCercano(a);
-            const indexB = getMesMasCercano(b);
-            
-            return indexA - indexB;
+            return getMesMasReciente(b) - getMesMasReciente(a);
         });
     };
 
-    // ✅ Filtros combinados: Se aplican TODOS los seleccionados
-    const disfracesFiltrados = disfraces.filter(disfraz => {
-        const cumpleBusqueda = !searchQuery || 
-            disfraz.nombre.toLowerCase().includes(searchQuery.toLowerCase()) || 
-            disfraz.descripcion.toLowerCase().includes(searchQuery.toLowerCase());
-        
-        const cumpleMes = !month || 
-            (disfraz.festividades && 
-             disfraz.festividades.some(f => f.mes === month));
-        
-        const cumpleEtiqueta = !etiqueta || 
-            (disfraz.etiquetas && 
-             disfraz.etiquetas.some(e => e.nombre === etiqueta));
-        
-        const cumpleEvento = !event || 
-            (disfraz.festividades && 
-             disfraz.festividades.some(f => 
-                 f.nombre.toLowerCase().includes(event.toLowerCase())));
-
-        return cumpleBusqueda && cumpleMes && cumpleEtiqueta && cumpleEvento;
-    });
-
-    // Ordenar los disfraces filtrados
     const disfracesOrdenados = ordenarPorMesMasReciente(disfracesFiltrados);
-
-    // ✅ Navegar sin eliminar los filtros anteriores
-    const handleEtiquetaClick = (etiqueta) => {
-        const queryParams = new URLSearchParams(location.search);
-        queryParams.set("etiqueta", etiqueta);
-        navigate(`/searches?${queryParams.toString()}`);
-    };
 
     const handleProductClick = (disfraz) => {
         navigate(`/productos/${disfraz.id}`);
     };
 
-    // Función para obtener las festividades únicas de un disfraz
-    const getFestividadesUnicas = (festividades) => {
-        if (!festividades || festividades.length === 0) return [];
-        
-        // Agrupar por mes y nombre para evitar duplicados
-        const unicas = [];
-        const vistas = new Set();
-        
-        festividades.forEach(f => {
-            const clave = `${f.mes}-${f.nombre}`;
-            if (!vistas.has(clave)) {
-                vistas.add(clave);
-                unicas.push(f);
-            }
-        });
-        
-        return unicas;
-    };
-
     return (
         <div className="searches-container">
-            <h2 className="titulo">Resultados de la búsqueda</h2>
-
             <section className="filtered-disfraces">
                 <h2 className="filtered-title">
                     {searchQuery && `Resultados para "${searchQuery}"`}
@@ -140,27 +130,28 @@ const Searches = () => {
 
                 <div className="filtered-container">
                     {disfracesOrdenados.length > 0 ? (
-                        disfracesOrdenados.map((disfraz) => {
-                            const festividadesUnicas = getFestividadesUnicas(disfraz.festividades);
-                            
-                            return (
-                                <Card key={disfraz.id} className="filtered-card" onClick={() => handleProductClick(disfraz)}>
-                                    <img 
-                                        src={disfraz.imagenes?.[0] || '/placeholder-image.jpg'} 
-                                        alt={disfraz.nombre} 
-                                        className="filtered-image"
-                                        onError={(e) => {
-                                            e.target.src = '/placeholder-image.jpg';
-                                        }}
-                                    />
-                                    <CardContent>
-                                        <p>{disfraz.nombre}</p>
-                                    </CardContent>
-                                </Card>
-                            );
-                        })
+                        disfracesOrdenados.map((disfraz) => (
+                            <Card key={disfraz.id} className="filtered-card" onClick={() => handleProductClick(disfraz)}>
+                                <img
+                                    src={disfraz.imagenes?.[0] || '/placeholder-image.jpg'}
+                                    alt={disfraz.nombre}
+                                    className="filtered-image"
+                                    onError={(e) => {
+                                        e.target.src = '/placeholder-image.jpg';
+                                    }}
+                                />
+                                <CardContent>
+                                    <p>{disfraz.nombre}</p>
+                                    {disfraz.festividades?.length > 0 && (
+                                        <small>Festividades: {disfraz.festividades.map(f => f.mes).join(", ")}</small>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        ))
                     ) : (
-                        <p className="no-disfraces">No hay disfraces disponibles según el criterio seleccionado.</p>
+                        <p className="no-disfraces">
+                            No se encontraron disfraces con los filtros aplicados.
+                        </p>
                     )}
                 </div>
             </section>

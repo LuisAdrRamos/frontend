@@ -25,7 +25,7 @@ const CrearAdministradores = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:3000/api/admin/crear-moderador", {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/admin/crear-moderador`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
