@@ -27,6 +27,7 @@
 /* 📌 Carrusel */
 .carousel-section {
     width: 100%;
+    max-width: 1000px;
     height: auto; /* ✅ Permitir ajuste dinámico */
     background-color: white;
     border-radius: 15px;

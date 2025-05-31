@@ -81,10 +81,135 @@
 /* 📅 Lista de Meses */
 .navbar-meses {
     display: flex;
-    gap: 20px;
+    gap: 5px;
     list-style: none;
     padding: 0;
     margin: 0;
+}
+
+/* Estilos para el dropdown de eventos (añadir esto al CSS existente) */
+.event-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    min-width: 280px;
+    z-index: 1100;
+    animation: fadeInDropdown 0.25s ease-out;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Header del dropdown */
+.event-dropdown-header {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.event-dropdown-header h4 {
+    margin: 0;
+    color: #00008b;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Lista de eventos */
+.event-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.event-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    margin: 4px 0;
+}
+
+.event-item:hover {
+    background-color: #f8f9ff;
+    transform: translateX(3px);
+}
+
+/* Día del evento */
+.event-day {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: #00008b;
+    color: white;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: bold;
+    margin-right: 12px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Nombre del evento */
+.event-name {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    flex-grow: 1;
+}
+
+/* Pequeña descripción (opcional) */
+.event-desc {
+    font-size: 12px;
+    color: #666;
+    margin-top: 2px;
+}
+
+/* Animación */
+@keyframes fadeInDropdown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.month-link {
+    background: transparent;
+    border: none;
+    color: #333;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 6px 14px;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.month-link:hover {
+    background-color: rgba(0, 0, 0, 0.07); /* tono más elegante al pasar */
+    color: #00008b;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Efecto de hover en el mes */
+.nav-item:hover .month-link {
+    background-color: rgba(0, 0, 139, 0.08);
+    color: #00008b;
+    box-shadow: 0 2px 8px rgba(0, 0, 139, 0.1);
 }
 
 .navbar-auth {
@@ -94,7 +219,10 @@
 }
 
 .nav-item {
-    position: relative;
+    border-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.05); /* más sutil */
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(0, 0, 0, 0.15); /* borde más discreto */
 }
 
 /* 🔹 Estilos del menú de festividades */

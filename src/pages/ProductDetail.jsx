@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/ProductDetail.css";
 import DisfracesContext from "../context/ProductosProvider";
+import Mapa from "../components/mapa";
 
 const ProductDetail = () => {
     const { obtenerDetalleDisfraz } = useContext(DisfracesContext);
@@ -23,11 +24,11 @@ const ProductDetail = () => {
             "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
         ];
-        
+
         return [...festividades].sort((a, b) => {
             const mesA = mesesOrden.indexOf(a.mes);
             const mesB = mesesOrden.indexOf(b.mes);
-            
+
             if (mesA !== mesB) return mesA - mesB;
             return a.dia - b.dia;
         });
@@ -38,7 +39,7 @@ const ProductDetail = () => {
             try {
                 setLoading(true);
                 const disfraz = await obtenerDetalleDisfraz(id);
-                
+
                 if (disfraz) {
                     // Ordenar las festividades si existen
                     if (disfraz.festividades && disfraz.festividades.length > 0) {
@@ -120,9 +121,9 @@ const ProductDetail = () => {
             <div className="product-info">
                 <p><strong>Nombre:</strong> {product.nombre}</p>
                 <p><strong>Descripción:</strong> {product.descripcion || "No hay descripción disponible."}</p>
-                
+
                 {/* Mostrar múltiples festividades */}
-                <p><strong>Evento:</strong> 
+                <p><strong>Evento:</strong>
                     {product.festividades && product.festividades.length > 0 ? (
                         <ul className="festividades-list">
                             {product.festividades.map((festividad, index) => (
@@ -148,9 +149,43 @@ const ProductDetail = () => {
                 </ul>
             </div>
 
+            <div>
+                {/* <Mapa /> */}
+            </div>
+
             {/* Sección de Productos Similares */}
             <div className="product-related">
-                <h2>Productos Similares</h2>
+                <h2>Productos con misma etiqueta</h2>
+                <div className="productos-similares-container">
+                    <div className="productos-similares-lista">
+                        {similares.slice(0, 6).map((item, idx) => (
+                            <div
+                                key={idx}
+                                className="producto-similar"
+                                onClick={() => handleProductClick(item)}
+                            >
+                                <img src={item.imagenes[0]} alt={item.nombre} />
+                                <p>{item.nombre}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <h2>Productos del mismo eventos</h2>
+                <div className="productos-similares-container">
+                    <div className="productos-similares-lista">
+                        {similares.slice(0, 6).map((item, idx) => (
+                            <div
+                                key={idx}
+                                className="producto-similar"
+                                onClick={() => handleProductClick(item)}
+                            >
+                                <img src={item.imagenes[0]} alt={item.nombre} />
+                                <p>{item.nombre}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <h2>Productos del mismo mes</h2>
                 <div className="productos-similares-container">
                     <div className="productos-similares-lista">
                         {similares.slice(0, 6).map((item, idx) => (

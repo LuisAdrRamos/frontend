@@ -123,9 +123,9 @@ const Searches = () => {
             <section className="filtered-disfraces">
                 <h2 className="filtered-title">
                     {searchQuery && `Resultados para "${searchQuery}"`}
-                    {month && ` | Disfraces de ${month}`}
-                    {etiqueta && ` | Etiqueta: ${etiqueta}`}
-                    {event && ` | Evento: ${event}`}
+                    {month && ` Disfraces de ${month}`}
+                    {etiqueta && ` Etiqueta: ${etiqueta}`}
+                    {event && ` Evento: ${event}`}
                 </h2>
 
                 <div className="filtered-container">

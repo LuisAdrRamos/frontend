@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import DisfracesContext from "../context/ProductosProvider";
 import Card from "../components/Card";
 import CardContent from "../components/CardContent";
+import Mapa from "../components/mapa";
+
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "../styles/home.css";
 
@@ -163,6 +165,9 @@ export default function MainPage() {
                     )}
                 </div>
             </section>
+
+            {/* 🌎 Mapa Sucursales */}
+            <Mapa />
 
             {/* Todos los disfraces - Ordenados por mes más reciente */}
             <section className="all-disfraces">

@@ -1,3 +1,4 @@
+// navbar.jsx
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,7 +11,6 @@ const Navbar = ({ toggleSidebar }) => {
     const [tipoUsuario, setTipoUsuario] = useState(null);
     const [showAdminMenu, setShowAdminMenu] = useState(false);
 
-    // Estados para eventos por mes
     const [hoveredMonth, setHoveredMonth] = useState(null);
     const [eventosMes, setEventosMes] = useState([]);
 
@@ -33,7 +33,6 @@ const Navbar = ({ toggleSidebar }) => {
         window.location.reload();
     };
 
-    // Mostrar eventos al hacer hover sobre un mes
     const handleMonthHover = async (mes) => {
         setHoveredMonth(mes);
         try {
@@ -44,7 +43,6 @@ const Navbar = ({ toggleSidebar }) => {
         }
     };
 
-    // Ocultar eventos cuando el mouse se aleje
     const handleMonthLeave = () => {
         setHoveredMonth(null);
         setEventosMes([]);
@@ -58,6 +56,11 @@ const Navbar = ({ toggleSidebar }) => {
         navigate(`/searches?month=${mes}`);
     };
 
+    const meses = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+
     return (
         <nav className="navbar px-4">
             <button className="menu-btn" onClick={toggleSidebar}>
@@ -69,38 +72,45 @@ const Navbar = ({ toggleSidebar }) => {
                 <span className="navbar-title">Megadisfraz</span>
             </Link>
 
-            {/* Meses con hover para festividades */}
             <ul className="navbar-meses">
-                {["| Enero |", "| Febrero |", "| Marzo |", "| Abril |", "| Mayo |", "| Junio |", "| Julio |", "| Agosto| ", "| Septiembre| ", "| Octubre |", "| Noviembre |", "| Diciembre |"].map((mes, index) => (
+                {meses.map((mes) => (
                     <li
                         className="nav-item"
-                        key={index}
+                        key={mes}
                         onMouseEnter={() => handleMonthHover(mes)}
                         onMouseLeave={handleMonthLeave}
                     >
-                        <button className="nav-link" onClick={() => handleMonthClick(mes)}>
+                        <button className="month-link" onClick={() => handleMonthClick(mes)}>
                             {mes}
                         </button>
-
-                        {/* Mostrar festividades en un dropdown cuando se hace hover */}
                         {hoveredMonth === mes && eventosMes.length > 0 && (
-                            <ul className="event-dropdown">
-                                {eventosMes.map((evento) => (
-                                    <li 
-                                        key={evento.id} 
-                                        className="event-item"
-                                        onClick={() => navigate(`/searches?event=${encodeURIComponent(evento.nombre)}`)} // ✅ Redirigir con `event`
-                                    >
-                                        {evento.nombre} - {evento.dia}
-                                    </li>
-                                ))}
-                            </ul>
+                            <div className="event-dropdown">
+                                <div className="event-dropdown-header">
+                                    <h4>Eventos en {mes}</h4>
+                                </div>
+                                <ul className="event-list">
+                                    {eventosMes.map((evento) => (
+                                        <li
+                                            key={evento.id}
+                                            className="event-item"
+                                            onClick={() => navigate(`/searches?event=${encodeURIComponent(evento.nombre)}`)}
+                                        >
+                                            <span className="event-day">{evento.dia}</span>
+                                            <div>
+                                                <div className="event-name">{evento.nombre}</div>
+                                                {evento.descripcion && (
+                                                    <div className="event-desc">{evento.descripcion}</div>
+                                                )}
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         )}
                     </li>
                 ))}
             </ul>
 
-            {/* Autenticación */}
             <div className="navbar-auth">
                 {!autenticado ? (
                     <Link to="/login" className="icon-btn login-icon" title="Iniciar Sesión">
@@ -120,7 +130,6 @@ const Navbar = ({ toggleSidebar }) => {
                                 <button className="icon-btn admin-icon" onClick={toggleAdminMenu} title="Administrador">
                                     <FontAwesomeIcon icon={faCog} /> <FontAwesomeIcon icon={faChevronDown} />
                                 </button>
-
                                 {showAdminMenu && (
                                     <div className="admin-menu">
                                         {tipoUsuario === "admin" && (

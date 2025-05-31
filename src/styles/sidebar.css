@@ -1,19 +1,18 @@
 /* 🏗️ Sidebar - General */
 .sidebar {
-    width: 250px;
-    /* background: white; */
+    width: 350px;
     background-color: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(5px); 
     padding: 15px;
     padding-top: 0px;
     border-radius: 10px;
     position: fixed;
-    left: -250px; /* 🔴 Sidebar oculta inicialmente */
+    left: -350px;
     top: 0;
     height: 100vh; /* Ocupa toda la altura */
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.4s ease-in-out, opacity 0.3s ease-in-out;
-    z-index: 1001;
+    z-index: 9999;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -22,7 +21,7 @@
 
 /* 📌 Mostrar la sidebar cuando está activa */
 .sidebar.active {
-    transform: translateX(250px); /* ✅ Se despliega suavemente */
+    transform: translateX(350px); /* ✅ Se despliega suavemente */
     opacity: 1;
 }
 
@@ -66,16 +65,20 @@
 
 .search-container {
     display: flex;
+    align-items: center;
     gap: 5px;
-    margin: 5px;
+    margin: 5px 0;
+    width: 100%;
 }
 
 .search-input {
-    width: 120px; /* Reducimos el ancho del input */
-    padding: 4px; /* Disminuimos el padding */
+    flex: 1; /* 🔥 Esto hace que se adapte dinámicamente */
+    padding: 6px 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px; /* Ajustamos el tamaño de la fuente */
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #333;
+    color: white;
 }
 
 .search-btn {
@@ -91,10 +94,43 @@
     background-color: #0056b3;
 }
 
-/* Solo se muestran los íconos de autenticación en móviles */
 .sidebar-auth-icons {
     display: flex;
     gap: 10px;
+    align-items: center;  /* ✅ Alinea verticalmente los íconos */
+    justify-content: flex-start;  /* ✅ O usa center si prefieres centrarlos */
+    flex-wrap: wrap;  /* ✅ Por si hay más íconos y poco espacio */
+}
+
+.auth-icons-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.admin-icon {
+    font-size: 20px;
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-icon:hover {
+    color: #00008b;
+    transform: scale(1.1);
+}
+
+.admin-menu-container {
+    display: block;
+    width: auto;
+    min-width: 30px;
 }
 
 .icon-btn {
@@ -201,41 +237,6 @@
     background: #0267ff;
 }
 
-/* 📌 Mapa de Sucursales */
-.map-container {
-    text-align: center;
-    margin-top: 15px;
-}
-
-.map-icon {
-    font-size: 24px;
-    color: #4c7aaf;
-    margin-bottom: 5px;
-}
-
-.sucursales-list {
-    list-style: none;
-    padding: 0;
-    text-align: center;
-    margin-top: 10px;
-    border-radius: 15px;
-}
-
-.sucursales-list li {
-    background: #00008b94;
-    color: white;
-    padding: 8px;
-    border-radius: 5px;
-    margin: 5px 0;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-    border-radius: 20px;
-}
-
-.sucursales-list li:hover {
-    background: #2e67a8;
-}
-
 .admin-btn-container {
     text-align: center;
     position: relative;
@@ -281,8 +282,12 @@
     background-color: #fded3f70;
 }
 
+
 /* 📌 Ocultar sidebar en escritorio */
 @media (min-width: 769px) {
+    body.sidebar-open {
+        overflow: hidden;
+    }
     
     .sidebar {
         position: static;
@@ -298,6 +303,7 @@
     }
 
     .overlay {
+        z-index: 9998;
         display: none;
     }
 
