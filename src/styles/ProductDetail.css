@@ -5,6 +5,10 @@ html, body, #root {
     overflow-y: visible !important;
 }
 
+.titulo {
+    color: black
+}
+
 .product-detail-wrapper {
     width: 100%;
     display: flex;

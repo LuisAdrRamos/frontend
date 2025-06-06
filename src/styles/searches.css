@@ -35,6 +35,10 @@
     object-fit: scale-down;
 }
 
+.filtered-title {
+    color: black
+}
+
 .search-input, .search-btn {
     border-radius: 15px;
 }

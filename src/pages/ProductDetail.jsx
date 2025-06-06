@@ -147,7 +147,7 @@ const ProductDetail = () => {
 
             <div className="product-related">
                 {/* MISMA ETIQUETA */}
-                <h2>Disfraces con las mismas etiquetas</h2>
+                <h2 className="titulo">Disfraces con las mismas etiquetas</h2>
                 <div className="productos-similares-container">
                     <div className="productos-similares-lista">
                         {disfracesMismaEtiqueta.length > 0 ? (
@@ -164,7 +164,7 @@ const ProductDetail = () => {
                 </div>
 
                 {/* MISMO EVENTO */}
-                <h2>Disfraces de los mismo eventos</h2>
+                <h2 className="titulo">Disfraces de los mismo eventos</h2>
                 <div className="productos-similares-container">
                     <div className="productos-similares-lista">
                         {disfracesMismoEvento.length > 0 ? (
@@ -181,7 +181,7 @@ const ProductDetail = () => {
                 </div>
 
                 {/* MISMO MES */}
-                <h2>Disfraces del mismo mes</h2>
+                <h2 className="titulo">Disfraces del mismo mes</h2>
                 <div className="productos-similares2-container">
                     <div className="productos-similares-lista">
                         {disfracesMismoMes.length > 0 ? (

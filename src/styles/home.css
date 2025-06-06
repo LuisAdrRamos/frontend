@@ -289,6 +289,10 @@
     object-fit: scale-down;
 }
 
+.all-title {
+    color: black
+}
+
 .all-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
