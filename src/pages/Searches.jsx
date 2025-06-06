@@ -150,7 +150,7 @@ const Searches = () => {
                         ))
                     ) : (
                         <p className="no-disfraces">
-                            No se encontraron disfraces con los filtros aplicados.
+                            No se encontraron disfraces con los filtros aplicados
                         </p>
                     )}
                 </div>
