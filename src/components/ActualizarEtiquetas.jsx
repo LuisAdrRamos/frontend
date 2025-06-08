@@ -1,42 +1,36 @@
 import React, { useState, useEffect } from "react";
 
 const ActualizarEtiquetas = () => {
-    const [etiquetas, setEtiquetas] = useState([]); // Lista de etiquetas
-    const [filteredEtiquetas, setFilteredEtiquetas] = useState([]); // Lista filtrada por búsqueda
-    const [selectedId, setSelectedId] = useState(""); // ID de la etiqueta seleccionada
-    const [formData, setFormData] = useState({ nombre: "", descripcion: "" }); // Datos del formulario
-    const [nombreBusqueda, setNombreBusqueda] = useState(""); // Nombre para buscar
+    const [etiquetas, setEtiquetas] = useState([]);
+    const [filteredEtiquetas, setFilteredEtiquetas] = useState([]);
+    const [selectedId, setSelectedId] = useState("");
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState({ nombre: "", descripcion: "" });
+    const [nombreBusqueda, setNombreBusqueda] = useState("");
 
-    // Obtener la lista de etiquetas al montar el componente
     useEffect(() => {
         const fetchEtiquetas = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiqueta/listar`, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
                     }
                 });
 
-                if (!response.ok) {
-                    throw new Error("Error al obtener las etiquetas");
-                }
-
                 const data = await response.json();
-                setEtiquetas(data); // Guardar la lista de etiquetas
-                setFilteredEtiquetas(data); // Inicializar la lista filtrada
+                setEtiquetas(data);
+                setFilteredEtiquetas(data);
             } catch (error) {
-                console.error("Error al cargar las etiquetas:", error);
-                alert("Hubo un problema al cargar las etiquetas");
+                console.error("Error al cargar etiquetas:", error);
+                alert("Error al cargar etiquetas");
             }
         };
-
         fetchEtiquetas();
     }, []);
 
-    // Filtrar etiquetas en tiempo real según el nombre ingresado
     useEffect(() => {
         if (nombreBusqueda.trim() === "") {
-            setFilteredEtiquetas(etiquetas); // Mostrar todas si no hay búsqueda
+            setFilteredEtiquetas(etiquetas);
         } else {
             const filtered = etiquetas.filter((etiqueta) =>
                 etiqueta.nombre.toLowerCase().includes(nombreBusqueda.toLowerCase())
@@ -45,153 +39,98 @@ const ActualizarEtiquetas = () => {
         }
     }, [nombreBusqueda, etiquetas]);
 
-    // Manejar cambios en el formulario
+    const handleSelect = (id) => {
+        const etiqueta = etiquetas.find(et => et.id === id);
+        if (etiqueta) {
+            setSelectedId(id);
+            setFormData({ nombre: etiqueta.nombre, descripcion: etiqueta.descripcion });
+            setIsEditing(true);
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    // Seleccionar una etiqueta para actualizar
-    const handleSelect = (id) => {
-        setSelectedId(id);
-        const etiqueta = etiquetas.find((et) => et.id === parseInt(id));
-        if (etiqueta) {
-            setFormData({ nombre: etiqueta.nombre, descripcion: etiqueta.descripcion });
-        }
-    };
-
-    // Actualizar una etiqueta
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiqueta/actualizar/${selectedId}`, {
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiqueta/actualizar/${selectedId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
                 },
                 body: JSON.stringify(formData)
             });
 
-            if (!response.ok) throw new Error("Error al actualizar la etiqueta");
+            if (!res.ok) throw new Error();
 
             alert("✅ Etiqueta actualizada");
-            // Actualizar la lista de etiquetas después de la actualización
-            setEtiquetas((prev) =>
-                prev.map((etiqueta) =>
-                    etiqueta.id === selectedId ? { ...etiqueta, ...formData } : etiqueta
-                )
-            );
-            setFilteredEtiquetas((prev) =>
-                prev.map((etiqueta) =>
-                    etiqueta.id === selectedId ? { ...etiqueta, ...formData } : etiqueta
-                )
-            );
-            setSelectedId(""); // Limpiar la selección
+            setEtiquetas(etiquetas.map(e => e.id === selectedId ? { ...e, ...formData } : e));
+            setFilteredEtiquetas(filteredEtiquetas.map(e => e.id === selectedId ? { ...e, ...formData } : e));
+            setIsEditing(false);
+            setSelectedId("");
         } catch (error) {
-            console.error("❌ Error:", error);
-            alert("❌ Hubo un error al actualizar");
+            alert("❌ Error al actualizar etiqueta");
         }
     };
 
-    // Eliminar una etiqueta
     const handleDelete = async (id) => {
-        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar esta etiqueta?");
-        if (!confirmDelete) return;
-
+        if (!confirm("¿Eliminar esta etiqueta?")) return;
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiqueta/eliminar/${id}`, {
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/etiqueta/eliminar/${id}`, {
                 method: "DELETE",
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}` // Si es necesario
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
             });
 
-            if (!response.ok) {
-                throw new Error("Error al eliminar la etiqueta");
-            }
+            if (!res.ok) throw new Error();
 
-            alert("Etiqueta eliminada exitosamente");
-            // Actualizar la lista de etiquetas después de eliminar
-            const updatedEtiquetas = etiquetas.filter((etiqueta) => etiqueta.id !== id);
-            setEtiquetas(updatedEtiquetas);
-            setFilteredEtiquetas(updatedEtiquetas); // Actualizar la lista filtrada
-            setNombreBusqueda(""); // Limpiar el campo de búsqueda
-        } catch (error) {
-            console.error("Error al eliminar la etiqueta:", error);
-            alert("Hubo un problema al eliminar la etiqueta");
+            const updated = etiquetas.filter(et => et.id !== id);
+            setEtiquetas(updated);
+            setFilteredEtiquetas(updated);
+        } catch (err) {
+            alert("❌ Error al eliminar");
         }
     };
 
     return (
         <div className="form-container">
             <h2>Actualizar Etiquetas</h2>
-
-            {/* Buscador en tiempo real */}
-            <div className="form-content">
-                <label htmlFor="nombre">Buscar por Nombre:</label>
-                <input
-                    type="text"
-                    id="nombre"
-                    name="nombre"
-                    className="form-input"
-                    value={nombreBusqueda}
-                    onChange={(e) => setNombreBusqueda(e.target.value)}
-                    placeholder="Ingrese un nombre"
-                />
-            </div>
-
-            {/* Lista filtrada de etiquetas */}
-            <ul className="etiquetas-list">
-                {filteredEtiquetas.map((etiqueta) => (
-                    <li key={etiqueta.id} className="etiqueta-item">
-                        <strong>Nombre:</strong> {etiqueta.nombre} <br />
-                        <strong>Descripción:</strong> {etiqueta.descripcion} <br />
-                        <button
-                            onClick={() => handleSelect(etiqueta.id)}
-                            className="edit-button3"
-                        >
-                            Editar
-                        </button>
-                        <button
-                            onClick={() => handleDelete(etiqueta.id)}
-                            className="delete-button3"
-                        >
-                            Eliminar
-                        </button>
-                        <hr />
-                    </li>
-                ))}
-            </ul>
-
-            {/* Formulario de actualización */}
-            {selectedId && (
-                <form onSubmit={handleSubmit} className="form-content">
-                    <h2>Actualizar Etiqueta</h2>
-                    <div className="form-group">
-                        <label htmlFor="nombre">Nombre:</label>
+            {!isEditing ? (
+                <>
+                    <div className="form-content">
+                        <label>Buscar por Nombre:</label>
                         <input
                             type="text"
-                            id="nombre"
-                            name="nombre"
                             className="form-input"
-                            value={formData.nombre}
-                            onChange={handleChange}
-                            required
+                            value={nombreBusqueda}
+                            onChange={(e) => setNombreBusqueda(e.target.value)}
+                            placeholder="Ingrese un nombre"
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="descripcion">Descripción:</label>
-                        <textarea
-                            id="descripcion"
-                            name="descripcion"
-                            className="form-input"
-                            value={formData.descripcion}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="form-button">Actualizar</button>
+                    <ul className="etiquetas-list">
+                        {filteredEtiquetas.map(et => (
+                            <li key={et.id}>
+                                <strong>Nombre:</strong> {et.nombre} <br />
+                                <strong>Descripción:</strong> {et.descripcion}
+                                <br />
+                                <button onClick={() => handleSelect(et.id)} className="edit-button3">Editar</button>
+                                <button onClick={() => handleDelete(et.id)} className="delete-button3">Eliminar</button>
+                                <hr />
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            ) : (
+                <form onSubmit={handleSubmit} className="form-content">
+                    <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} className="form-input" required />
+                    <textarea name="descripcion" value={formData.descripcion} onChange={handleChange} className="form-input" required />
+                    <button type="submit" className="form-button">Guardar Cambios</button>
+                    <button type="button" className="cancel-button" onClick={() => { setIsEditing(false); setSelectedId(""); }}>Cancelar</button>
                 </form>
             )}
         </div>

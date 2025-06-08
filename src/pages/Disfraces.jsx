@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import CrearDisfraz from "../components/CrearDisfraz";
 import ActualizarDisfraz from "../components/ActualizarDisfraz";
-// import BuscarDisfraz from "../components/BuscarDisfraz";
-// import EliminarDisfraces from "../components/EliminarDisfraces";
 
 const Disfraces = () => {
     const [moduloActivo, setModuloActivo] = useState(null);

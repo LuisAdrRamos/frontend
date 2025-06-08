@@ -346,7 +346,7 @@
 
 .disfraz-item::before {
     margin-top: 25px;
-    content: "🥼"; 
+    content: ""; 
     position: absolute;
     left: 0;
     top: 0;

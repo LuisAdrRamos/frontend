@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import CrearEventos from "../components/CrearEventos";
 import EditarEventos from "../components/EditarEventos";
-// import BuscarEvento from "../components/BuscarEvento";
-// import EliminarEvento from "../components/EliminarEvento";
-import "../styles/Admin.css";
 
 const Eventos = () => {
     const [moduloActivo, setModuloActivo] = useState(null);
