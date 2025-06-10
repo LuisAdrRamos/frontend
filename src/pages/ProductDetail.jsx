@@ -7,6 +7,9 @@ import ImageWithFallback from "../components/ImageWithFallback";
 import { normalizeImages } from "../utils/imageUtils";
 import Mapa from "../components/mapa";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 const ProductDetail = () => {
     const { obtenerDetalleDisfraz, disfraces } = useContext(DisfracesContext);
     const { id } = useParams();
@@ -77,7 +80,10 @@ const ProductDetail = () => {
         <div className="product-detail-wrapper">
             <div className="parent-ProductDetail">
                 <div className="product-img">
-                    <div id="carouselExampleIndicators" className="carousel slide">
+                    <div id="carouselExampleIndicators"
+                        className="carousel slide w-100"
+                        data-bs-ride="carousel">
+                        {/* indicadores dinámicos */}
                         <div className="carousel-indicators">
                             {productImages.map((_, idx) => (
                                 <button
@@ -85,28 +91,30 @@ const ProductDetail = () => {
                                     type="button"
                                     data-bs-target="#carouselExampleIndicators"
                                     data-bs-slide-to={idx}
-                                    className={idx === 0 ? "active" : ""}
+                                    className={idx === 0 ? 'active' : ''}
+                                    aria-current={idx === 0 ? 'true' : undefined}
                                     aria-label={`Slide ${idx + 1}`}
                                 />
                             ))}
                         </div>
+
+                        {/* slides */}
                         <div className="carousel-inner">
                             {productImages.map((_, idx) => (
                                 <div
                                     key={idx}
-                                    className={`carousel-item ${idx === 0 ? "active" : ""}`}
-                                >
-                                    <div className="carousel-image-wrapper">
-                                        <ImageWithFallback
-                                            imagenes={product.imagenes}
-                                            index={idx}
-                                            alt={product.nombre}
-                                            className="d-block w-100"
-                                        />
-                                    </div>
+                                    className={`carousel-item ${idx === 0 ? 'active' : ''}`}>
+                                    <ImageWithFallback
+                                        imagenes={product.imagenes}
+                                        index={idx}
+                                        alt={product.nombre}
+                                        className="d-block w-100"
+                                    />
                                 </div>
                             ))}
                         </div>
+
+                        {/* controles prev/next sólo si hay >1 imagen */}
                         {productImages.length > 1 && (
                             <>
                                 <button
@@ -130,6 +138,7 @@ const ProductDetail = () => {
                             </>
                         )}
                     </div>
+
                 </div>
 
                 <div className="product-info">

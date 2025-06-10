@@ -14,7 +14,7 @@
     text-align: center;
     padding: 15px 0;
     background-color: #1a1a3dda;
-    color: white;
+    color: rgb(255, 255, 255);
     width: 100%;
 }
 
@@ -23,21 +23,19 @@
     margin: 10px 0;
     color: rgb(7, 7, 7);
 }
-
+ 
 /* 📌 Carrusel */
 .carousel-section {
     width: 100%;
     max-width: 1000px;
     height: auto; /* ✅ Permitir ajuste dinámico */
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.171);
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     position: relative;
     z-index: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center; /* ✅ Centrar contenido verticalmente */
+    display: block;
 }
 
 .carousel-image {
@@ -53,6 +51,13 @@
     background-color: #F8FFE5;
     padding: 10px 0;
     font-weight: bold;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 15%; /* 50% en X (centro) y 25% en Y (hacia arriba) */
 }
 
 /* 📌 Sección de nuevas llegadas */

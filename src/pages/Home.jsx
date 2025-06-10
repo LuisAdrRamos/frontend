@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import DisfracesContext from "../context/ProductosProvider";
@@ -7,7 +6,6 @@ import CardContent from "../components/CardContent";
 import ImageWithFallback from "../components/ImageWithFallback";
 import Mapa from "../components/mapa";
 
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "../styles/home.css";
 
 export default function MainPage() {
@@ -22,7 +20,7 @@ export default function MainPage() {
     const mesActual = meses[new Date().getMonth()];
 
     // Ordenar por mes más reciente
-    const ordenarPorMesMasReciente = (disfraces) => {
+    const ordenarPorMesMasReciente = (disfracesList) => {
         const mesesOrden = [...meses];
         const mesActualIndex = mesesOrden.indexOf(mesActual);
         const mesesReordenados = [
@@ -30,7 +28,7 @@ export default function MainPage() {
             ...mesesOrden.slice(0, mesActualIndex)
         ].reverse();
 
-        return [...disfraces].sort((a, b) => {
+        return [...disfracesList].sort((a, b) => {
             if (!a.festividades || !b.festividades) return 0;
             const getMesRec = (d) => {
                 let max = -1;
@@ -45,8 +43,8 @@ export default function MainPage() {
     };
 
     // Ordenar por día del mes actual
-    const ordenarPorDiaDelMes = (disfraces) => {
-        return [...disfraces].sort((a, b) => {
+    const ordenarPorDiaDelMes = (disfracesList) => {
+        return [...disfracesList].sort((a, b) => {
             if (!a.festividades || !b.festividades) return 0;
             const getDiaCercano = (d) => {
                 const festMes = d.festividades.filter(f => f.mes === mesActual);
@@ -57,7 +55,7 @@ export default function MainPage() {
         });
     };
 
-    // Filtrar disfraces del mes actual
+    // Filtrar disfraces del mes actual y ordenar por día
     const disfracesFiltrados = disfraces.length
         ? ordenarPorDiaDelMes(
             disfraces.filter(d =>
@@ -66,6 +64,7 @@ export default function MainPage() {
         )
         : [];
 
+    // Todos los disfraces ordenados por mes más reciente
     const disfracesOrdenados = ordenarPorMesMasReciente(disfraces);
 
     const handleProductClick = (disfraz) => {
@@ -74,15 +73,15 @@ export default function MainPage() {
 
     return (
         <div className="store-container">
-            {/* Carrusel */}
-            <section className="carousel-section" style={{ maxWidth: "80%", margin: "auto" }}>
-                <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
+            {/* Carrusel personalizado */}
+            <section className="carousel-section" style={{ maxWidth: "90%", margin: "auto" }}>
+                <div id="carouselExampleCaptions" className="carousel slide w-100 " data-bs-ride="carousel">
                     <div className="carousel-indicators">
                         {disfraces.map((_, i) => (
                             <button
                                 key={i}
                                 type="button"
-                                data-bs-target="#carouselExampleIndicators"
+                                data-bs-target="#carouselExampleCaptions"
                                 data-bs-slide-to={i}
                                 className={i === 0 ? "active" : ""}
                                 aria-current={i === 0 ? "true" : "false"}
@@ -96,17 +95,16 @@ export default function MainPage() {
                                 key={d.id}
                                 className={`carousel-item ${i === 0 ? "active" : ""}`}
                                 onClick={() => handleProductClick(d)}
+                                style={{ cursor: "pointer" }}
                             >
                                 <ImageWithFallback
                                     imagenes={d.imagenes}
                                     alt={d.nombre}
-                                    className="carousel-image"
-                                    style={{ height: "500px", width: "100%", objectFit: "scale-down" }}
+                                    className="d-block w-100"
+                                    style={{ height: "500px", objectFit: "cover" }}
                                 />
                                 <div className="carousel-caption d-none d-md-block">
-                                    <p className="carousel-text" style={{ color: "black" }}>
-                                        {d.nombre}
-                                    </p>
+                                    <h5>{d.nombre}</h5>
                                 </div>
                             </div>
                         ))}
@@ -114,7 +112,7 @@ export default function MainPage() {
                     <button
                         className="carousel-control-prev"
                         type="button"
-                        data-bs-target="#carouselExampleIndicators"
+                        data-bs-target="#carouselExampleCaptions"
                         data-bs-slide="prev"
                     >
                         <span className="carousel-control-prev-icon" aria-hidden="true" />
@@ -123,7 +121,7 @@ export default function MainPage() {
                     <button
                         className="carousel-control-next"
                         type="button"
-                        data-bs-target="#carouselExampleIndicators"
+                        data-bs-target="#carouselExampleCaptions"
                         data-bs-slide="next"
                     >
                         <span className="carousel-control-next-icon" aria-hidden="true" />
