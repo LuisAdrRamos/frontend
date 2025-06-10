@@ -1,8 +1,10 @@
+// src/pages/Home.jsx
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import DisfracesContext from "../context/ProductosProvider";
 import Card from "../components/Card";
 import CardContent from "../components/CardContent";
+import ImageWithFallback from "../components/ImageWithFallback";
 import Mapa from "../components/mapa";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -19,12 +21,10 @@ export default function MainPage() {
     ];
     const mesActual = meses[new Date().getMonth()];
 
-    // Función para ordenar disfraces por mes más reciente
+    // Ordenar por mes más reciente
     const ordenarPorMesMasReciente = (disfraces) => {
         const mesesOrden = [...meses];
         const mesActualIndex = mesesOrden.indexOf(mesActual);
-        
-        // Reordenar el array de meses para que el actual sea el primero
         const mesesReordenados = [
             ...mesesOrden.slice(mesActualIndex),
             ...mesesOrden.slice(0, mesActualIndex)
@@ -32,51 +32,40 @@ export default function MainPage() {
 
         return [...disfraces].sort((a, b) => {
             if (!a.festividades || !b.festividades) return 0;
-            
-            // Obtener el mes más reciente de cada disfraz
-            const getMesMasReciente = (disfraz) => {
-                let maxMesIndex = -1;
-                disfraz.festividades.forEach(festividad => {
-                    const index = mesesReordenados.indexOf(festividad.mes);
-                    if (index > maxMesIndex) maxMesIndex = index;
+            const getMesRec = (d) => {
+                let max = -1;
+                d.festividades.forEach(f => {
+                    const idx = mesesReordenados.indexOf(f.mes);
+                    if (idx > max) max = idx;
                 });
-                return maxMesIndex;
+                return max;
             };
-
-            return getMesMasReciente(b) - getMesMasReciente(a);
+            return getMesRec(b) - getMesRec(a);
         });
     };
 
-    // Función para ordenar disfraces por día del mes actual
+    // Ordenar por día del mes actual
     const ordenarPorDiaDelMes = (disfraces) => {
         return [...disfraces].sort((a, b) => {
             if (!a.festividades || !b.festividades) return 0;
-            
-            // Obtener el día más cercano para el mes actual
-            const getDiaMasCercano = (disfraz) => {
-                const festividadesMesActual = disfraz.festividades.filter(
-                    f => f.mes === mesActual
-                );
-                if (festividadesMesActual.length === 0) return Infinity;
-                return Math.min(...festividadesMesActual.map(f => f.dia));
+            const getDiaCercano = (d) => {
+                const festMes = d.festividades.filter(f => f.mes === mesActual);
+                if (!festMes.length) return Infinity;
+                return Math.min(...festMes.map(f => f.dia));
             };
-
-            return getDiaMasCercano(a) - getDiaMasCercano(b);
+            return getDiaCercano(a) - getDiaCercano(b);
         });
     };
 
-    // Filtrar y ordenar disfraces por el mes actual
-    const disfracesFiltrados = disfraces.length > 0 
+    // Filtrar disfraces del mes actual
+    const disfracesFiltrados = disfraces.length
         ? ordenarPorDiaDelMes(
-            disfraces.filter(disfraz => 
-                disfraz.festividades && disfraz.festividades.some(
-                    festividad => festividad.mes === mesActual
-                )
+            disfraces.filter(d =>
+                d.festividades?.some(f => f.mes === mesActual)
             )
-        ) 
+        )
         : [];
 
-    // Ordenar todos los disfraces por mes más reciente
     const disfracesOrdenados = ordenarPorMesMasReciente(disfraces);
 
     const handleProductClick = (disfraz) => {
@@ -85,119 +74,124 @@ export default function MainPage() {
 
     return (
         <div className="store-container">
-            {/* Carrusel de productos principales */}
+            {/* Carrusel */}
             <section className="carousel-section" style={{ maxWidth: "80%", margin: "auto" }}>
                 <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
                     <div className="carousel-indicators">
-                        {disfraces.map((_, index) => (
+                        {disfraces.map((_, i) => (
                             <button
-                                key={index}
+                                key={i}
                                 type="button"
                                 data-bs-target="#carouselExampleIndicators"
-                                data-bs-slide-to={index}
-                                className={index === 0 ? "active" : ""}
-                                aria-current={index === 0 ? "true" : "false"}
-                                aria-label={`Slide ${index + 1}`}
-                            ></button>
+                                data-bs-slide-to={i}
+                                className={i === 0 ? "active" : ""}
+                                aria-current={i === 0 ? "true" : "false"}
+                                aria-label={`Slide ${i + 1}`}
+                            />
                         ))}
                     </div>
                     <div className="carousel-inner">
-                        {disfraces.map((disfraz, index) => (
+                        {disfraces.map((d, i) => (
                             <div
-                                key={disfraz.id}
-                                className={`carousel-item ${index === 0 ? "active" : ""}`}
-                                onClick={() => handleProductClick(disfraz)}
+                                key={d.id}
+                                className={`carousel-item ${i === 0 ? "active" : ""}`}
+                                onClick={() => handleProductClick(d)}
                             >
-                                <img
-                                    src={disfraz.imagenes?.[0] || '/placeholder-image.jpg'}
-                                    alt={disfraz.nombre}
+                                <ImageWithFallback
+                                    imagenes={d.imagenes}
+                                    alt={d.nombre}
                                     className="carousel-image"
-                                    style={{
-                                        height: "500px",
-                                        width: "100%",
-                                        objectFit: "scale-down",
-                                    }}
-                                    onError={(e) => {
-                                        e.target.src = '/placeholder-image.jpg';
-                                    }}
+                                    style={{ height: "500px", width: "100%", objectFit: "scale-down" }}
                                 />
                                 <div className="carousel-caption d-none d-md-block">
                                     <p className="carousel-text" style={{ color: "black" }}>
-                                        {disfraz.nombre}
+                                        {d.nombre}
                                     </p>
                                 </div>
                             </div>
                         ))}
                     </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <button
+                        className="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev"
+                    >
+                        <span className="carousel-control-prev-icon" aria-hidden="true" />
                         <span className="visually-hidden">Previous</span>
                     </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                    <button
+                        className="carousel-control-next"
+                        type="button"
+                        data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next"
+                    >
+                        <span className="carousel-control-next-icon" aria-hidden="true" />
                         <span className="visually-hidden">Next</span>
                     </button>
                 </div>
             </section>
 
-            {/* Disfraces del mes - Ordenados por día */}
+            {/* Disfraces del mes */}
             <section className="new-arrivals">
                 <h2 className="titulo">Disfraces de {mesActual}</h2>
                 <div className="new-arrivals-container">
-                    {disfracesFiltrados.length > 0 ? (
-                        disfracesFiltrados.map((disfraz) => (
-                            <Card key={disfraz.id} className="new-arrival-card" onClick={() => handleProductClick(disfraz)}>
-                                <img 
-                                    src={disfraz.imagenes?.[0] || '/placeholder-image.jpg'} 
-                                    alt={disfraz.nombre} 
+                    {disfracesFiltrados.length ? (
+                        disfracesFiltrados.map(d => (
+                            <Card
+                                key={d.id}
+                                className="new-arrival-card"
+                                onClick={() => handleProductClick(d)}
+                            >
+                                <ImageWithFallback
+                                    imagenes={d.imagenes}
+                                    alt={d.nombre}
                                     className="arrival-image"
-                                    onError={(e) => {
-                                        e.target.src = '/placeholder-image.jpg';
-                                    }}
                                 />
                                 <CardContent>
-                                    <p>{disfraz.nombre}</p>
+                                    <p>{d.nombre}</p>
                                 </CardContent>
                             </Card>
                         ))
                     ) : (
-                        <p className="no-disfraces">No hay disfraces disponibles para {mesActual}.</p>
+                        <p className="no-disfraces">
+                            No hay disfraces disponibles para {mesActual}.
+                        </p>
                     )}
                 </div>
             </section>
 
-            {/* 🌎 Mapa Sucursales */}
+            {/* Mapa */}
             <Mapa />
 
-            {/* Todos los disfraces - Ordenados por mes más reciente */}
+            {/* Todos los disfraces */}
             <section className="all-disfraces">
                 <h2 className="all-title">Todos los Disfraces</h2>
                 <div className="all-container">
-                    {disfracesOrdenados.length > 0 ? (
-                        disfracesOrdenados.map((disfraz) => {
-                            // Encontrar la festividad más reciente para mostrar
-                            const festividadReciente = disfraz.festividades?.reduce((prev, current) => {
-                                const prevIndex = meses.indexOf(prev.mes);
-                                const currentIndex = meses.indexOf(current.mes);
-                                return currentIndex > prevIndex ? current : prev;
-                            }, {mes: "Enero", dia: 1});
-
+                    {disfracesOrdenados.length ? (
+                        disfracesOrdenados.map(d => {
+                            const festReciente = d.festividades?.reduce((prev, cur) => {
+                                const idxPrev = meses.indexOf(prev.mes);
+                                const idxCur = meses.indexOf(cur.mes);
+                                return idxCur > idxPrev ? cur : prev;
+                            }, { mes: "Enero", dia: 1 });
                             return (
-                                <Card key={disfraz.id} className="all-card" onClick={() => handleProductClick(disfraz)}>
-                                    <img 
-                                        src={disfraz.imagenes?.[0] || '/placeholder-image.jpg'} 
-                                        alt={disfraz.nombre} 
+                                <Card
+                                    key={d.id}
+                                    className="all-card"
+                                    onClick={() => handleProductClick(d)}
+                                >
+                                    <ImageWithFallback
+                                        imagenes={d.imagenes}
+                                        alt={d.nombre}
                                         className="all-image"
-                                        onError={(e) => {
-                                            e.target.src = '/placeholder-image.jpg';
-                                        }}
                                     />
                                     <CardContent>
-                                        <p>{disfraz.nombre}</p>
+                                        <p>{d.nombre}</p>
                                     </CardContent>
                                 </Card>
                             );
-                        }) 
+                        })
                     ) : (
                         <p className="no-disfraces">Cargando disfraces...</p>
                     )}
