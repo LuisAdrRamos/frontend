@@ -8,6 +8,7 @@ const ProductDetail = () => {
     const { obtenerDetalleDisfraz, disfraces } = useContext(DisfracesContext);
     const { id } = useParams();
     const navigate = useNavigate();
+
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -49,17 +50,17 @@ const ProductDetail = () => {
     if (error) return <div className="error-message">{error}</div>;
     if (!product) return <div className="producto-no-encontrado">Producto no encontrado</div>;
 
-    const productImages = product.imagenes || [];
+    // ← Aquí normalizamos siempre a array:
+    const productImages = [].concat(product.imagenes || []);
+
     const similares = disfraces.filter(item => item.id !== parseInt(id, 10));
     const handleProductClick = (item) => navigate(`/productos/${item.id}`);
 
-    // Nuevos filtros:
     const disfracesMismaEtiqueta = similares.filter(item =>
         item.etiquetas?.some(et =>
             product.etiquetas?.some(pet => pet.id === et.id)
         )
     );
-
     const disfracesMismoEvento = similares.filter(item =>
         item.festividades?.some(ev =>
             product.festividades?.some(pev =>
@@ -67,7 +68,6 @@ const ProductDetail = () => {
             )
         )
     );
-
     const disfracesMismoMes = similares.filter(item =>
         item.festividades?.some(ev =>
             product.festividades?.some(pev => ev.mes === pev.mes)
@@ -88,26 +88,49 @@ const ProductDetail = () => {
                                     data-bs-slide-to={index}
                                     className={index === 0 ? "active" : ""}
                                     aria-label={`Slide ${index + 1}`}
-                                ></button>
+                                />
                             ))}
                         </div>
                         <div className="carousel-inner">
                             {productImages.map((image, index) => (
-                                <div key={index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
+                                <div
+                                    key={index}
+                                    className={`carousel-item ${index === 0 ? "active" : ""}`}
+                                >
                                     <div className="carousel-image-wrapper">
-                                        <img src={image} className="d-block w-100" alt={product.nombre} />
+                                        <img
+                                            src={image}
+                                            className="d-block w-100"
+                                            alt={product.nombre}
+                                        />
                                     </div>
                                 </div>
                             ))}
                         </div>
                         {productImages.length > 1 && (
                             <>
-                                <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <button
+                                    className="carousel-control-prev"
+                                    type="button"
+                                    data-bs-target="#carouselExampleIndicators"
+                                    data-bs-slide="prev"
+                                >
+                                    <span
+                                        className="carousel-control-prev-icon"
+                                        aria-hidden="true"
+                                    />
                                     <span className="visually-hidden">Previous</span>
                                 </button>
-                                <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                                <button
+                                    className="carousel-control-next"
+                                    type="button"
+                                    data-bs-target="#carouselExampleIndicators"
+                                    data-bs-slide="next"
+                                >
+                                    <span
+                                        className="carousel-control-next-icon"
+                                        aria-hidden="true"
+                                    />
                                     <span className="visually-hidden">Next</span>
                                 </button>
                             </>
@@ -117,7 +140,10 @@ const ProductDetail = () => {
 
                 <div className="product-info">
                     <p><strong>Nombre:</strong> {product.nombre}</p>
-                    <p><strong>Descripción:</strong> {product.descripcion || "No hay descripción disponible."}</p>
+                    <p>
+                        <strong>Descripción:</strong>{" "}
+                        {product.descripcion || "No hay descripción disponible."}
+                    </p>
 
                     <p><strong>Evento:</strong></p>
                     {product.festividades?.length ? (
@@ -126,14 +152,14 @@ const ProductDetail = () => {
                                 <li key={f.id || i}>{formatFestividad(f)}</li>
                             ))}
                         </ul>
-                    ) : <p>Evento no disponible</p>}
+                    ) : (
+                        <p>Evento no disponible</p>
+                    )}
 
                     <p><strong>Etiquetas:</strong></p>
                     <ul className="product-prendas">
                         {product.etiquetas?.length ? (
-                            product.etiquetas.map((et) => (
-                                <li key={et.id}>{et.nombre}</li>
-                            ))
+                            product.etiquetas.map((et) => <li key={et.id}>{et.nombre}</li>)
                         ) : (
                             <li>No hay etiquetas disponibles.</li>
                         )}
@@ -146,13 +172,17 @@ const ProductDetail = () => {
             </div>
 
             <div className="product-related">
-                {/* MISMA ETIQUETA */}
+                {/* Same etiqueta */}
                 <h2 className="titulo">Disfraces con las mismas etiquetas</h2>
                 <div className="productos-similares-container">
                     <div className="productos-similares-lista">
                         {disfracesMismaEtiqueta.length > 0 ? (
                             disfracesMismaEtiqueta.slice(0, 6).map((item, idx) => (
-                                <div key={idx} className="producto-similar" onClick={() => handleProductClick(item)}>
+                                <div
+                                    key={idx}
+                                    className="producto-similar"
+                                    onClick={() => handleProductClick(item)}
+                                >
                                     <img src={item.imagenes[0]} alt={item.nombre} />
                                     <p>{item.nombre}</p>
                                 </div>
@@ -163,13 +193,17 @@ const ProductDetail = () => {
                     </div>
                 </div>
 
-                {/* MISMO EVENTO */}
-                <h2 className="titulo">Disfraces de los mismo eventos</h2>
+                {/* Mismo evento */}
+                <h2 className="titulo">Disfraces de los mismos eventos</h2>
                 <div className="productos-similares-container">
                     <div className="productos-similares-lista">
                         {disfracesMismoEvento.length > 0 ? (
                             disfracesMismoEvento.slice(0, 6).map((item, idx) => (
-                                <div key={idx} className="producto-similar" onClick={() => handleProductClick(item)}>
+                                <div
+                                    key={idx}
+                                    className="producto-similar"
+                                    onClick={() => handleProductClick(item)}
+                                >
                                     <img src={item.imagenes[0]} alt={item.nombre} />
                                     <p>{item.nombre}</p>
                                 </div>
@@ -180,13 +214,17 @@ const ProductDetail = () => {
                     </div>
                 </div>
 
-                {/* MISMO MES */}
+                {/* Mismo mes */}
                 <h2 className="titulo">Disfraces del mismo mes</h2>
                 <div className="productos-similares2-container">
                     <div className="productos-similares-lista">
                         {disfracesMismoMes.length > 0 ? (
                             disfracesMismoMes.slice(0, 6).map((item, idx) => (
-                                <div key={idx} className="producto-similar" onClick={() => handleProductClick(item)}>
+                                <div
+                                    key={idx}
+                                    className="producto-similar"
+                                    onClick={() => handleProductClick(item)}
+                                >
                                     <img src={item.imagenes[0]} alt={item.nombre} />
                                     <p>{item.nombre}</p>
                                 </div>
