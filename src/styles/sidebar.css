@@ -158,44 +158,6 @@
     color: #555;
 }
 
-/* 📌 Contacto y Redes Sociales */
-.sidebar-contact {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.contact-btn {
-    margin-top: 10px;
-    background: #4c7aaf;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 80%;
-    text-align: center;
-    font-weight: bold;
-}
-
-.social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.social-icon {
-    font-size: 24px;
-    color: #4c7aaf;
-    transition: transform 0.3s ease-in-out;
-}
-
-.social-icon:hover {
-    transform: scale(1.2);
-}
-
 /* 📌 Etiquetas */
 .sidebar-title {
     font-size: 18px;

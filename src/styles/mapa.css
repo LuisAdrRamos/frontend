@@ -1,6 +1,6 @@
 /* 📌 Mapa de Sucursales Estilo Nuevo */
 .mapa-wrapper {
-    padding: 20px;
+    padding: 5px;
     background-color: #fff9ec;
     border-radius: 15px;
     margin: 30px auto;
@@ -19,29 +19,39 @@
 .mapa-layout {
     display: flex;
     flex-direction: row;
-    gap: 20px;
-    align-items: center;
+    align-items: stretch; /* todos del mismo alto */
     justify-content: space-between;
-    flex-wrap: wrap;
+    gap: 20px;
+    flex-wrap: nowrap;
+    height: 300px;
 }
 
 /* Lista de sucursales */
 .sucursales-list {
-    list-style: none;
-    padding: 0;
-    width: 25%;
-    min-width: 180px;
+    max-width: 19%;
+    gap: 30px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .sucursales-list li {
     background: #00008b94;
     color: white;
-    padding: 10px;
+    padding: 30px 10px; /* más alto para homogeneidad */
+    min-height: 45px;   /* altura mínima para uniformidad */
+    width: 100%;        /* usar todo el ancho del contenedor padre */
     border-radius: 15px;
     margin: 8px 0;
     cursor: pointer;
     text-align: center;
     transition: background 0.3s ease-in-out;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-wrap: wrap;
 }
 
 .sucursales-list li:hover {
@@ -50,45 +60,119 @@
 
 /* Mapa */
 .map-container {
-    flex: 1;
-    min-width: 300px;
-    text-align: center;
+    width:auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.map-icon {
-    font-size: 24px;
-    color: #4c7aaf;
-    margin-bottom: 10px;
+.map-container iframe {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    pointer-events: auto; /* ✅ permite clics y scroll */
 }
 
 /* Imagen del local */
 .local-image {
-    width: 25%;
-    min-width: 180px;
-    text-align: center;
+    width: auto;
+    margin-left: -100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .local-image img {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
+    width: auto;
+    height: 100%;
+    object-fit:scale-down;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0 30px 0;
+}
+
+.social-icons a {
+    background-color: white;
+    /* width: 80px;
+    height: 80px; */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: #000;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.social-icons a:hover {
+    background-color: #027fb9;
+    color: white;
+    transform: scale(1.1);
+}
+
+.sucursales-list,
+.map-container,
+.local-image {
+    flex: 1;
+    min-width: 250px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+
+    .sucursales-list {
+    max-width: 100%;
+    margin-top: -30px;
+    margin-bottom: -30px;
+    gap: 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    }
+
     .mapa-layout {
         flex-direction: column;
-        align-items: stretch;
+        height: auto;
+        align-items: center;
     }
 
     .sucursales-list,
+    .map-container,
     .local-image {
         width: 100%;
+        height: auto;
     }
 
-    .map-container {
-        width: 100%;
+    .map-container iframe {
+        height: 250px;
+    }
+
+    .local-image {
+        display: flex;
+        justify-content: center; /* 🔹 centra horizontalmente */
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .local-image img {
+        align-items: center;
+        margin-left: 100px;
+        max-width: 100%;       /* 🔹 evita que se salga del borde */
+        height: auto;
+        object-fit: contain;
     }
 }

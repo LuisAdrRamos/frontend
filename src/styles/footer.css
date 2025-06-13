@@ -14,29 +14,6 @@ footer {
     box-sizing: border-box;
 }
 
-.social-icons {
-  margin-bottom: 15px;
-}
-
-.social-icons a {
-  display: inline-block;
-  margin: 0 10px;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  background-color: white;
-  border-radius: 50%;
-  text-align: center;
-  color: black;
-  font-size: 18px;
-  transition: 0.3s;
-}
-
-.social-icons a:hover {
-  background-color: #007bff;
-  color: black;
-}
-
 .footer-links {
   list-style: none;
   padding: 0;
