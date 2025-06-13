@@ -1,5 +1,5 @@
 // src/pages/ProductDetail.jsx
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/ProductDetail.css";
 import DisfracesContext from "../context/ProductosProvider";
@@ -18,6 +18,8 @@ const ProductDetail = () => {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const panZoomRefs = useRef([]);
 
     const formatFestividad = (f) => `${f.nombre} - ${f.dia} de ${f.mes}`;
     const ordenarFestividades = (list) => {
@@ -49,6 +51,7 @@ const ProductDetail = () => {
         };
         load();
     }, [id, obtenerDetalleDisfraz]);
+    
 
     if (loading) return <div className="loading-message">Cargando detalles del producto...</div>;
     if (error) return <div className="error-message">{error}</div>;
