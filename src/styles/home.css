@@ -1,6 +1,7 @@
 /* 📌 Estilos Generales */
 .store-container {
     min-height: 90vh;
+    margin-left: -50px;
     width: 100%;
     background-color: transparent;
     overflow: hidden;
@@ -23,7 +24,7 @@
     margin: 10px 0;
     color: rgb(7, 7, 7);
 }
- 
+
 /* 📌 Carrusel */
 .carousel-section {
     width: 100%;
@@ -341,6 +342,11 @@
 }
 
 @media (max-width: 768px) {
+
+    .store-container{
+        width: 100%;
+        margin-left: 0px;
+    }
 
     .carousel-image {
         height: 300px;

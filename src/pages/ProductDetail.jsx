@@ -19,8 +19,6 @@ const ProductDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const panZoomRefs = useRef([]);
-
     const formatFestividad = (f) => `${f.nombre} - ${f.dia} de ${f.mes}`;
     const ordenarFestividades = (list) => {
         const mesesOrd = [
@@ -28,65 +26,79 @@ const ProductDetail = () => {
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
         ];
         return [...list].sort((a, b) => {
-            const ma = mesesOrd.indexOf(a.mes);
-            const mb = mesesOrd.indexOf(b.mes);
+            const ma = mesesOrd.indexOf(a.mes),
+                mb = mesesOrd.indexOf(b.mes);
             return ma !== mb ? ma - mb : a.dia - b.dia;
         });
     };
 
     useEffect(() => {
-        const load = async () => {
+        (async () => {
             try {
                 setLoading(true);
                 const d = await obtenerDetalleDisfraz(id);
                 if (d?.festividades?.length) {
                     d.festividades = ordenarFestividades(d.festividades);
                 }
-                setProduct(d ?? null);
+                setProduct(d || null);
             } catch {
                 setError("Error al cargar los detalles del producto");
             } finally {
                 setLoading(false);
             }
-        };
-        load();
+        })();
     }, [id, obtenerDetalleDisfraz]);
-    
 
     if (loading) return <div className="loading-message">Cargando detalles del producto...</div>;
     if (error) return <div className="error-message">{error}</div>;
     if (!product) return <div className="producto-no-encontrado">Producto no encontrado</div>;
 
-    // Normalizamos always a array
+    // Normalizamos siempre a array
     const productImages = normalizeImages(product.imagenes);
 
-    const similares = disfraces.filter(i => i.id !== Number(id));
-    const handleProductClick = (i) => navigate(`/productos/${i.id}`);
+    // Excluye del array `base` todos los IDs que aparezcan en `exclude`
+    const excluirIds = (base, exclude) => {
+        const setEx = new Set(exclude.map(x => x.id));
+        return base.filter(item => !setEx.has(item.id));
+    };
 
-    const disfracesMismaEtiqueta = similares.filter(i =>
+    // 1) Todos los disfraces excepto el actual
+    const similares = disfraces.filter(i => i.id !== Number(id));
+
+    // 2) Categorías
+    const mismaEtiqueta = similares.filter(i =>
         i.etiquetas?.some(e => product.etiquetas?.some(pe => pe.id === e.id))
     );
-    const disfracesMismoEvento = similares.filter(i =>
+
+    const mismoEventoRaw = similares.filter(i =>
         i.festividades?.some(ev =>
             product.festividades?.some(pf =>
                 ev.nombre === pf.nombre && ev.dia === pf.dia && ev.mes === pf.mes
             )
         )
     );
-    const disfracesMismoMes = similares.filter(i =>
+    // excluimos los que ya están en 'mismaEtiqueta'
+    const mismoEvento = excluirIds(mismoEventoRaw, mismaEtiqueta);
+
+    const mismoMesRaw = similares.filter(i =>
         i.festividades?.some(ev =>
             product.festividades?.some(pf => ev.mes === pf.mes)
         )
     );
+    // excluimos los que ya están en 'mismaEtiqueta' o 'mismoEvento'
+    const mismoMes = excluirIds(
+        excluirIds(mismoMesRaw, mismaEtiqueta),
+        mismoEvento
+    );
+
+    const handleProductClick = (p) => navigate(`/productos/${p.id}`);
 
     return (
         <div className="product-detail-wrapper">
             <div className="parent-ProductDetail">
+                {/* --- Carousel --- */}
                 <div className="product-img">
-                    <div id="carouselExampleIndicators"
-                        className="carousel slide w-100"
-                        data-bs-ride="carousel">
-                        {/* indicadores dinámicos */}
+                    <div id="carouselExampleIndicators" className="carousel slide w-100" data-bs-ride="carousel">
                         <div className="carousel-indicators">
                             {productImages.map((_, idx) => (
                                 <button
@@ -100,13 +112,9 @@ const ProductDetail = () => {
                                 />
                             ))}
                         </div>
-
-                        {/* slides */}
                         <div className="carousel-inner">
                             {productImages.map((_, idx) => (
-                                <div
-                                    key={idx}
-                                    className={`carousel-item ${idx === 0 ? 'active' : ''}`}>
+                                <div key={idx} className={`carousel-item ${idx === 0 ? 'active' : ''}`}>
                                     <ImageWithFallback
                                         imagenes={product.imagenes}
                                         index={idx}
@@ -116,8 +124,6 @@ const ProductDetail = () => {
                                 </div>
                             ))}
                         </div>
-
-                        {/* controles prev/next sólo si hay >1 imagen */}
                         {productImages.length > 1 && (
                             <>
                                 <button
@@ -141,9 +147,9 @@ const ProductDetail = () => {
                             </>
                         )}
                     </div>
-
                 </div>
 
+                {/* --- Info del producto --- */}
                 <div className="product-info">
                     <p><strong>Nombre:</strong> {product.nombre}</p>
                     <p><strong>Descripción:</strong> {product.descripcion || "No hay descripción disponible."}</p>
@@ -170,69 +176,50 @@ const ProductDetail = () => {
                 </div>
             </div>
 
+            {/* --- Mapa --- */}
             <div className="product-mapa">
                 <Mapa />
             </div>
 
+            {/* --- Relacionados --- */}
             <div className="product-related">
-                {/* Misma etiqueta */}
                 <h2 className="titulo">Disfraces con las mismas etiquetas</h2>
                 <div className="productos-similares-container">
                     <div className="productos-similares-lista">
-                        {disfracesMismaEtiqueta.length ? (
-                            disfracesMismaEtiqueta.slice(0, 6).map((i, idx) => (
-                                <div key={idx} className="producto-similar" onClick={() => handleProductClick(i)}>
-                                    <ImageWithFallback
-                                        imagenes={i.imagenes}
-                                        alt={i.nombre}
-                                        className="d-block w-100"
-                                    />
-                                    <p>{i.nombre}</p>
-                                </div>
-                            ))
-                        ) : (
+                        {mismaEtiqueta.length ? mismaEtiqueta.slice(0, 6).map((i, idx) => (
+                            <div key={idx} className="producto-similar" onClick={() => handleProductClick(i)}>
+                                <ImageWithFallback imagenes={i.imagenes} alt={i.nombre} className="d-block w-100" />
+                                <p>{i.nombre}</p>
+                            </div>
+                        )) : (
                             <p>No existen disfraces que coincidan en etiquetas.</p>
                         )}
                     </div>
                 </div>
 
-                {/* Mismo evento */}
                 <h2 className="titulo">Disfraces de los mismos eventos</h2>
                 <div className="productos-similares-container">
                     <div className="productos-similares-lista">
-                        {disfracesMismoEvento.length ? (
-                            disfracesMismoEvento.slice(0, 6).map((i, idx) => (
-                                <div key={idx} className="producto-similar" onClick={() => handleProductClick(i)}>
-                                    <ImageWithFallback
-                                        imagenes={i.imagenes}
-                                        alt={i.nombre}
-                                        className="d-block w-100"
-                                    />
-                                    <p>{i.nombre}</p>
-                                </div>
-                            ))
-                        ) : (
+                        {mismoEvento.length ? mismoEvento.slice(0, 6).map((i, idx) => (
+                            <div key={idx} className="producto-similar" onClick={() => handleProductClick(i)}>
+                                <ImageWithFallback imagenes={i.imagenes} alt={i.nombre} className="d-block w-100" />
+                                <p>{i.nombre}</p>
+                            </div>
+                        )) : (
                             <p>No existen disfraces que coincidan en eventos.</p>
                         )}
                     </div>
                 </div>
 
-                {/* Mismo mes */}
                 <h2 className="titulo">Disfraces del mismo mes</h2>
                 <div className="productos-similares2-container">
                     <div className="productos-similares-lista">
-                        {disfracesMismoMes.length ? (
-                            disfracesMismoMes.slice(0, 6).map((i, idx) => (
-                                <div key={idx} className="producto-similar" onClick={() => handleProductClick(i)}>
-                                    <ImageWithFallback
-                                        imagenes={i.imagenes}
-                                        alt={i.nombre}
-                                        className="d-block w-100"
-                                    />
-                                    <p>{i.nombre}</p>
-                                </div>
-                            ))
-                        ) : (
+                        {mismoMes.length ? mismoMes.slice(0, 6).map((i, idx) => (
+                            <div key={idx} className="producto-similar" onClick={() => handleProductClick(i)}>
+                                <ImageWithFallback imagenes={i.imagenes} alt={i.nombre} className="d-block w-100" />
+                                <p>{i.nombre}</p>
+                            </div>
+                        )) : (
                             <p>No existen disfraces que coincidan en el mes.</p>
                         )}
                     </div>

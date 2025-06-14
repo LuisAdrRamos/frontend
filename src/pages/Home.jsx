@@ -6,6 +6,9 @@ import CardContent from "../components/CardContent";
 import ImageWithFallback from "../components/ImageWithFallback";
 import Mapa from "../components/mapa";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 import "../styles/home.css";
 
 export default function MainPage() {
