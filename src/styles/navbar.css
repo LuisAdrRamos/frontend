@@ -7,9 +7,9 @@
     border-radius: 10px;
     max-width: 1846px;
     height: 75px;
-    background: rgba(255, 255, 255, 0.4);
+    background: #35a9e2;
+    color: #ffffff;
     backdrop-filter: blur(5px); 
-    color: black;
     position: relative;
     z-index: 5000;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
@@ -17,12 +17,12 @@
 
 /* 📌 Botón de menú */
 .menu-btn {
-    color: #333;
+    color: #ffffff;
     background: none;
     border: none;
     font-size: 24px;
     cursor: pointer;
-    display: none; /* 🔴 Oculto por defecto */
+    display: none;
     position: absolute;
     left: -10px;
     top: -5px;
@@ -36,8 +36,8 @@
 .admin-menu {
     display: flex;
     flex-direction: column;
-    background-color: #fff;
-    border: 1px solid #ccc;
+    background-color: #ffffff;
+    border: 1px solid #2685bb;
     position: absolute;
     top: 30px;
     right: 0;
@@ -55,17 +55,16 @@
 }
 
 .admin-menu-item:hover {
-    background-color: #f0f0f0;
+    background-color: #ffbc2b;
 }
-
 
 /* 📌 Logo + Nombre */
 .navbar-logo {
     display: flex;
     align-items: center;
     gap: 10px;
-    text-decoration: none; /* 🔹 Elimina el subrayado */
-    color: inherit; /* 🔹 Mantiene el color original del texto */
+    text-decoration: none;
+    color: inherit;
 }
 
 .navbar-logo img {
@@ -75,11 +74,12 @@
 .navbar-title {
     font-size: 25px;
     font-weight: bold;
-    color: #333;
+    color: #ffffff;
 }
 
 /* 📅 Lista de Meses */
 .navbar-meses {
+    background-color: transparent;
     display: flex;
     gap: 5px;
     list-style: none;
@@ -87,25 +87,28 @@
     margin: 0;
     flex-wrap: wrap;
     overflow-x: auto;
+    position: static;
+    z-index: auto;
+    overflow: visible;
 }
 
-/* Estilos para el dropdown de eventos (añadir esto al CSS existente) */
+/* Estilos para el dropdown de eventos */
 .event-dropdown {
     position: absolute;
+    z-index: 9999;
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    background: white;
+    background: #ffffff;
+    border: 1px solid #2685bb;
     border-radius: 12px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     padding: 15px;
     min-width: 280px;
     z-index: 1100;
     animation: fadeInDropdown 0.25s ease-out;
-    border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-/* Header del dropdown */
 .event-dropdown-header {
     padding-bottom: 10px;
     margin-bottom: 10px;
@@ -114,7 +117,7 @@
 
 .event-dropdown-header h4 {
     margin: 0;
-    color: #00008b;
+    color: #2685bb;
     font-size: 16px;
     font-weight: 600;
     text-align: center;
@@ -138,19 +141,19 @@
 }
 
 .event-item:hover {
-    background-color: #f8f9ff;
+    background-color: #f9a510;
+    color: #ffffff;
     transform: translateX(3px);
 }
 
-/* Día del evento */
 .event-day {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 28px;
     height: 28px;
-    background-color: #00008b;
-    color: white;
+    background-color: #ffbc2b;
+    color: #000;
     border-radius: 50%;
     font-size: 13px;
     font-weight: bold;
@@ -159,7 +162,6 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Nombre del evento */
 .event-name {
     font-size: 14px;
     color: #333;
@@ -167,7 +169,6 @@
     flex-grow: 1;
 }
 
-/* Pequeña descripción (opcional) */
 .event-desc {
     font-size: 12px;
     color: #666;
@@ -188,8 +189,8 @@
 
 .month-link {
     background: transparent;
-    border: none;
-    color: #333;
+    border: 2px solid #ffffff;
+    color: #ffffff;
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
@@ -198,20 +199,19 @@
     transition: all 0.3s ease;
     text-decoration: none;
     white-space: nowrap;
+    outline: none;
+    box-shadow: none;
 }
 
 .month-link:hover {
-    background-color: rgba(0, 0, 0, 0.07); /* tono más elegante al pasar */
-    color: #00008b;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    color: #2685bb;
 }
 
-
-/* Efecto de hover en el mes */
 .nav-item:hover .month-link {
-    background-color: rgba(0, 0, 139, 0.08);
-    color: #00008b;
-    box-shadow: 0 2px 8px rgba(0, 0, 139, 0.1);
+    background-color: #ffffff;
+    color: #2685bb;
+
 }
 
 .navbar-auth {
@@ -222,30 +222,10 @@
 
 .nav-item {
     border-radius: 16px;
-    background-color: rgba(255, 255, 255, 0.05); /* más sutil */
     backdrop-filter: blur(4px);
-    border: 1px solid rgba(0, 0, 0, 0.15); /* borde más discreto */
-}
-
-/* 🔹 Estilos del menú de festividades */
-.event-dropdown {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    border: 1px solid #ccc;
-    padding: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    width: 200px;
-    list-style: none;
-    z-index: 9999; /* 🔹 Asegurar que siempre esté sobre otros elementos */
-    border-radius: 8px; /* 🔹 Agregar esquinas redondeadas */
-}
-
-/* 📌 Mostrar el menú cuando el mes está en hover */
-.nav-item:hover .event-dropdown {
-    display: block; /* ✅ Se muestra al hacer hover */
+    border: 1px solid rgb(255, 255, 255);
+    position: relative;
+    z-index: 10000;
 }
 
 /* 📌 Estilos para los eventos */
@@ -256,13 +236,14 @@
 }
 
 .event-item:hover {
-    background: #f0f0f0;
+    background: #f9a510;
+    color: #ffffff;
 }
 
 /* Estilo base para los íconos */
 .icon-btn {
     font-size: 22px;
-    color: #333;
+    color: #ffffff !important;
     background: none;
     border: none;
     cursor: pointer;
@@ -270,22 +251,22 @@
     position: relative;
 }
 
-/* Verde al hacer hover cuando NO está autenticado */
 .login-icon:hover {
-    color: green;
+    color: #ffbc2b !important;
 }
 
-/* Ícono de perfil sin efecto hover (opcional) */
 .profile-icon:hover {
-    color: #555;
+    color: #f9a510 !important;
 }
 
-/* Rojo al hacer hover en cerrar sesión */
 .logout-icon:hover {
-    color: red;
+    color: #ff4d4d !important;
 }
 
-/* Animación general para hover */
+.admin-icon:hover {
+    color: #0d0085 !important;
+}
+
 .navbar-logo:hover img,
 .navbar-title:hover,
 .navbar-meses .nav-item .nav-link:hover,
@@ -295,17 +276,16 @@
 }
 
 /* 📌 Responsive */
-
 .admin-menu-container {
-    display: none; /* Ocultar por defecto en pantallas pequeñas */
+    display: none;
 }
 
-/* Mostrar menú de administración solo en pantallas grandes */
-@media (min-width: 1024px) { 
+@media (min-width: 1024px) {
     .admin-menu-container {
-        display: block; /* Mostrar en pantallas grandes */
+        display: block;
     }
 }
+
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
@@ -318,18 +298,18 @@
         display: flex;
         flex-wrap: nowrap;
         overflow-x: auto;
-        scrollbar-width: thin; /* Oculta scrollbar en navegadores modernos */
-        -ms-overflow-style: none; /* Oculta scrollbar en IE y Edge */
+        scrollbar-width: thin;
+        -ms-overflow-style: none;
         white-space: nowrap;
         width: 100%;
         justify-content: flex-start;
         padding-left: 10px;
         scroll-behavior: smooth;
-        scroll-snap-type: x mandatory; /* Hace que el scroll se alinee mejor */
+        scroll-snap-type: x mandatory;
     }
 
     .navbar-meses::-webkit-scrollbar {
-        display: none; /* Oculta scrollbar en navegadores basados en WebKit */
+        display: none;
     }
 
     .navbar-meses .nav-item {
@@ -337,8 +317,9 @@
     }
 
     .menu-btn {
-        display: block; /* 🟢 Mostrar solo en móviles */
+        display: block;
     }
+
     .navbar-auth {
         display: none;
     }
