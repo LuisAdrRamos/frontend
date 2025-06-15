@@ -20,7 +20,8 @@
 .brand-text {
     font-size: 35px;
     font-weight: bold;
-    color: #333;
+    color: #000000;
+    border-color: #35a8e2f3;
     text-transform: uppercase;
     display: inline-block;
     text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.781), 4px 4px 10px #1a1a3dda; /* Sombra sutil para efecto 3D */

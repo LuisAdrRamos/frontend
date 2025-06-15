@@ -30,7 +30,7 @@
     width: 100%;
     max-width: 1000px;
     height: auto; /* ✅ Permitir ajuste dinámico */
-    background-color: rgba(255, 255, 255, 0.171);
+    background-color: #35a9e2;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
@@ -65,7 +65,7 @@
 .new-arrivals {
     text-align: center;
     padding: 20px;
-    background-color: #F8FFE5;
+    background-color: #ffbc2b79;
     border-radius: 15px;
     margin: 20px auto;
     width: 90%;
@@ -269,7 +269,7 @@
 .all-disfraces {
     text-align: center;
     padding: 20px;
-    background-color: #F8FFE5;
+    background-color: #ffbc2b79;
     border-radius: 15px;
     margin: 20px auto;
     width: 90%;

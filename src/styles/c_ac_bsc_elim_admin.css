@@ -222,7 +222,7 @@
 }
 /* Botón del formulario */
 .form-button {
-    background-color: #1f2937;
+    background-color: #35a8e2f3;
     color: white;
     padding: 10px 20px;
     border: 0.3px solid #010101;
@@ -234,7 +234,7 @@
 }
 
 .form-buttonev,.cancel-button{
-    background-color: #1f2937;
+    background-color: #35a8e2f3;
     color: white;
     padding: 10px 20px;
     border: 0.3px solid #010101;
@@ -273,7 +273,7 @@
 }
 
 .form-button:hover {
-    background-color: #5e7ba2;
+    background-color: #2685bb;
 }
 
 /* formato li*/

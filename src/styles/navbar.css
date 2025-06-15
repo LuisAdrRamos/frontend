@@ -7,9 +7,9 @@
     border-radius: 10px;
     max-width: 1846px;
     height: 75px;
-    background: rgba(255, 255, 255, 0.4);
+    background: #35a8e2f3;
     backdrop-filter: blur(5px); 
-    color: black;
+    color: rgb(255, 255, 255);
     position: relative;
     z-index: 5000;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
@@ -17,7 +17,7 @@
 
 /* 📌 Botón de menú */
 .menu-btn {
-    color: #333;
+    color: #ffffff;
     background: none;
     border: none;
     font-size: 24px;
@@ -75,7 +75,7 @@
 .navbar-title {
     font-size: 25px;
     font-weight: bold;
-    color: #333;
+    color: #ffffff;
 }
 
 /* 📅 Lista de Meses */
@@ -201,7 +201,7 @@
 }
 
 .month-link:hover {
-    background-color: rgba(0, 0, 0, 0.07); /* tono más elegante al pasar */
+    background-color: rgba(190, 188, 72, 0.63); /* tono más elegante al pasar */
     color: #00008b;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
@@ -209,7 +209,7 @@
 
 /* Efecto de hover en el mes */
 .nav-item:hover .month-link {
-    background-color: rgba(0, 0, 139, 0.08);
+    background-color: rgba(190, 188, 72, 0.63);
     color: #00008b;
     box-shadow: 0 2px 8px rgba(0, 0, 139, 0.1);
 }
@@ -262,7 +262,7 @@
 /* Estilo base para los íconos */
 .icon-btn {
     font-size: 22px;
-    color: #333;
+    color: #ffffff;
     background: none;
     border: none;
     cursor: pointer;

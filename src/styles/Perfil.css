@@ -124,7 +124,7 @@ body, html {
 
 .btn-success {
   margin: 0 auto;
-  background-color: #00a900b7;
+  background-color: #ffbc2b;
   color: #000000;
   border: 2px solid #00b200; /* Adding border and border color */
 }
@@ -137,7 +137,7 @@ body, html {
 }
 
 .btn-success:hover, .btn-primary:hover {
-  background-color: #a1ffa1;
+  background-color: #a1fff2;
   color: #000000;
   transform: scale(1.05); /* Adding transform on hover */
 }

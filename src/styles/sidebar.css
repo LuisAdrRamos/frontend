@@ -1,7 +1,7 @@
 /* 🏗️ Sidebar - General */
 .sidebar {
     width: 350px;
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: #35a8e275;
     backdrop-filter: blur(5px); 
     padding: 15px;
     padding-top: 0px;
@@ -10,7 +10,7 @@
     left: -350px;
     top: 0;
     height: 100vh; /* Ocupa toda la altura */
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: -2px 0 5px rgba(233, 18, 18, 0.2);
     transition: transform 0.4s ease-in-out, opacity 0.3s ease-in-out;
     z-index: 9999;
     display: flex;
@@ -77,13 +77,13 @@
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
-    background-color: #333;
-    color: white;
+    background-color: #35a9e2;
+    color: rgb(36, 35, 35);
 }
 
 .search-btn {
-    background-color: #00008b94;
-    color: white;
+    background-color: #35a9e2;
+    color: rgb(255, 255, 255);
     border: none;
     padding: 6px 10px; /* Ajustamos el tamaño del botón */
     border-radius: 4px;
@@ -135,7 +135,7 @@
 
 .icon-btn {
     font-size: 20px;
-    color: #333;
+    color: #ffffff;
     background: none;
     border: none;
     cursor: pointer;
@@ -187,12 +187,12 @@
 
 .tag-button{
     border-radius: 15px;
-    background-color: #00008b94;
+    background-color: #f9a510;
     color: white;
 }
 
 .tag-button:hover{
-    background: #0056b3;
+    background: #35a9e2;
 }
 
 .tag.active {

@@ -48,13 +48,13 @@
 
 .admin-button:hover {
     transform: scale(1.05);
-    background-color: #1f2937;
+    background-color: #ffbc2b;
 }
 
-.button-crear { background-color: #00008b94; }
-.button-actualizar { background-color:  #00008b94;}
-.button-buscar { background-color: #00008b94; }
-.button-eliminar { background-color: #00008b94;  }
+.button-crear { background-color: #35a8e2f3; }
+.button-actualizar { background-color:  #35a8e2f3;}
+.button-buscar { background-color: #35a8e2f3; }
+.button-eliminar { background-color: #35a8e2f3;  }
 
 .admin-module-container {
     background-color: #ffff0018;

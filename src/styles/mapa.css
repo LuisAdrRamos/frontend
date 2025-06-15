@@ -1,7 +1,7 @@
 /* 📌 Mapa de Sucursales Estilo Nuevo */
 .mapa-wrapper {
     padding: 5px;
-    background-color: #fff9ec;
+    background-color: #fffffa56;
     border-radius: 15px;
     margin: 30px auto;
     width: 100%;
@@ -37,7 +37,7 @@
 }
 
 .sucursales-list li {
-    background: #00008b94;
+    background: #f9a510;
     color: white;
     padding: 30px 10px; /* más alto para homogeneidad */
     min-height: 45px;   /* altura mínima para uniformidad */
@@ -47,7 +47,8 @@
     cursor: pointer;
     text-align: center;
     transition: background 0.3s ease-in-out;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -55,7 +56,7 @@
 }
 
 .sucursales-list li:hover {
-    background: #2e67a8;
+    background: #35a9e2;
 }
 
 /* Mapa */
@@ -101,7 +102,7 @@
 }
 
 .social-icons a {
-    background-color: white;
+    background-color: #ffffff05;
     /* width: 80px;
     height: 80px; */
     border-radius: 50%;
