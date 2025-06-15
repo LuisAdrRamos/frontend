@@ -7,9 +7,9 @@
     border-radius: 10px;
     max-width: 1846px;
     height: 75px;
-    background: rgba(255, 255, 255, 0.4);
+    background: #35a9e2;
+    color: #ffffff;
     backdrop-filter: blur(5px); 
-    color: black;
     position: relative;
     z-index: 5000;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
@@ -204,15 +204,14 @@
 }
 
 .month-link:hover {
-    background-color: rgba(0, 0, 0, 0.07); /* tono más elegante al pasar */
-    color: #00008b;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    color: #2685bb;
 }
 
 .nav-item:hover .month-link {
-    background-color: rgba(0, 0, 139, 0.08);
-    color: #00008b;
-    box-shadow: 0 2px 8px rgba(0, 0, 139, 0.1);
+    background-color: #ffffff;
+    color: #2685bb;
+
 }
 
 .navbar-auth {
@@ -244,7 +243,7 @@
 /* Estilo base para los íconos */
 .icon-btn {
     font-size: 22px;
-    color: #333;
+    color: #ffffff !important;
     background: none;
     border: none;
     cursor: pointer;

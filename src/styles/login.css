@@ -3,10 +3,35 @@ body, html {
   height: 100%;
   margin: 0;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1098%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='rgba(255%2c 214%2c 124%2c 1)'%3e%3c/rect%3e%3cpath d='M 0%2c77 C 96%2c70.2 288%2c32.4 480%2c43 C 672%2c53.6 768%2c134.6 960%2c130 C 1152%2c125.4 1344%2c42 1440%2c20L1440 560L0 560z' fill='rgba(255%2c 227%2c 171%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c250 C 96%2c240.8 288%2c208.4 480%2c204 C 672%2c199.6 768%2c229.4 960%2c228 C 1152%2c226.6 1344%2c203.2 1440%2c197L1440 560L0 560z' fill='rgba(255%2c 230%2c 185%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c376 C 96%2c363.6 288%2c307.4 480%2c314 C 672%2c320.6 768%2c402.8 960%2c409 C 1152%2c415.2 1344%2c357.8 1440%2c345L1440 560L0 560z' fill='rgba(255%2c 242%2c 197%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c558 C 96%2c538.2 288%2c461.4 480%2c459 C 672%2c456.6 768%2c550 960%2c546 C 1152%2c542 1344%2c460.4 1440%2c439L1440 560L0 560z' fill='rgba(255%2c 250%2c 229%2c 1)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1098'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
-  background-repeat: repeat;
-  background-size: cover;
-  background-attachment: fixed; /* ✅ mantiene el fondo al hacer scroll */
+  
+  background-image: linear-gradient(
+    -45deg,
+    #ffffff 0px,
+    #ffffff 150px,
+
+    #35a9e2 150px,
+    #35a9e2 190px,
+
+    #3fbdea 190px,
+    #3fbdea 230px,
+
+    #ffffff 230px,
+    #ffffff 470px,
+
+    #fbb034 470px,
+    #fbb034 510px,
+
+    #f5a623 510px,
+    #f5a623 550px,
+
+    #ffffff 550px,
+    #ffffff 1000px
+  );
+
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: -700px 0px; /* alineado con sidebar y carrusel */
+  background-attachment: fixed;
   box-sizing: border-box;
 }
 
@@ -24,7 +49,6 @@ body, html {
   font-weight: bold;
   margin-left: 15px;
   margin-top: 15px;
-  
 }
 .text-center{
   font-size: 1.6rem;
@@ -49,7 +73,6 @@ body, html {
   height: 60px;
   object-fit: contain;
 }
-
 
 .brand-icon:hover {
   transform: scale(1.3);
@@ -81,7 +104,7 @@ body, html {
   justify-content: center;
   align-items: center;
   min-height: 88vh;
-  background-size:cover;
+  background-size: cover;
   background-position: center;
   color: #b82d2d;
   font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -89,24 +112,15 @@ body, html {
 }
 
 .login-wrapper, .forgot-wrapper, .register-wrapper {
-  /* Fondo semitransparente */
   background: rgba(255, 255, 255, 0); 
-  /* Efecto borroso en el fondo */
   backdrop-filter: blur(5px); 
-  /* Sombra sutil para resaltar las cajas */
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.4); 
-  /* Texto en color blanco para contraste */
-  color: Black; 
-  /* Ajustes generales de tamaño */
+  color: black; 
   width: 100%;
   max-width: 500px;
-  /* Espaciado interno */
   padding: 40px 50px; 
-  /* Esquinas redondeadas */
   border-radius: 15px; 
-  /* Tamaño de fuente mayor */
   font-size: 1.2em; 
-  /* Separación desde la parte superior */
   margin-top: 80px; 
 }
 
