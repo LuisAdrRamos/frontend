@@ -15,6 +15,7 @@ const ProductDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    const [zoomedImage, setZoomedImage] = useState(null);
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -115,12 +116,14 @@ const ProductDetail = () => {
                         <div className="carousel-inner">
                             {productImages.map((_, idx) => (
                                 <div key={idx} className={`carousel-item ${idx === 0 ? 'active' : ''}`}>
-                                    <ImageWithFallback
-                                        imagenes={product.imagenes}
-                                        index={idx}
-                                        alt={product.nombre}
-                                        className="d-block w-100"
-                                    />
+                                    <div onClick={() => setZoomedImage(productImages[idx])} style={{ cursor: "zoom-in" }}>
+                                        <ImageWithFallback
+                                            imagenes={product.imagenes}
+                                            index={idx}
+                                            alt={product.nombre}
+                                            className="d-block w-100"
+                                        />
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -225,6 +228,14 @@ const ProductDetail = () => {
                     </div>
                 </div>
             </div>
+
+            {/* --- Modal de Zoom --- */}
+            {zoomedImage && (
+                <div className="zoom-modal" onClick={() => setZoomedImage(null)}>
+                    <img src={zoomedImage} alt="Zoom" className="zoomed-img" />
+                    <button className="close-btn" onClick={() => setZoomedImage(null)}>×</button>
+                </div>
+            )}
         </div>
     );
 };
