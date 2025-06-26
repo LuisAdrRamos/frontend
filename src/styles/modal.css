@@ -144,6 +144,54 @@
     color: #374151;
 }
 
+.etiquetas-list,
+.festividades-list {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag-item {
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
+    padding: 6px 10px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tag-item:hover {
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
+}
+
+.tag-item .remove-button {
+    margin-left: 8px;
+    position: static;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    border-radius: 50%;
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.tag-item .remove-button:hover {
+    background-color: #dc2626;
+    transform: scale(1.1);
+}
+
 /* Estilos responsivos */
 @media (max-width: 768px) {
     .modal-content {

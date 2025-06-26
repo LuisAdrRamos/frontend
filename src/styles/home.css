@@ -1,13 +1,16 @@
 /* 📌 Estilos Generales */
 .store-container {
     min-height: 90vh;
-    margin-left: -50px;
+    margin: 0 auto;
     width: 100%;
+    max-width: 1600px; /* ✅ Para pantallas grandes */
     background-color: transparent;
-    overflow: hidden;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-sizing: border-box;
+    padding: 0 -10px; /* ✅ Añadir algo de padding lateral */
 }
 
 /* 📌 Header - Navbar */
@@ -28,7 +31,8 @@
 /* 📌 Carrusel */
 .carousel-section {
     width: 100%;
-    max-width: 1000px;
+    max-width: 1300px;
+    margin: 0 auto;
     height: auto; /* ✅ Permitir ajuste dinámico */
     background-color: #35a9e2;
     border-radius: 15px;
